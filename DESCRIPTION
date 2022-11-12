@@ -1,22 +1,39 @@
-Package: rpkgTemplate
-Title: Template for Creating R Packages
+Package: mlsurvlrnrs
+Title: R6-Based ML Survival Learners for 'mlexperiments'
 Version: 0.0.0.9001
 Authors@R: 
-    person("John", "Doe", , "john.doe@johnmail.com", role = c("cre", "aut", "cph"))
-Description: A template repository for creating R packages.
+    person("Lorenz A.", "Kapsner", , "lorenz.kapsner@gmail.com", role = c("cre", "aut", "cph"),
+           comment = c(ORCID = "0000-0003-1866-860X"))
+Description: A set of ML learners to be used for survival analysis with
+    the R package 'mlexperiments'.
 License: GPL (>= 3)
-URL: https://github.com/kapsner/rpkgTemplate
-BugReports: https://github.com/kapsner/rpkgTemplate/issues
+URL: https://github.com/kapsner/mlsurvlrnrs
+BugReports: https://github.com/kapsner/mlsurvlrnrs/issues
 Depends: 
     R (>= 2.10)
 Imports: 
     data.table,
-    magrittr
+    kdry,
+    mlexperiments,
+    mllrnrs,
+    R6,
+    stats
 Suggests: 
+    glmnet,
     knitr,
     lintr,
-    testthat (>= 3.0.1)
+    mlbench,
+    ranger,
+    rpart,
+    splitTools,
+    survival,
+    survivalsvm,
+    testthat (>= 3.0.1),
+    xgboost
 VignetteBuilder: 
     knitr
-Date/Publication: 2022-10-16 06:38:17 UTC
+Config/testthat/edition: 3
+Config/testthat/parallel: false
+Date/Publication: 2022-11-12 15:32:32 UTC
 Encoding: UTF-8
+RoxygenNote: 7.2.1

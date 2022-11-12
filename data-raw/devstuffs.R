@@ -1,5 +1,5 @@
 # nolint start
-packagename <- "rpkgTemplate"
+packagename <- "mlsurvlrnrs"
 
 # remove existing description object
 unlink("DESCRIPTION")
@@ -10,40 +10,38 @@ my_desc$set("Package", packagename)
 #Set your name
 my_desc$set_authors(c(
   person(
-    given = "John",
-    family = "Doe",
-    email = "john.doe@johnmail.com",
-    role = c('cre', 'aut', 'cph')
+    given = "Lorenz A.",
+    family = "Kapsner",
+    email = "lorenz.kapsner@gmail.com",
+    role = c('cre', 'aut', 'cph'),
+    comment = c(ORCID = "0000-0003-1866-860X")
   )))
 # Remove some author fields
 my_desc$del("Maintainer")
 # Set the version
 my_desc$set_version("0.0.0.9001")
 # The title of your package
-my_desc$set(Title = "Template for Creating R Packages")
+my_desc$set(Title = "R6-Based ML Survival Learners for 'mlexperiments'")
 # The description of your package
 my_desc$set(Description = paste0(
-  "A template repository for creating R packages."
+  "A set of ML learners to be used for survival analysis with the R package 'mlexperiments'."
 ))
 # The description of your package
 my_desc$set("Date/Publication" = paste(as.character(Sys.time()), "UTC"))
 # The urls
-my_desc$set("URL", "https://github.com/kapsner/rpkgTemplate")
+my_desc$set("URL", "https://github.com/kapsner/mlsurvlrnrs")
 my_desc$set("BugReports",
-            "https://github.com/kapsner/rpkgTemplate/issues")
+            "https://github.com/kapsner/mlsurvlrnrs/issues")
 
 # Vignette Builder
 my_desc$set("VignetteBuilder" = "knitr")
 
-# License
-my_desc$set("License", "GPL-3")
-
 # Testthat stuff
 my_desc$set("Config/testthat/parallel" = "false")
 my_desc$set("Config/testthat/edition" = "3")
-# Roxygen
-my_desc$set("Roxygen" = "list(markdown = TRUE)")
 
+# License
+my_desc$set("License", "GPL-3")
 # Save everyting
 my_desc$write(file = "DESCRIPTION")
 
@@ -55,70 +53,104 @@ usethis::use_package("R", min_version = "2.10", type = "Depends")
 
 # Imports
 # https://cran.r-project.org/web/packages/data.table/vignettes/datatable-importing.html
+usethis::use_package("R6", type = "Imports")
 usethis::use_package("data.table", type = "Imports")
-usethis::use_package("magrittr", type = "Imports")
+usethis::use_package("kdry", type = "Imports")
+usethis::use_package("stats", type = "Imports")
+usethis::use_package("mlexperiments", type = "Imports")
+usethis::use_package("mllrnrs", type = "Imports")
 
 # Suggests
 usethis::use_package("testthat", type = "Suggests", min_version = "3.0.1")
 usethis::use_package("lintr", type = "Suggests")
 usethis::use_package("knitr", type = "Suggests")
+usethis::use_package("glmnet", type = "Suggests")
+usethis::use_package("xgboost", type = "Suggests")
+usethis::use_package("ranger", type = "Suggests")
+usethis::use_package("rpart", type = "Suggests")
+usethis::use_package("survivalsvm", type = "Suggests")
+usethis::use_package("survival", type = "Suggests")
+usethis::use_package("splitTools", type = "Suggests")
+usethis::use_package("mlbench", type = "Suggests")
 
 
 # define remotes
-# remotes_append_vector <- NULL
-#
-# # Development package 1
-# tag1 <- "master" # e.g. "v0.1.7", "development" or "cran"
-# if (tag1 == "cran") {
-#   install.packages("data.table")
-# } else{
-#   remotes::install_github(
-#     repo = "Rdatatable/data.table",
-#     ref = tag1
-#   )
-#   # add_remotes <- paste0(
-#   #   "url::https://gitlab.miracum.org/miracum/misc/diztools/-/archive/", tools_tag, "/diztools-", tools_tag, ".zip"
-#   # )
-#   add_remotes <- paste0(
-#     "github::Rdatatable/data.table@", tag1
-#   )
-#
-#   if (is.null(remotes_append_vector)) {
-#     remotes_append_vector <- add_remotes
-#   } else {
-#     remotes_append_vector <- c(remotes_append_vector, add_remotes)
-#   }
-# }
-#
-# tag2 <- "main" # e.g. "v0.1.7", "development" or "cran"
-# if (tag2 == "cran") {
-#   install.packages("magrittr")
-# } else{
-#   remotes::install_github(
-#     repo = "tidyverse/magrittr",
-#     ref = tag2
-#   )
-#   # add_remotes <- paste0(
-#   #   "url::https://gitlab.miracum.org/miracum/misc/dizutils/-/archive/", utils_tag, "/dizutils-", utils_tag, ".zip"
-#   # )
-#   add_remotes <- paste0(
-#     "github::tidyverse/magrittr@", tag2
-#   )
-#
-#   if (is.null(remotes_append_vector)) {
-#     remotes_append_vector <- add_remotes
-#   } else {
-#     remotes_append_vector <- c(remotes_append_vector, add_remotes)
-#   }
-# }
-#
-# # finally, add remotes (if required)
-# if (!is.null(remotes_append_vector)) {
-#   desc::desc_set_remotes(
-#     remotes_append_vector,
-#     file = usethis::proj_get()
-#   )
-# }
+remotes_append_vector <- NULL
+
+# Development package 1
+tag1 <- "main" # e.g. "v0.1.7", "development" or "cran"
+if (tag1 == "cran") {
+  install.packages("mlexperiments")
+} else{
+  remotes::install_github(
+    repo = "kapsner/mlexperiments",
+    ref = tag1
+  )
+  # add_remotes <- paste0(
+  #   "url::https://gitlab.miracum.org/miracum/misc/diztools/-/archive/", tools_tag, "/diztools-", tools_tag, ".zip"
+  # )
+  add_remotes <- paste0(
+    "github::kapsner/mlexperiments@", tag1
+  )
+
+  if (is.null(remotes_append_vector)) {
+    remotes_append_vector <- add_remotes
+  } else {
+    remotes_append_vector <- c(remotes_append_vector, add_remotes)
+  }
+}
+
+tag2 <- "main" # e.g. "v0.1.7", "development" or "cran"
+if (tag2 == "main") {
+  install.packages("kdry")
+} else{
+  remotes::install_github(
+    repo = "kapsner/kdry",
+    ref = tag2
+  )
+  # add_remotes <- paste0(
+  #   "url::https://gitlab.miracum.org/miracum/misc/dizutils/-/archive/", utils_tag, "/dizutils-", utils_tag, ".zip"
+  # )
+  add_remotes <- paste0(
+    "github::kapsner/kdry@", tag2
+  )
+
+  if (is.null(remotes_append_vector)) {
+    remotes_append_vector <- add_remotes
+  } else {
+    remotes_append_vector <- c(remotes_append_vector, add_remotes)
+  }
+}
+
+tag3 <- "main" # e.g. "v0.1.7", "development" or "cran"
+if (tag1 == "cran") {
+  install.packages("mllrnrs")
+} else{
+  remotes::install_github(
+    repo = "kapsner/mllrnrs",
+    ref = tag3
+  )
+  # add_remotes <- paste0(
+  #   "url::https://gitlab.miracum.org/miracum/misc/diztools/-/archive/", tools_tag, "/diztools-", tools_tag, ".zip"
+  # )
+  add_remotes <- paste0(
+    "github::kapsner/mllrnrs@", tag3
+  )
+
+  if (is.null(remotes_append_vector)) {
+    remotes_append_vector <- add_remotes
+  } else {
+    remotes_append_vector <- c(remotes_append_vector, add_remotes)
+  }
+}
+
+# finally, add remotes (if required)
+if (!is.null(remotes_append_vector)) {
+  desc::desc_set_remotes(
+    remotes_append_vector,
+    file = usethis::proj_get()
+  )
+}
 
 usethis::use_build_ignore("cran-comments.md")
 usethis::use_build_ignore(".lintr")
