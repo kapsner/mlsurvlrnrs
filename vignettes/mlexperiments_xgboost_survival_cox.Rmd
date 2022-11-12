@@ -18,10 +18,10 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(mlexperiments)
-library(mllrnrs)
+library(mlsurvlrnrs)
 ```
 
-See [https://github.com/kapsner/mllrnrs/blob/main/R/learner_surv_xgboost_cox.R](https://github.com/kapsner/mllrnrs/blob/main/R/learner_surv_xgboost_cox.R) for implementation details.
+See [https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_xgboost_cox.R](https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_xgboost_cox.R) for implementation details.
 
 # Preprocessing
 

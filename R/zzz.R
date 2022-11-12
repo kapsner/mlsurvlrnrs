@@ -8,15 +8,6 @@ NULL
 utils::globalVariables(c("seed", "method_helper", "x", "y"))
 
 mlexperiments_default_options <- list(
-  mlexperiments.learner = c(
-    LearnerSurvCoxPHCox$classname,
-    LearnerSurvGlmnetCox$classname, # = "LearnerSurvGlmnetCox"
-    LearnerSurvXgboostCox$classname,
-    LearnerSurvXgboostAft$classname,
-    LearnerSurvRangerCox$classname,
-    LearnerSurvSurvivalsvm$classname,
-    LearnerSurvRpartCox$classname
-  ),
   mlexperiments.optim.xgb.nrounds = 5000L,
   mlexperiments.optim.xgb.early_stopping_rounds = 500L,
   mlexperiments.xgb.print_every_n = 50L,

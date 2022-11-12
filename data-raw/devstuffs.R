@@ -101,7 +101,7 @@ if (tag1 == "cran") {
 }
 
 tag2 <- "main" # e.g. "v0.1.7", "development" or "cran"
-if (tag2 == "main") {
+if (tag2 == "cran") {
   install.packages("kdry")
 } else{
   remotes::install_github(

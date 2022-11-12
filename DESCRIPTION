@@ -32,8 +32,12 @@ Suggests:
     xgboost
 VignetteBuilder: 
     knitr
+Remotes: 
+    github::kapsner/kdry@main,
+    github::kapsner/mlexperiments@main,
+    github::kapsner/mllrnrs@main
 Config/testthat/edition: 3
 Config/testthat/parallel: false
-Date/Publication: 2022-11-12 15:32:32 UTC
+Date/Publication: 2022-11-12 16:01:33 UTC
 Encoding: UTF-8
 RoxygenNote: 7.2.1
