@@ -308,14 +308,45 @@ validator_results <- validator$execute()
 head(validator_results)
 ```
 
+## Comparison with Cox Proportional Hazards Regression
 
-## Holdout Test Dataset Performance
+See [https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_coxph_cox.R](https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_coxph_cox.R) for implementation details.
+
+```{r}
+validator_coxph <- mlexperiments::MLCrossValidation$new(
+  learner = LearnerSurvCoxPHCox$new(),
+  fold_list = fold_list,
+  ncores = ncores,
+  seed = seed
+)
+validator_coxph$performance_metric <- performance_metric
+validator_coxph$performance_metric_args <- performance_metric_args
+validator_coxph$return_models <- TRUE
+validator_coxph$set_data(
+  x = train_x,
+  y = train_y
+)
+validator_coxph_results <- validator_coxph$execute()
+head(validator_coxph_results)
+```
+
+### Test Fold Equality
+
+```{r}
+mlexperiments::validate_fold_equality(
+  experiments = list(validator, validator_coxph)
+)
+```
 
 ### Predict Outcome in Holdout Test Dataset
 
 ```{r}
 preds_glmnet <- mlexperiments::predictions(
   object = validator,
+  newdata = test_x
+)
+preds_coxph <- mlexperiments::predictions(
+  object = validator_coxph,
   newdata = test_x
 )
 ```
@@ -329,4 +360,13 @@ perf_glmnet <- mlexperiments::performance(
   y_ground_truth = test_y
 )
 perf_glmnet
+```
+
+```{r}
+perf_coxph <- mlexperiments::performance(
+  object = validator_coxph,
+  prediction_results = preds_coxph,
+  y_ground_truth = test_y
+)
+perf_coxph
 ```

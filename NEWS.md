@@ -1,5 +1,12 @@
 # mlsurvlrnrs NEWS
 
+## Unreleased (2022-11-13)
+
+#### Other changes
+
+-   updated news.md
+    ([47f1c21](https://github.com/kapsner/mlsurvlrnrs/tree/47f1c21f0bf91eba432dec35671411fab24bd4d0))
+
 ## v0.0.1 (2022-11-13)
 
 #### New features
