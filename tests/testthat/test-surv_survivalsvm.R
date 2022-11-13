@@ -60,44 +60,6 @@ fold_list <- splitTools::create_folds(
   seed = seed
 )
 
-
-# ###########################################################################
-# %% CV
-# ###########################################################################
-
-test_that(
-  desc = "test cv - surv_survivalsvm",
-  code = {
-
-    surv_survivalsvm_optimizer <- mlexperiments::MLCrossValidation$new(
-      learner = mllrnrs::LearnerSurvSurvivalsvm$new(),
-      fold_list = fold_list,
-      ncores = ncores,
-      seed = seed
-    )
-    surv_survivalsvm_optimizer$learner_args <- as.list(
-      data.table::data.table(param_list_survivalsvm[1, ],
-                             stringsAsFactors = FALSE)
-    )
-    surv_survivalsvm_optimizer$performance_metric <- c_index
-
-
-    # set data
-    surv_survivalsvm_optimizer$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    cv_results <- surv_survivalsvm_optimizer$execute()
-    expect_type(cv_results, "list")
-    expect_equal(dim(cv_results), c(3, 6))
-    expect_true(inherits(
-      x = surv_survivalsvm_optimizer$results,
-      what = "mlexCV"
-    ))
-  }
-)
-
 # ###########################################################################
 # %% TUNING
 # ###########################################################################
@@ -111,62 +73,6 @@ optim_args <- list(
   acq = "ucb"
 )
 
-test_that(
-  desc = "test bayesian tuner, initGrid - surv_survivalsvm",
-  code = {
-
-    surv_survivalsvm_tuner <- mlexperiments::MLTuneParameters$new(
-      learner = mllrnrs::LearnerSurvSurvivalsvm$new(),
-      strategy = "bayesian",
-      ncores = ncores,
-      seed = seed
-    )
-    surv_survivalsvm_tuner$parameter_bounds <- survivalsvm_bounds
-    surv_survivalsvm_tuner$parameter_grid <- param_list_survivalsvm
-    surv_survivalsvm_tuner$optim_args <- optim_args
-
-    # create split-strata from training dataset
-    surv_survivalsvm_tuner$split_vector <- split_vector
-
-    # set data
-    surv_survivalsvm_tuner$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    expect_error(surv_survivalsvm_tuner$execute(k = 3))
-  }
-)
-
-
-test_that(
-  desc = "test grid tuner - surv_survivalsvm",
-  code = {
-
-    surv_survivalsvm_tuner <- mlexperiments::MLTuneParameters$new(
-      learner = mllrnrs::LearnerSurvSurvivalsvm$new(),
-      strategy = "grid",
-      ncores = ncores,
-      seed = seed
-    )
-    surv_survivalsvm_tuner$parameter_grid <- param_list_survivalsvm
-
-    # create split-strata from training dataset
-    surv_survivalsvm_tuner$split_vector <- split_vector
-
-    # set data
-    surv_survivalsvm_tuner$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    tune_results <- surv_survivalsvm_tuner$execute(k = 3)
-    expect_type(tune_results, "list")
-    expect_equal(dim(tune_results), c(5, 6))
-    expect_true(inherits(x = surv_survivalsvm_tuner$results, what = "mlexTune"))
-  }
-)
-
 # ###########################################################################
 # %% NESTED CV
 # ###########################################################################
@@ -176,7 +82,7 @@ test_that(
   code = {
 
     surv_survivalsvm_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = mllrnrs::LearnerSurvSurvivalsvm$new(),
+      learner = LearnerSurvSurvivalsvm$new(),
       strategy = "bayesian",
       fold_list = fold_list,
       k_tuning = 3L,
@@ -208,7 +114,7 @@ test_that(
   code = {
 
     surv_survivalsvm_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = mllrnrs::LearnerSurvSurvivalsvm$new(),
+      learner = LearnerSurvSurvivalsvm$new(),
       strategy = "grid",
       fold_list = fold_list,
       k_tuning = 3L,

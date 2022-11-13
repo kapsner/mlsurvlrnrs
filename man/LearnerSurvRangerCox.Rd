@@ -64,7 +64,7 @@ fold_list <- splitTools::create_folds(
 )
 
 surv_ranger_cox_optimizer <- mlexperiments::MLCrossValidation$new(
-  learner = mllrnrs::LearnerSurvRangerCox$new(),
+  learner = LearnerSurvRangerCox$new(),
   fold_list = fold_list,
   ncores = ncores,
   seed = seed

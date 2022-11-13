@@ -64,45 +64,6 @@ fold_list <- splitTools::create_folds(
 )
 
 # ###########################################################################
-# %% CV
-# ###########################################################################
-
-test_that(
-  desc = "test cv - surv_xgboost_aft",
-  code = {
-
-    surv_xgboost_aft_optimizer <- mlexperiments::MLCrossValidation$new(
-      learner = mllrnrs::LearnerSurvXgboostAft$new(
-        metric_optimization_higher_better = FALSE
-      ),
-      fold_list = fold_list,
-      ncores = ncores,
-      seed = seed
-    )
-    surv_xgboost_aft_optimizer$learner_args <- c(as.list(
-      data.table::data.table(param_list_xgboost[1, ], stringsAsFactors = FALSE)
-    ),
-    nrounds = 45L
-    )
-    surv_xgboost_aft_optimizer$performance_metric <- c_index
-
-    # set data
-    surv_xgboost_aft_optimizer$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    cv_results <- surv_xgboost_aft_optimizer$execute()
-    expect_type(cv_results, "list")
-    expect_equal(dim(cv_results), c(3, 10))
-    expect_true(inherits(
-      x = surv_xgboost_aft_optimizer$results,
-      what = "mlexCV"
-    ))
-  }
-)
-
-# ###########################################################################
 # %% TUNING
 # ###########################################################################
 
@@ -119,70 +80,6 @@ optim_args <- list(
   acq = "ucb"
 )
 
-test_that(
-  desc = "test bayesian tuner, initGrid - surv_xgboost_aft",
-  code = {
-
-    surv_xgboost_aft_tuner <- mlexperiments::MLTuneParameters$new(
-      learner = mllrnrs::LearnerSurvXgboostAft$new(
-        metric_optimization_higher_better = FALSE
-      ),
-      strategy = "bayesian",
-      ncores = ncores,
-      seed = seed
-    )
-    surv_xgboost_aft_tuner$parameter_bounds <- xgboost_bounds
-    surv_xgboost_aft_tuner$parameter_grid <- param_list_xgboost
-    surv_xgboost_aft_tuner$optim_args <- optim_args
-
-    # create split-strata from training dataset
-    surv_xgboost_aft_tuner$split_vector <- split_vector
-
-    # set data
-    surv_xgboost_aft_tuner$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    tune_results <- surv_xgboost_aft_tuner$execute(k = 3)
-    expect_type(tune_results, "list")
-    expect_true(inherits(x = surv_xgboost_aft_tuner$results, what = "mlexTune"))
-  }
-)
-
-
-test_that(
-  desc = "test grid tuner - surv_xgboost_aft",
-  code = {
-
-    surv_xgboost_aft_tuner <- mlexperiments::MLTuneParameters$new(
-      learner = mllrnrs::LearnerSurvXgboostAft$new(
-        metric_optimization_higher_better = FALSE
-      ),
-      strategy = "grid",
-      ncores = ncores,
-      seed = seed
-    )
-    set.seed(seed)
-    random_grid <- sample(seq_len(nrow(param_list_xgboost)), 10)
-    surv_xgboost_aft_tuner$parameter_grid <- param_list_xgboost[random_grid, ]
-
-    # create split-strata from training dataset
-    surv_xgboost_aft_tuner$split_vector <- split_vector
-
-    # set data
-    surv_xgboost_aft_tuner$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    tune_results <- surv_xgboost_aft_tuner$execute(k = 3)
-    expect_type(tune_results, "list")
-    expect_equal(dim(tune_results), c(10, 10))
-    expect_true(inherits(x = surv_xgboost_aft_tuner$results, what = "mlexTune"))
-  }
-)
-
 # ###########################################################################
 # %% NESTED CV
 # ###########################################################################
@@ -193,7 +90,7 @@ test_that(
   code = {
 
     surv_xgboost_aft_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = mllrnrs::LearnerSurvXgboostAft$new(
+      learner = LearnerSurvXgboostAft$new(
         metric_optimization_higher_better = FALSE
       ),
       strategy = "bayesian",
@@ -233,7 +130,7 @@ test_that(
   code = {
 
     surv_xgboost_aft_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = mllrnrs::LearnerSurvXgboostAft$new(
+      learner = LearnerSurvXgboostAft$new(
         metric_optimization_higher_better = FALSE
       ),
       strategy = "grid",

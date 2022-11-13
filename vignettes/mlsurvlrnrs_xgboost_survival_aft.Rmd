@@ -176,7 +176,7 @@ optim_args <- list(
 
 ```{r}
 tuner <- mlexperiments::MLTuneParameters$new(
-  learner = mllrnrs::LearnerSurvXgboostAft$new(
+  learner = LearnerSurvXgboostAft$new(
     metric_optimization_higher_better = FALSE
   ),
   strategy = "grid",
@@ -203,7 +203,7 @@ head(tuner_results_grid)
 
 ```{r}
 tuner <- mlexperiments::MLTuneParameters$new(
-  learner = mllrnrs::LearnerSurvXgboostAft$new(
+  learner = LearnerSurvXgboostAft$new(
     metric_optimization_higher_better = FALSE
   ),
   strategy = "bayesian",
@@ -233,7 +233,7 @@ head(tuner_results_bayesian)
 
 ```{r}
 validator <- mlexperiments::MLCrossValidation$new(
-  learner = mllrnrs::LearnerSurvXgboostAft$new(
+  learner = LearnerSurvXgboostAft$new(
     metric_optimization_higher_better = FALSE
   ),
   fold_list = fold_list,
@@ -264,7 +264,7 @@ head(validator_results)
 
 ```{r}
 validator <- mlexperiments::MLNestedCV$new(
-  learner = mllrnrs::LearnerSurvXgboostAft$new(
+  learner = LearnerSurvXgboostAft$new(
     metric_optimization_higher_better = FALSE
   ),
   strategy = "grid",
@@ -298,7 +298,7 @@ head(validator_results)
 
 ```{r}
 validator <- mlexperiments::MLNestedCV$new(
-  learner = mllrnrs::LearnerSurvXgboostAft$new(
+  learner = LearnerSurvXgboostAft$new(
     metric_optimization_higher_better = FALSE
   ),
   strategy = "bayesian",
@@ -343,7 +343,7 @@ preds_xgboost <- mlexperiments::predictions(
 )
 ```
 
-### Evaluate Performance on Holout Test Dataset
+### Evaluate Performance on Holdout Test Dataset
 
 ```{r}
 perf_xgboost <- mlexperiments::performance(

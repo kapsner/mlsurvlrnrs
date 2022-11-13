@@ -58,43 +58,6 @@ fold_list <- splitTools::create_folds(
   seed = seed
 )
 
-
-# ###########################################################################
-# %% CV
-# ###########################################################################
-
-test_that(
-  desc = "test cv - surv_ranger_cox",
-  code = {
-
-    surv_ranger_cox_optimizer <- mlexperiments::MLCrossValidation$new(
-      learner = mllrnrs::LearnerSurvRangerCox$new(),
-      fold_list = fold_list,
-      ncores = ncores,
-      seed = seed
-    )
-    surv_ranger_cox_optimizer$learner_args <- as.list(
-      data.table::data.table(param_list_ranger[1, ], stringsAsFactors = FALSE)
-    )
-    surv_ranger_cox_optimizer$performance_metric <- c_index
-
-
-    # set data
-    surv_ranger_cox_optimizer$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    cv_results <- surv_ranger_cox_optimizer$execute()
-    expect_type(cv_results, "list")
-    expect_equal(dim(cv_results), c(3, 7))
-    expect_true(inherits(
-      x = surv_ranger_cox_optimizer$results,
-      what = "mlexCV"
-    ))
-  }
-)
-
 # ###########################################################################
 # %% TUNING
 # ###########################################################################
@@ -112,66 +75,6 @@ optim_args <- list(
   acq = "ucb"
 )
 
-test_that(
-  desc = "test bayesian tuner, initGrid - surv_ranger_cox",
-  code = {
-
-    surv_ranger_cox_tuner <- mlexperiments::MLTuneParameters$new(
-      learner = mllrnrs::LearnerSurvRangerCox$new(),
-      strategy = "bayesian",
-      ncores = ncores,
-      seed = seed
-    )
-    surv_ranger_cox_tuner$parameter_bounds <- ranger_bounds
-    surv_ranger_cox_tuner$parameter_grid <- param_list_ranger
-    surv_ranger_cox_tuner$optim_args <- optim_args
-
-    # create split-strata from training dataset
-    surv_ranger_cox_tuner$split_vector <- split_vector
-
-    # set data
-    surv_ranger_cox_tuner$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    tune_results <- surv_ranger_cox_tuner$execute(k = 3)
-    expect_type(tune_results, "list")
-    expect_true(inherits(x = surv_ranger_cox_tuner$results, what = "mlexTune"))
-  }
-)
-
-
-test_that(
-  desc = "test grid tuner - surv_ranger_cox",
-  code = {
-
-    surv_ranger_cox_tuner <- mlexperiments::MLTuneParameters$new(
-      learner = mllrnrs::LearnerSurvRangerCox$new(),
-      strategy = "grid",
-      ncores = ncores,
-      seed = seed
-    )
-    set.seed(seed)
-    random_grid <- sample(seq_len(nrow(param_list_ranger)), 10)
-    surv_ranger_cox_tuner$parameter_grid <- param_list_ranger[random_grid, ]
-
-    # create split-strata from training dataset
-    surv_ranger_cox_tuner$split_vector <- split_vector
-
-    # set data
-    surv_ranger_cox_tuner$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    tune_results <- surv_ranger_cox_tuner$execute(k = 3)
-    expect_type(tune_results, "list")
-    expect_equal(dim(tune_results), c(10, 7))
-    expect_true(inherits(x = surv_ranger_cox_tuner$results, what = "mlexTune"))
-  }
-)
-
 # ###########################################################################
 # %% NESTED CV
 # ###########################################################################
@@ -181,7 +84,7 @@ test_that(
   code = {
 
     surv_ranger_cox_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = mllrnrs::LearnerSurvRangerCox$new(),
+      learner = LearnerSurvRangerCox$new(),
       strategy = "bayesian",
       fold_list = fold_list,
       k_tuning = 3L,
@@ -219,7 +122,7 @@ test_that(
   code = {
 
     surv_ranger_cox_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = mllrnrs::LearnerSurvRangerCox$new(),
+      learner = LearnerSurvRangerCox$new(),
       strategy = "grid",
       fold_list = fold_list,
       k_tuning = 3L,

@@ -38,6 +38,6 @@ Remotes:
     github::kapsner/mllrnrs@main
 Config/testthat/edition: 3
 Config/testthat/parallel: false
-Date/Publication: 2022-11-12 20:04:06 UTC
+Date/Publication: 2022-11-13 14:16:36 UTC
 Encoding: UTF-8
 RoxygenNote: 7.2.1

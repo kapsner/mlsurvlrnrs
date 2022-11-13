@@ -168,7 +168,7 @@ optim_args <- list(
 
 ```{r}
 tuner <- mlexperiments::MLTuneParameters$new(
-  learner = mllrnrs::LearnerSurvRpartCox$new(),
+  learner = LearnerSurvRpartCox$new(),
   strategy = "grid",
   ncores = ncores,
   seed = seed
@@ -193,7 +193,7 @@ head(tuner_results_grid)
 
 ```{r}
 tuner <- mlexperiments::MLTuneParameters$new(
-  learner = mllrnrs::LearnerSurvRpartCox$new(),
+  learner = LearnerSurvRpartCox$new(),
   strategy = "bayesian",
   ncores = ncores,
   seed = seed
@@ -221,7 +221,7 @@ head(tuner_results_bayesian)
 
 ```{r}
 validator <- mlexperiments::MLCrossValidation$new(
-  learner = mllrnrs::LearnerSurvRpartCox$new(),
+  learner = LearnerSurvRpartCox$new(),
   fold_list = fold_list,
   ncores = ncores,
   seed = seed
@@ -250,7 +250,7 @@ head(validator_results)
 
 ```{r}
 validator <- mlexperiments::MLNestedCV$new(
-  learner = mllrnrs::LearnerSurvRpartCox$new(),
+  learner = LearnerSurvRpartCox$new(),
   strategy = "grid",
   fold_list = fold_list,
   k_tuning = 3L,
@@ -282,7 +282,7 @@ head(validator_results)
 
 ```{r}
 validator <- mlexperiments::MLNestedCV$new(
-  learner = mllrnrs::LearnerSurvRpartCox$new(),
+  learner = LearnerSurvRpartCox$new(),
   strategy = "bayesian",
   fold_list = fold_list,
   k_tuning = 3L,
@@ -325,7 +325,7 @@ preds_rpart <- mlexperiments::predictions(
 )
 ```
 
-### Evaluate Performance on Holout Test Dataset
+### Evaluate Performance on Holdout Test Dataset
 
 ```{r}
 perf_rpart <- mlexperiments::performance(

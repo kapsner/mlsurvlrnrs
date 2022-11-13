@@ -66,7 +66,7 @@ fold_list <- splitTools::create_folds(
 )
 
 surv_xgboost_cox_optimizer <- mlexperiments::MLCrossValidation$new(
-  learner = mllrnrs::LearnerSurvXgboostCox$new(
+  learner = LearnerSurvXgboostCox$new(
     metric_optimization_higher_better = FALSE
   ),
   fold_list = fold_list,

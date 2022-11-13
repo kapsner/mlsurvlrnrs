@@ -69,7 +69,7 @@
 #' )
 #'
 #' surv_xgboost_aft_optimizer <- mlexperiments::MLCrossValidation$new(
-#'   learner = mllrnrs::LearnerSurvXgboostAft$new(
+#'   learner = LearnerSurvXgboostAft$new(
 #'     metric_optimization_higher_better = FALSE
 #'   ),
 #'   fold_list = fold_list,
@@ -123,8 +123,7 @@ LearnerSurvXgboostAft <- R6::R6Class( # nolint
 
 
 surv_xgboost_aft_ce <- function() {
-  c("surv_xgboost_aft_optimization", "setup_surv_xgb_dataset",
-    mllrnrs:::xgboost_ce())
+  c("surv_xgboost_aft_optimization")
 }
 
 

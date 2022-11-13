@@ -60,7 +60,7 @@
 #' )
 #'
 #' surv_glmnet_cox_optimizer <- mlexperiments::MLCrossValidation$new(
-#'   learner = mllrnrs::LearnerSurvGlmnetCox$new(),
+#'   learner = LearnerSurvGlmnetCox$new(),
 #'   fold_list = fold_list,
 #'   ncores = ncores,
 #'   seed = seed

@@ -65,7 +65,7 @@
 #' )
 #'
 #' surv_xgboost_cox_optimizer <- mlexperiments::MLCrossValidation$new(
-#'   learner = mllrnrs::LearnerSurvXgboostCox$new(
+#'   learner = LearnerSurvXgboostCox$new(
 #'     metric_optimization_higher_better = FALSE
 #'   ),
 #'   fold_list = fold_list,
@@ -119,8 +119,7 @@ LearnerSurvXgboostCox <- R6::R6Class( # nolint
 
 
 surv_xgboost_cox_ce <- function() {
-  c("surv_xgboost_cox_optimization", "setup_surv_xgb_dataset",
-    mllrnrs:::xgboost_ce())
+  c("surv_xgboost_cox_optimization")
 }
 
 

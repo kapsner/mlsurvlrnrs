@@ -15,6 +15,7 @@ Can be used with
 * [mlexperiments::MLNestedCVs]
 }
 \examples{
+\dontrun{
 # survival analysis
 
 dataset <- survival::colon |>
@@ -28,11 +29,11 @@ surv_cols <- c("status", "time", "rx")
 feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
 
 param_list_survivalsvm <- expand.grid(
-  sample.fraction = seq(0.6, 1, .2),
-  min.node.size = seq(1, 5, 4),
-  mtry = seq(2, 6, 2),
-  num.trees = c(5L, 10L),
-  max.depth = seq(1, 5, 4)
+  type = "regression",
+  gamma.mu = seq(0.1, 0.9, 0.2),
+  opt.meth = "ipop",
+  kernel = "rbf_kernel",
+  maxiter = 5
 )
 
 ncores <- 2L
@@ -63,7 +64,7 @@ fold_list <- splitTools::create_folds(
 )
 
 surv_survivalsvm_optimizer <- mlexperiments::MLCrossValidation$new(
-  learner = mllrnrs::LearnerSurvSurvivalsvm$new(),
+  learner = LearnerSurvSurvivalsvm$new(),
   fold_list = fold_list,
   ncores = ncores,
   seed = seed
@@ -81,7 +82,7 @@ surv_survivalsvm_optimizer$set_data(
 )
 
 surv_survivalsvm_optimizer$execute()
-
+}
 
 ## ------------------------------------------------
 ## Method `LearnerSurvSurvivalsvm$new`

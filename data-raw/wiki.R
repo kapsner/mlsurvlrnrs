@@ -1,11 +1,19 @@
 # nolint start
 
 output_dir <- "../mlsurvlrnrs.wiki"
+url <- "https://github.com/kapsner/mlsurvlrnrs.wiki.git"
 
-git2r::clone(
-  url = "https://github.com/kapsner/mlsurvlrnrs.wiki.git",
-  local_path = output_dir
-)
+tryCatch({
+  git2r::clone(
+    url = url,
+    local_path = output_dir
+  )
+}, error = function(e) {
+  message(e)
+  git2r::pull(
+    repo = output_dir
+  )
+})
 
 file_list <- list.files(
   path = "vignettes",

@@ -38,7 +38,7 @@ test_that(
   code = {
 
     surv_coxph_cox_optimizer <- mlexperiments::MLCrossValidation$new(
-      learner = mllrnrs::LearnerSurvCoxPHCox$new(),
+      learner = LearnerSurvCoxPHCox$new(),
       fold_list = fold_list,
       ncores = -1L,
       seed = seed

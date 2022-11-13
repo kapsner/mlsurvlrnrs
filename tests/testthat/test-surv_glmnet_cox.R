@@ -53,44 +53,6 @@ fold_list <- splitTools::create_folds(
   seed = seed
 )
 
-
-# ###########################################################################
-# %% CV
-# ###########################################################################
-
-
-test_that(
-  desc = "test cv - surv_glmnet_cox",
-  code = {
-
-    surv_glmnet_cox_optimizer <- mlexperiments::MLCrossValidation$new(
-      learner = mllrnrs::LearnerSurvGlmnetCox$new(),
-      fold_list = fold_list,
-      ncores = ncores,
-      seed = seed
-    )
-    surv_glmnet_cox_optimizer$learner_args <- list(
-      alpha = 0.8,
-      lambda = 0.002
-    )
-    surv_glmnet_cox_optimizer$performance_metric <- c_index
-
-    # set data
-    surv_glmnet_cox_optimizer$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    cv_results <- surv_glmnet_cox_optimizer$execute()
-    expect_type(cv_results, "list")
-    expect_equal(dim(cv_results), c(3, 4))
-    expect_true(inherits(
-      x = surv_glmnet_cox_optimizer$results,
-      what = "mlexCV"
-    ))
-  }
-)
-
 # ###########################################################################
 # %% TUNING
 # ###########################################################################
@@ -102,93 +64,6 @@ optim_args <- list(
   acq = "ucb"
 )
 
-test_that(
-  desc = "test bayesian tuner, initGrid - surv_glmnet_cox",
-  code = {
-
-    surv_glmnet_cox_tuner <- mlexperiments::MLTuneParameters$new(
-      learner = mllrnrs::LearnerSurvGlmnetCox$new(),
-      strategy = "bayesian",
-      ncores = ncores,
-      seed = seed
-    )
-    surv_glmnet_cox_tuner$parameter_bounds <- glmnet_bounds
-    surv_glmnet_cox_tuner$parameter_grid <- param_list_glmnet
-    surv_glmnet_cox_tuner$optim_args <- optim_args
-
-    # create split-strata from training dataset
-    surv_glmnet_cox_tuner$split_vector <- split_vector
-
-    # set data
-    surv_glmnet_cox_tuner$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    tune_results <- surv_glmnet_cox_tuner$execute(k = 3)
-    expect_type(tune_results, "list")
-    expect_true(inherits(x = surv_glmnet_cox_tuner$results, what = "mlexTune"))
-  }
-)
-
-
-test_that(
-  desc = "test bayesian tuner, initPoints - surv_glmnet_cox",
-  code = {
-
-    surv_glmnet_cox_tuner <- mlexperiments::MLTuneParameters$new(
-      learner = mllrnrs::LearnerSurvGlmnetCox$new(),
-      strategy = "bayesian",
-      ncores = ncores,
-      seed = seed
-    )
-    surv_glmnet_cox_tuner$parameter_bounds <- glmnet_bounds
-    surv_glmnet_cox_tuner$optim_args <- optim_args
-
-    # create split-strata from training dataset
-    surv_glmnet_cox_tuner$split_vector <- split_vector
-
-    # set data
-    surv_glmnet_cox_tuner$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    tune_results <- surv_glmnet_cox_tuner$execute(k = 3)
-    expect_type(tune_results, "list")
-    expect_true(inherits(x = surv_glmnet_cox_tuner$results, what = "mlexTune"))
-  }
-)
-
-
-test_that(
-  desc = "test grid tuner - surv_glmnet_cox",
-  code = {
-
-    surv_glmnet_cox_tuner <- mlexperiments::MLTuneParameters$new(
-      learner = mllrnrs::LearnerSurvGlmnetCox$new(),
-      strategy = "grid",
-      ncores = ncores,
-      seed = seed
-    )
-    surv_glmnet_cox_tuner$parameter_grid <- param_list_glmnet
-
-    # create split-strata from training dataset
-    surv_glmnet_cox_tuner$split_vector <- split_vector
-
-    # set data
-    surv_glmnet_cox_tuner$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    tune_results <- surv_glmnet_cox_tuner$execute(k = 3)
-    expect_type(tune_results, "list")
-    expect_equal(dim(tune_results), c(nrow(param_list_glmnet), 4))
-    expect_true(inherits(x = surv_glmnet_cox_tuner$results, what = "mlexTune"))
-  }
-)
-
 # ###########################################################################
 # %% NESTED CV
 # ###########################################################################
@@ -198,7 +73,7 @@ test_that(
   code = {
 
     surv_glmnet_cox_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = mllrnrs::LearnerSurvGlmnetCox$new(),
+      learner = LearnerSurvGlmnetCox$new(),
       strategy = "bayesian",
       fold_list = fold_list,
       k_tuning = 3L,
@@ -236,7 +111,7 @@ test_that(
   code = {
 
     surv_glmnet_cox_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = mllrnrs::LearnerSurvGlmnetCox$new(),
+      learner = LearnerSurvGlmnetCox$new(),
       strategy = "grid",
       fold_list = fold_list,
       k_tuning = 3L,
