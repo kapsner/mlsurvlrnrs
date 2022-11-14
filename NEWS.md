@@ -1,11 +1,24 @@
 # mlsurvlrnrs NEWS
 
-## Unreleased (2022-11-13)
+## Unreleased (2022-11-14)
+
+#### Bug fixes
+
+-   added cat\_vars adaptions
+    ([2b85d9c](https://github.com/kapsner/mlsurvlrnrs/tree/2b85d9c2535c274d892121a7a7dbe29d27ca8431))
+
+#### Docs
+
+-   added coxph comparison to glmnet vignette
+    ([570d375](https://github.com/kapsner/mlsurvlrnrs/tree/570d3758b6934fd1e87f9c93291af6ae7965d51a))
 
 #### Other changes
 
 -   updated news.md
     ([47f1c21](https://github.com/kapsner/mlsurvlrnrs/tree/47f1c21f0bf91eba432dec35671411fab24bd4d0))
+
+Full set of changes:
+[`v0.0.1...2b85d9c`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...2b85d9c)
 
 ## v0.0.1 (2022-11-13)
 
