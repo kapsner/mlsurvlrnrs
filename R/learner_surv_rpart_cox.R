@@ -153,6 +153,11 @@ surv_rpart_cox_bsF <- function(...) { # nolint
 
   stopifnot(inherits(y, "Surv"))
 
+  params <- kdry::list.append(
+    main_list = params,
+    append_list = method_helper$execute_params["cat_vars"]
+  )
+
   # call to surv_rpart_cox_optimization here with ncores = 1, since the Bayesian
   # search is parallelized already / "FUN is fitted n times in m threads"
   set.seed(seed)#, kind = "L'Ecuyer-CMRG")
@@ -243,7 +248,8 @@ surv_rpart_cox_optimization <- function(x, y, params, fold_list, ncores, seed) {
       model = cvfit,
       newdata = kdry::mlh_subset(x, -train_idx),
       ncores = ncores,
-      type = "vector"
+      type = "vector",
+      cat_vars = params[["cat_vars"]]
     )
 
     preds <- do.call(surv_rpart_cox_predict, pred_args)

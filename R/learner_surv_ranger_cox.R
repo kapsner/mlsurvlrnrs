@@ -126,6 +126,11 @@ surv_ranger_cox_bsF <- function(...) { # nolint
 
   params <- list(...)
 
+  params <- kdry::list.append(
+    main_list = params,
+    append_list = method_helper$execute_params["cat_vars"]
+  )
+
   set.seed(seed)#, kind = "L'Ecuyer-CMRG")
   bayes_opt_ranger <- surv_ranger_cox_optimization(
     x = x,
@@ -231,8 +236,8 @@ surv_ranger_cox_optimization <- function(
     preds <- surv_ranger_cox_predict(
       model = cvfit,
       newdata = kdry::mlh_subset(x, -ranger_train_idx),
-      cat_vars = params[["cat_vars"]],
-      ncores = ncores
+      ncores = ncores,
+      cat_vars = params[["cat_vars"]]
     )
 
     # calculate Harrell's c-index using the `glmnet::Cindex`-implementation

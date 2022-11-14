@@ -7,6 +7,8 @@ seed <- 123
 surv_cols <- c("status", "time", "rx")
 
 feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
+cat_vars <- c("sex", "obstruct", "perfor", "adhere", "differ", "extent",
+              "surg", "node4", "rx")
 
 param_list_ranger <- expand.grid(
   sample.fraction = seq(0.6, 1, .2),
@@ -37,8 +39,7 @@ split_vector <- splitTools::multi_strata(
   k = 4
 )
 
-train_x <- model.matrix(
-  ~ -1 + .,
+train_x <- data.matrix(
   dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
 )
 train_y <- survival::Surv(
@@ -142,7 +143,8 @@ test_that(
     # set data
     surv_ranger_cox_optimizer$set_data(
       x = train_x,
-      y = train_y
+      y = train_y,
+      cat_vars = cat_vars
     )
 
     cv_results <- surv_ranger_cox_optimizer$execute()

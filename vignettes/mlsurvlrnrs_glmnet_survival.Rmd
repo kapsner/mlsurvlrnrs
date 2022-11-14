@@ -35,6 +35,8 @@ dataset <- dataset[get("etype") == 2, ]
 
 surv_cols <- c("status", "time", "rx")
 feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
+cat_vars <- c("sex", "obstruct", "perfor", "adhere", "differ", "extent",
+              "surg", "node4", "rx")
 ```
 
 ## General Configurarions
@@ -313,6 +315,19 @@ head(validator_results)
 See [https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_coxph_cox.R](https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_coxph_cox.R) for implementation details.
 
 ```{r}
+train_x_coxph <- data.matrix(
+  dataset[
+    data_split$train, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])
+  ]
+)
+test_x_coxph <- data.matrix(
+  dataset[
+    data_split$test, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])
+  ]
+)
+```
+
+```{r}
 validator_coxph <- mlexperiments::MLCrossValidation$new(
   learner = LearnerSurvCoxPHCox$new(),
   fold_list = fold_list,
@@ -323,8 +338,9 @@ validator_coxph$performance_metric <- performance_metric
 validator_coxph$performance_metric_args <- performance_metric_args
 validator_coxph$return_models <- TRUE
 validator_coxph$set_data(
-  x = train_x,
-  y = train_y
+  x = train_x_coxph,
+  y = train_y,
+  cat_vars = cat_vars
 )
 validator_coxph_results <- validator_coxph$execute()
 head(validator_coxph_results)
@@ -347,7 +363,7 @@ preds_glmnet <- mlexperiments::predictions(
 )
 preds_coxph <- mlexperiments::predictions(
   object = validator_coxph,
-  newdata = test_x
+  newdata = test_x_coxph
 )
 ```
 

@@ -7,6 +7,8 @@ seed <- 123
 surv_cols <- c("status", "time", "rx")
 
 feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
+cat_vars <- c("sex", "obstruct", "perfor", "adhere", "differ", "extent",
+              "surg", "node4", "rx")
 
 if (isTRUE(as.logical(Sys.getenv("_R_CHECK_LIMIT_CORES_")))) {
   # on cran
@@ -29,8 +31,7 @@ split_vector <- splitTools::multi_strata(
   k = 4
 )
 
-train_x <- model.matrix(
-  ~ -1 + .,
+train_x <- data.matrix(
   dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
 )
 train_y <- survival::Surv(
@@ -101,12 +102,12 @@ test_that(
     # set data
     surv_rpart_cox_optimizer$set_data(
       x = train_x,
-      y = train_y
+      y = train_y,
+      cat_vars = cat_vars
     )
 
     cv_results <- surv_rpart_cox_optimizer$execute()
     expect_type(cv_results, "list")
-    expect_equal(dim(cv_results), c(3, 6))
     expect_true(inherits(
       x = surv_rpart_cox_optimizer$results,
       what = "mlexCV"
@@ -140,7 +141,8 @@ test_that(
     # set data
     surv_rpart_cox_optimizer$set_data(
       x = train_x,
-      y = train_y
+      y = train_y,
+      cat_vars = cat_vars
     )
 
     cv_results <- surv_rpart_cox_optimizer$execute()

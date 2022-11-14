@@ -35,6 +35,8 @@ dataset <- dataset[get("etype") == 2, ]
 
 surv_cols <- c("status", "time", "rx")
 feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
+cat_vars <- c("sex", "obstruct", "perfor", "adhere", "differ", "extent",
+              "surg", "node4", "rx")
 ```
 
 ## General Configurarions
@@ -74,8 +76,7 @@ data_split <- splitTools::partition(
   seed = seed
 )
 
-train_x <- model.matrix(
-  ~ -1 + .,
+train_x <- data.matrix(
   dataset[
     data_split$train, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])
   ]
@@ -94,8 +95,7 @@ split_vector_train <- splitTools::multi_strata(
 )
 
 
-test_x <- model.matrix(
-  ~ -1 + .,
+test_x <- data.matrix(
   dataset[data_split$test, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
 )
 test_y <- survival::Surv(
@@ -184,7 +184,8 @@ tuner$split_vector <- split_vector_train
 
 tuner$set_data(
   x = train_x,
-  y = train_y
+  y = train_y,
+  cat_vars = cat_vars
 )
 
 tuner_results_grid <- tuner$execute(k = 3)
@@ -213,7 +214,8 @@ tuner$split_vector <- split_vector_train
 
 tuner$set_data(
   x = train_x,
-  y = train_y
+  y = train_y,
+  cat_vars = cat_vars
 )
 
 tuner_results_bayesian <- tuner$execute(k = 3)
@@ -239,7 +241,8 @@ validator$return_models <- return_models
 
 validator$set_data(
   x = train_x,
-  y = train_y
+  y = train_y,
+  cat_vars = cat_vars
 )
 
 validator_results <- validator$execute()
@@ -273,7 +276,8 @@ validator$return_models <- return_models
 
 validator$set_data(
   x = train_x,
-  y = train_y
+  y = train_y,
+  cat_vars = cat_vars
 )
 
 validator_results <- validator$execute()
@@ -309,7 +313,8 @@ validator$return_models <- TRUE
 
 validator$set_data(
   x = train_x,
-  y = train_y
+  y = train_y,
+  cat_vars = cat_vars
 )
 
 validator_results <- validator$execute()
