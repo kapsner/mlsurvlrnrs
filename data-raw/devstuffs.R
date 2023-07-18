@@ -19,7 +19,7 @@ my_desc$set_authors(c(
 # Remove some author fields
 my_desc$del("Maintainer")
 # Set the version
-my_desc$set_version("0.0.1.9001")
+my_desc$set_version("0.0.1.9002")
 # The title of your package
 my_desc$set(Title = "R6-Based ML Survival Learners for 'mlexperiments'")
 # The description of your package
@@ -72,13 +72,14 @@ usethis::use_package("survivalsvm", type = "Suggests")
 usethis::use_package("survival", type = "Suggests")
 usethis::use_package("splitTools", type = "Suggests")
 usethis::use_package("mlbench", type = "Suggests")
+usethis::use_package("ParBayesianOptimization", type = "Suggests")
 
 
 # define remotes
 remotes_append_vector <- NULL
 
 # Development package 1
-tag1 <- "main" # e.g. "v0.1.7", "development" or "cran"
+tag1 <- "cran" # e.g. "v0.1.7", "development" or "cran"
 if (tag1 == "cran") {
   install.packages("mlexperiments")
 } else{
@@ -100,7 +101,7 @@ if (tag1 == "cran") {
   }
 }
 
-tag2 <- "main" # e.g. "v0.1.7", "development" or "cran"
+tag2 <- "cran" # e.g. "v0.1.7", "development" or "cran"
 if (tag2 == "cran") {
   install.packages("kdry")
 } else{
@@ -122,7 +123,7 @@ if (tag2 == "cran") {
   }
 }
 
-tag3 <- "main" # e.g. "v0.1.7", "development" or "cran"
+tag3 <- "cran" # e.g. "v0.1.7", "development" or "cran"
 if (tag1 == "cran") {
   install.packages("mllrnrs")
 } else{
@@ -193,7 +194,7 @@ badger::badge_github_actions(action = "test-coverage")
 # )
 an <- autonewsmd::autonewsmd$new(repo_name = packagename)
 an$generate()
-an$write()
+an$write(force = TRUE)
 
 # rcmdcheck::rcmdcheck(
 #   args = c("--as-cran", "--no-vignettes"),
