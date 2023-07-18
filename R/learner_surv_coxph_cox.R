@@ -112,7 +112,6 @@ surv_coxph_cox_fit <- function(x, y, ncores, seed, ...) {
 
   var_handler <- mlexperiments::handle_cat_vars(kwargs)
   cat_vars <- var_handler$cat_vars
-  params <- var_handler$params
 
   x <- kdry::dtr_matrix2df(matrix = x, cat_vars = cat_vars)
 
@@ -132,16 +131,28 @@ surv_coxph_cox_fit <- function(x, y, ncores, seed, ...) {
 surv_coxph_cox_predict <- function(model, newdata, ncores, ...) {
   kwargs <- list(...)
 
+  if (is.null(kwargs$type)) {
+    kwargs$type <- "risk"
+  }
+
   var_handler <- mlexperiments::handle_cat_vars(kwargs)
   cat_vars <- var_handler$cat_vars
-  params <- var_handler$params
 
   newdata <- kdry::dtr_matrix2df(matrix = newdata, cat_vars = cat_vars)
+
+  args <- kdry::list.append(
+    list(
+      object = model,
+      newdata = newdata
+    ),
+    kwargs
+  )
 
   # type the type of predicted value. Choices are the linear predictor ("lp"),
   # the risk score exp(lp) ("risk"), the expected number of events given the
   # covariates and follow-up time ("expected"), and the terms of the linear
   # predictor ("terms"). The survival probability for a subject is equal
   # to exp(-expected).
-  return(stats::predict(model, newdata = newdata, type = "risk"))
+  preds <- do.call(stats::predict, args)
+  return(preds)
 }

@@ -242,7 +242,22 @@ surv_glmnet_cox_fit <- function(x, y, ncores, seed, ...) {
 
 surv_glmnet_cox_predict <- function(model, newdata, ncores, ...) {
   kwargs <- list(...) # nolint
+
+  if (is.null(kwargs$type)) {
+    kwargs$type <- "response"
+  }
+  args <- kdry::list.append(
+    list(
+      object = model,
+      newx = newdata
+    ),
+    kwargs
+  )
+  preds <- do.call(stats::predict, args)
   # From the docs:
   # Type "response" gives [...] the fitted relative-risk for "cox".
-  return(stats::predict(model, newx = newdata, type = "response")[, 1])
+  if (kwargs$type == "response") {
+    preds <- preds[, 1]
+  }
+  return(preds)
 }

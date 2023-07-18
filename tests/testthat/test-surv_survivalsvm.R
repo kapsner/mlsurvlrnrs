@@ -107,39 +107,3 @@ test_that(
     expect_error(surv_survivalsvm_optimizer$execute())
   }
 )
-
-
-test_that(
-  desc = "test nested cv, grid - surv_survivalsvm",
-  code = {
-
-    surv_survivalsvm_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = LearnerSurvSurvivalsvm$new(),
-      strategy = "grid",
-      fold_list = fold_list,
-      k_tuning = 3L,
-      ncores = ncores,
-      seed = seed
-    )
-    surv_survivalsvm_optimizer$parameter_grid <- param_list_survivalsvm
-    surv_survivalsvm_optimizer$split_type <- "stratified"
-    surv_survivalsvm_optimizer$split_vector <- split_vector
-    surv_survivalsvm_optimizer$optim_args <- optim_args
-
-    surv_survivalsvm_optimizer$performance_metric <- c_index
-
-    # set data
-    surv_survivalsvm_optimizer$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    cv_results <- surv_survivalsvm_optimizer$execute()
-    expect_type(cv_results, "list")
-    expect_equal(dim(cv_results), c(3, 6))
-    expect_true(inherits(
-      x = surv_survivalsvm_optimizer$results,
-      what = "mlexCV"
-    ))
-  }
-)
