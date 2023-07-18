@@ -37,7 +37,7 @@ surv_cols <- c("status", "time", "rx")
 feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
 ```
 
-## General Configurarions
+## General Configurations
 
 ```{r}
 seed <- 123

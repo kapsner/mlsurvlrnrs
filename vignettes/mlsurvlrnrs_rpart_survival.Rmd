@@ -39,7 +39,7 @@ cat_vars <- c("sex", "obstruct", "perfor", "adhere", "differ", "extent",
               "surg", "node4", "rx")
 ```
 
-## General Configurarions
+## General Configurations
 
 ```{r}
 seed <- 123
