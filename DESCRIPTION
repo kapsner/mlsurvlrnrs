@@ -29,7 +29,6 @@ Suggests:
     glmnet,
     knitr,
     lintr,
-    mlbench,
     ParBayesianOptimization,
     ranger,
     rpart,
@@ -41,6 +40,6 @@ VignetteBuilder:
     knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: false
-Date/Publication: 2023-07-26 05:29:30.876507 UTC
+Date/Publication: 2023-07-26 05:35:07.599285 UTC
 Encoding: UTF-8
 RoxygenNote: 7.2.3

@@ -77,7 +77,6 @@ usethis::use_package("ranger", type = "Suggests")
 usethis::use_package("rpart", type = "Suggests")
 usethis::use_package("survival", type = "Suggests")
 usethis::use_package("splitTools", type = "Suggests")
-usethis::use_package("mlbench", type = "Suggests")
 usethis::use_package("ParBayesianOptimization", type = "Suggests")
 
 
