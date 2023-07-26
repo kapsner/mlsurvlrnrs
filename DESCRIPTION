@@ -4,8 +4,15 @@ Version: 0.0.1.9003
 Authors@R: 
     person("Lorenz A.", "Kapsner", , "lorenz.kapsner@gmail.com", role = c("cre", "aut", "cph"),
            comment = c(ORCID = "0000-0003-1866-860X"))
-Description: A set of ML learners to be used for survival analysis with
-    the R package 'mlexperiments'.
+Description: Enhances 'mlexperiments'
+    <https://CRAN.R-project.org/package=mlexperiments> with additional
+    machine learning ('ML') learners for survival analysis. The package
+    provides R6-based survival learners for the following algorithms:
+    'glmnet' <https://CRAN.R-project.org/package=glmnet>, 'ranger'
+    <https://CRAN.R-project.org/package=ranger>, 'xgboost'
+    <https://CRAN.R-project.org/package=xgboost>, and 'rpart'
+    <https://CRAN.R-project.org/package=rpart>. These can be used directly
+    with the 'mlexperiments' R package.
 License: GPL (>= 3)
 URL: https://github.com/kapsner/mlsurvlrnrs
 BugReports: https://github.com/kapsner/mlsurvlrnrs/issues
@@ -35,6 +42,6 @@ VignetteBuilder:
     knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: false
-Date/Publication: 2023-07-26 05:23:53.768164 UTC
+Date/Publication: 2023-07-26 05:27:19.861975 UTC
 Encoding: UTF-8
 RoxygenNote: 7.2.3

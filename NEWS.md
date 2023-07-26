@@ -1,6 +1,6 @@
 # mlsurvlrnrs NEWS
 
-## Unreleased (2023-07-18)
+## Unreleased (2023-07-26)
 
 #### Bug fixes
 
@@ -14,6 +14,8 @@
 
 #### Docs
 
+-   making vignettes static
+    ([3dd080a](https://github.com/kapsner/mlsurvlrnrs/tree/3dd080a905589c727b337492a37c605fce198030))
 -   fixed typo in vignettes
     ([7479fad](https://github.com/kapsner/mlsurvlrnrs/tree/7479fad1f53702102bff8d6e896b5a32b566da2c))
 -   added coxph comparison to glmnet vignette
@@ -27,7 +29,7 @@
     ([47f1c21](https://github.com/kapsner/mlsurvlrnrs/tree/47f1c21f0bf91eba432dec35671411fab24bd4d0))
 
 Full set of changes:
-[`v0.0.1...7479fad`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...7479fad)
+[`v0.0.1...3dd080a`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...3dd080a)
 
 ## v0.0.1 (2022-11-13)
 

@@ -24,7 +24,14 @@ my_desc$set_version("0.0.1.9003")
 my_desc$set(Title = "R6-Based ML Survival Learners for 'mlexperiments'")
 # The description of your package
 my_desc$set(Description = paste0(
-  "A set of ML learners to be used for survival analysis with the R package 'mlexperiments'."
+  "Enhances 'mlexperiments' <https://CRAN.R-project.org/package=mlexperiments> ",
+  "with additional machine learning ('ML') learners for survival analysis. ",
+  "The package provides R6-based survival learners for the following algorithms: ",
+  "'glmnet' <https://CRAN.R-project.org/package=glmnet>, ",
+  "'ranger' <https://CRAN.R-project.org/package=ranger>, ",
+  "'xgboost' <https://CRAN.R-project.org/package=xgboost>, and ",
+  "'rpart' <https://CRAN.R-project.org/package=rpart>. These can be ",
+  "used directly with the 'mlexperiments' R package."
 ))
 # The description of your package
 my_desc$set("Date/Publication" = paste(as.character(Sys.time()), "UTC"))
