@@ -23,13 +23,15 @@
 
 #### Other changes
 
+-   updated package description
+    ([4286924](https://github.com/kapsner/mlsurvlrnrs/tree/428692428ec8fe7630ae826e9c2483506ca94188))
 -   updated description and news.md
     ([5b2a189](https://github.com/kapsner/mlsurvlrnrs/tree/5b2a189258449e19bf1132cea57d69c56462acb4))
 -   updated news.md
     ([47f1c21](https://github.com/kapsner/mlsurvlrnrs/tree/47f1c21f0bf91eba432dec35671411fab24bd4d0))
 
 Full set of changes:
-[`v0.0.1...3dd080a`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...3dd080a)
+[`v0.0.1...4286924`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...4286924)
 
 ## v0.0.1 (2022-11-13)
 

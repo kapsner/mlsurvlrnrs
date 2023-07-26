@@ -20,7 +20,6 @@ Currently implemented learners are:
 | LearnerSurvRpartCox | `rpart::rpart` | Random Survival Forest with right-censored data |
 | LearnerSurvXgboostCox | `xgboost::xgb.train` | Cox Regression with right-censored data |
 | LearnerSurvXgboostAft | `xgboost::xgb.train` | [Accelerated failure time models](https://xgboost.readthedocs.io/en/stable/tutorials/aft_survival_analysis.html) with right-censored data |
-| LearnerSurvSurvivalsvm | `survivalsvm::survivalsmv` | Survival support vector analysis |
 
 For a short introduction on how to use the learners together with the `mlexperiments` R package, please visit the [wiki page](https://github.com/kapsner/mlsurvlrnrs/wiki).
 
