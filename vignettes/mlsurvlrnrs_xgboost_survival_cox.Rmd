@@ -12,8 +12,10 @@ editor_options:
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = FALSE
 )
+# nolint start
 ```
 
 ```{r setup}
@@ -195,7 +197,19 @@ tuner$set_data(
 )
 
 tuner_results_grid <- tuner$execute(k = 3)
+#> 
+#> Parameter settings [==============================================================================================================>----------------------------] 8/10 ( 80%)
+#> Parameter settings [============================================================================================================================>--------------] 9/10 ( 90%)
+#> Parameter settings [==========================================================================================================================================] 10/10 (100%)                                                                                                                                                                             
+
 head(tuner_results_grid)
+#>    setting_id metric_optim_mean nrounds subsample colsample_bytree min_child_weight learning_rate max_depth    objective eval_metric
+#> 1:          1          4.866125      26       0.6              0.8                5           0.2         1 survival:cox cox-nloglik
+#> 2:          2          4.896370      14       1.0              0.8                5           0.1         5 survival:cox cox-nloglik
+#> 3:          3          4.860956      72       0.8              0.8                5           0.1         1 survival:cox cox-nloglik
+#> 4:          4          4.867604       6       0.6              0.8                5           0.2         5 survival:cox cox-nloglik
+#> 5:          5          4.893917      14       1.0              0.8                1           0.1         5 survival:cox cox-nloglik
+#> 6:          6          4.883471      13       0.8              0.8                5           0.1         5 survival:cox cox-nloglik
 ```
 
 
@@ -226,7 +240,24 @@ tuner$set_data(
 )
 
 tuner_results_bayesian <- tuner$execute(k = 3)
+#> 
+#> Registering parallel backend using 4 cores.
+
 head(tuner_results_bayesian)
+#>    Epoch setting_id subsample colsample_bytree min_child_weight learning_rate max_depth gpUtility acqOptimum inBounds Elapsed     Score metric_optim_mean nrounds errorMessage
+#> 1:     0          1       0.6              0.8                5           0.2         1        NA      FALSE     TRUE   1.792 -4.867594          4.867594      22           NA
+#> 2:     0          2       1.0              0.8                5           0.1         5        NA      FALSE     TRUE   1.826 -4.901912          4.901912      12           NA
+#> 3:     0          3       0.8              0.8                5           0.1         1        NA      FALSE     TRUE   1.833 -4.874152          4.874152      48           NA
+#> 4:     0          4       0.6              0.8                5           0.2         5        NA      FALSE     TRUE   1.836 -4.870687          4.870687       5           NA
+#> 5:     0          5       1.0              0.8                1           0.1         5        NA      FALSE     TRUE   0.813 -4.883240          4.883240      14           NA
+#> 6:     0          6       0.8              0.8                5           0.1         5        NA      FALSE     TRUE   0.861 -4.895220          4.895220      13           NA
+#>       objective eval_metric
+#> 1: survival:cox cox-nloglik
+#> 2: survival:cox cox-nloglik
+#> 3: survival:cox cox-nloglik
+#> 4: survival:cox cox-nloglik
+#> 5: survival:cox cox-nloglik
+#> 6: survival:cox cox-nloglik
 ```
 
 ## k-Fold Cross Validation
@@ -254,7 +285,18 @@ validator$set_data(
 )
 
 validator_results <- validator$execute()
+#> 
+#> CV fold: Fold1
+#> 
+#> CV fold: Fold2
+#> 
+#> CV fold: Fold3
+
 head(validator_results)
+#>     fold performance subsample colsample_bytree min_child_weight learning_rate max_depth nrounds    objective eval_metric
+#> 1: Fold1   0.6433838 0.3015909        0.5804647                1           0.2         1      27 survival:cox cox-nloglik
+#> 2: Fold2   0.6979611 0.3015909        0.5804647                1           0.2         1      27 survival:cox cox-nloglik
+#> 3: Fold3   0.6536441 0.3015909        0.5804647                1           0.2         1      27 survival:cox cox-nloglik
 ```
 
 
@@ -290,7 +332,37 @@ validator$set_data(
 )
 
 validator_results <- validator$execute()
+#> 
+#> CV fold: Fold1
+#> 
+#> Parameter settings [==============================================================================================================>----------------------------] 8/10 ( 80%)
+#> Parameter settings [============================================================================================================================>--------------] 9/10 ( 90%)
+#> Parameter settings [==========================================================================================================================================] 10/10 (100%)                                                                                                                                                                             
+#> CV fold: Fold2
+#> CV progress [=================================================================================================>-------------------------------------------------] 2/3 ( 67%)
+#> 
+#> Parameter settings [=====================================================================>---------------------------------------------------------------------] 5/10 ( 50%)
+#> Parameter settings [==================================================================================>--------------------------------------------------------] 6/10 ( 60%)
+#> Parameter settings [================================================================================================>------------------------------------------] 7/10 ( 70%)
+#> Parameter settings [==============================================================================================================>----------------------------] 8/10 ( 80%)
+#> Parameter settings [============================================================================================================================>--------------] 9/10 ( 90%)
+#> Parameter settings [==========================================================================================================================================] 10/10 (100%)                                                                                                                                                                             
+#> CV fold: Fold3
+#> CV progress [===================================================================================================================================================] 3/3 (100%)
+#>                                                                                                                                                                              
+#> Parameter settings [=======================================================>-----------------------------------------------------------------------------------] 4/10 ( 40%)
+#> Parameter settings [=====================================================================>---------------------------------------------------------------------] 5/10 ( 50%)
+#> Parameter settings [==================================================================================>--------------------------------------------------------] 6/10 ( 60%)
+#> Parameter settings [================================================================================================>------------------------------------------] 7/10 ( 70%)
+#> Parameter settings [==============================================================================================================>----------------------------] 8/10 ( 80%)
+#> Parameter settings [============================================================================================================================>--------------] 9/10 ( 90%)
+#> Parameter settings [==========================================================================================================================================] 10/10 (100%)                                                                                                                                                                             
+
 head(validator_results)
+#>     fold performance nrounds subsample colsample_bytree min_child_weight learning_rate max_depth    objective eval_metric
+#> 1: Fold1   0.6355074      47       0.6              1.0                1           0.2         1 survival:cox cox-nloglik
+#> 2: Fold2   0.6699094      13       0.8              0.8                5           0.1         5 survival:cox cox-nloglik
+#> 3: Fold3   0.6832026      20       0.6              0.8                5           0.2         1 survival:cox cox-nloglik
 ```
 
 
@@ -328,7 +400,26 @@ validator$set_data(
 )
 
 validator_results <- validator$execute()
+#> 
+#> CV fold: Fold1
+#> 
+#> Registering parallel backend using 4 cores.
+#> 
+#> CV fold: Fold2
+#> CV progress [=================================================================================================>-------------------------------------------------] 2/3 ( 67%)
+#> 
+#> Registering parallel backend using 4 cores.
+#> 
+#> CV fold: Fold3
+#> CV progress [===================================================================================================================================================] 3/3 (100%)
+#>                                                                                                                                                                              
+#> Registering parallel backend using 4 cores.
+
 head(validator_results)
+#>     fold performance subsample colsample_bytree min_child_weight learning_rate max_depth nrounds    objective eval_metric
+#> 1: Fold1   0.6420432 0.6394793        0.9881643                4     0.1268116         1      53 survival:cox cox-nloglik
+#> 2: Fold2   0.6563499 1.0000000        1.0000000                5     0.1000000         5      11 survival:cox cox-nloglik
+#> 3: Fold3   0.6573680 0.7495501        0.4383327                7     0.1000000         5      20 survival:cox cox-nloglik
 ```
 
 
@@ -352,4 +443,12 @@ perf_xgboost <- mlexperiments::performance(
   y_ground_truth = test_y
 )
 perf_xgboost
+#>    model performance
+#> 1: Fold1   0.6384856
+#> 2: Fold2   0.6118066
+#> 3: Fold3   0.6356952
+```
+
+```{r include=FALSE}
+# nolint end
 ```

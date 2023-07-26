@@ -12,8 +12,10 @@ editor_options:
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = FALSE
 )
+# nolint start
 ```
 
 ```{r setup}
@@ -186,7 +188,19 @@ tuner$set_data(
 )
 
 tuner_results_grid <- tuner$execute(k = 3)
+#> 
+#> Parameter settings [=======================================================>------------------------------------------------------------------------------------] 2/5 ( 40%)
+#> Parameter settings [===================================================================================>--------------------------------------------------------] 3/5 ( 60%)
+#> Parameter settings [===============================================================================================================>----------------------------] 4/5 ( 80%)
+#> Parameter settings [============================================================================================================================================] 5/5 (100%)                                                                                                                                                                             
+
 head(tuner_results_grid)
+#>    setting_id metric_optim_mean gamma.mu       type opt.meth     kernel maxiter
+#> 1:          1         0.4226923      0.1 regression quadprog rbf_kernel       5
+#> 2:          2         0.4226923      0.3 regression quadprog rbf_kernel       5
+#> 3:          3         0.4226493      0.5 regression quadprog rbf_kernel       5
+#> 4:          4         0.4226389      0.7 regression quadprog rbf_kernel       5
+#> 5:          5         0.4226698      0.9 regression quadprog rbf_kernel       5
 ```
 
 
@@ -215,7 +229,17 @@ tuner$set_data(
 )
 
 tuner_results_bayesian <- tuner$execute(k = 3)
+#> 
+#> Registering parallel backend using 4 cores.
+
 head(tuner_results_bayesian)
+#>    Epoch setting_id gamma.mu gpUtility acqOptimum inBounds Elapsed     Score metric_optim_mean                            errorMessage       type opt.meth     kernel maxiter
+#> 1:     0          1      0.1        NA      FALSE     TRUE  41.423 0.4226923         0.4226923                                    <NA> regression quadprog rbf_kernel       5
+#> 2:     0          2      0.3        NA      FALSE     TRUE  41.794 0.4226923         0.4226923                                    <NA> regression quadprog rbf_kernel       5
+#> 3:     0          3      0.5        NA      FALSE     TRUE  41.788 0.4226493         0.4226493                                    <NA> regression quadprog rbf_kernel       5
+#> 4:     0          4      0.7        NA      FALSE     TRUE  41.020 0.4226389         0.4226389                                    <NA> regression quadprog rbf_kernel       5
+#> 5:     0          5      0.9        NA      FALSE     TRUE  19.455 0.4226698         0.4226698                                    <NA> regression quadprog rbf_kernel       5
+#> 6:     1          6      0.0 0.6397671       TRUE     TRUE   0.002        NA                NA gamma.mu: only positive values allowed. regression quadprog rbf_kernel       5
 ```
 
 ## k-Fold Cross Validation
@@ -241,7 +265,21 @@ validator$set_data(
 )
 
 validator_results <- validator$execute()
+#> 
+#> CV fold: Fold1
+#> 
+#> CV fold: Fold2
+#> CV progress [=================================================================================================>-------------------------------------------------] 2/3 ( 67%)
+#> 
+#> CV fold: Fold3
+#> CV progress [===================================================================================================================================================] 3/3 (100%)
+#>                                                                                                                                                                              
+
 head(validator_results)
+#>     fold performance     gamma.mu       type opt.meth     kernel maxiter
+#> 1: Fold1   0.4487941 0.0009792652 regression quadprog rbf_kernel       5
+#> 2: Fold2   0.4036467 0.0009792652 regression quadprog rbf_kernel       5
+#> 3: Fold3   0.4529986 0.0009792652 regression quadprog rbf_kernel       5
 ```
 
 
@@ -275,7 +313,33 @@ validator$set_data(
 )
 
 validator_results <- validator$execute()
+#> 
+#> CV fold: Fold1
+#> 
+#> Parameter settings [=======================================================>------------------------------------------------------------------------------------] 2/5 ( 40%)
+#> Parameter settings [===================================================================================>--------------------------------------------------------] 3/5 ( 60%)
+#> Parameter settings [===============================================================================================================>----------------------------] 4/5 ( 80%)
+#> Parameter settings [============================================================================================================================================] 5/5 (100%)                                                                                                                                                                             
+#> CV fold: Fold2
+#> CV progress [=================================================================================================>-------------------------------------------------] 2/3 ( 67%)
+#> 
+#> Parameter settings [=======================================================>------------------------------------------------------------------------------------] 2/5 ( 40%)
+#> Parameter settings [===================================================================================>--------------------------------------------------------] 3/5 ( 60%)
+#> Parameter settings [===============================================================================================================>----------------------------] 4/5 ( 80%)
+#> Parameter settings [============================================================================================================================================] 5/5 (100%)                                                                                                                                                                             
+#> CV fold: Fold3
+#> CV progress [===================================================================================================================================================] 3/3 (100%)
+#>                                                                                                                                                                              
+#> Parameter settings [=======================================================>------------------------------------------------------------------------------------] 2/5 ( 40%)
+#> Parameter settings [===================================================================================>--------------------------------------------------------] 3/5 ( 60%)
+#> Parameter settings [===============================================================================================================>----------------------------] 4/5 ( 80%)
+#> Parameter settings [============================================================================================================================================] 5/5 (100%)                                                                                                                                                                             
+
 head(validator_results)
+#>     fold performance gamma.mu       type opt.meth     kernel maxiter
+#> 1: Fold1   0.4365956      0.1 regression quadprog rbf_kernel       5
+#> 2: Fold2   0.3917775      0.1 regression quadprog rbf_kernel       5
+#> 3: Fold3   0.4397037      0.1 regression quadprog rbf_kernel       5
 ```
 
 
@@ -311,7 +375,26 @@ validator$set_data(
 )
 
 validator_results <- validator$execute()
+#> 
+#> CV fold: Fold1
+#> 
+#> Registering parallel backend using 4 cores.
+#> 
+#> CV fold: Fold2
+#> CV progress [=================================================================================================>-------------------------------------------------] 2/3 ( 67%)
+#> 
+#> Registering parallel backend using 4 cores.
+#> 
+#> CV fold: Fold3
+#> CV progress [===================================================================================================================================================] 3/3 (100%)
+#>                                                                                                                                                                              
+#> Registering parallel backend using 4 cores.
+
 head(validator_results)
+#>     fold performance    gamma.mu       type opt.meth     kernel maxiter
+#> 1: Fold1   0.4364907 0.909125538 regression quadprog rbf_kernel       5
+#> 2: Fold2   0.3917457 0.036876500 regression quadprog rbf_kernel       5
+#> 3: Fold3   0.4530633 0.001528976 regression quadprog rbf_kernel       5
 ```
 
 
@@ -335,4 +418,12 @@ perf_survivalsvm <- mlexperiments::performance(
   y_ground_truth = test_y
 )
 perf_survivalsvm
+#>    model performance
+#> 1: Fold1   0.4402035
+#> 2: Fold2   0.4582914
+#> 3: Fold3   0.4755862
+```
+
+```{r include=FALSE}
+# nolint end
 ```
