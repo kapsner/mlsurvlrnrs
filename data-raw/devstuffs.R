@@ -19,7 +19,7 @@ my_desc$set_authors(c(
 # Remove some author fields
 my_desc$del("Maintainer")
 # Set the version
-my_desc$set_version("0.0.1.9004")
+my_desc$set_version("0.0.1.9006")
 # The title of your package
 my_desc$set(Title = "R6-Based ML Survival Learners for 'mlexperiments'")
 # The description of your package
@@ -77,6 +77,7 @@ usethis::use_package("ranger", type = "Suggests")
 usethis::use_package("rpart", type = "Suggests")
 usethis::use_package("survival", type = "Suggests")
 usethis::use_package("splitTools", type = "Suggests")
+usethis::use_package("mlr3measures", type = "Suggests")
 usethis::use_package("ParBayesianOptimization", type = "Suggests")
 
 
@@ -169,6 +170,7 @@ usethis::use_build_ignore("Meta")
 
 usethis::use_git_ignore("!NEWS.md")
 usethis::use_git_ignore("!README.md")
+usethis::use_git_ignore("!cran-comments.md")
 usethis::use_git_ignore("docs")
 usethis::use_git_ignore("Meta")
 
