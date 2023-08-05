@@ -1,6 +1,6 @@
 # mlsurvlrnrs NEWS
 
-## Unreleased (2023-07-26)
+## Unreleased (2023-08-05)
 
 #### Bug fixes
 
@@ -33,7 +33,7 @@
     ([47f1c21](https://github.com/kapsner/mlsurvlrnrs/tree/47f1c21f0bf91eba432dec35671411fab24bd4d0))
 
 Full set of changes:
-[`v0.0.1...0da3a95`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...0da3a95)
+[`v0.0.1...0eb9785`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...0eb9785)
 
 ## v0.0.1 (2022-11-13)
 
