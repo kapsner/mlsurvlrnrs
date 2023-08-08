@@ -17,6 +17,7 @@ Can be used with
 * [mlexperiments::MLNestedCVs]
 }
 \examples{
+\donttest{# execution time >2.5 sec
 # survival analysis
 
 dataset <- survival::colon |>
@@ -87,6 +88,8 @@ surv_xgboost_cox_optimizer$set_data(
 )
 
 surv_xgboost_cox_optimizer$execute()
+}
+
 
 ## ------------------------------------------------
 ## Method `LearnerSurvXgboostCox$new`

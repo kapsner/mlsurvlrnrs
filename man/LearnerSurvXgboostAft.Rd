@@ -21,6 +21,7 @@ Also see the official xgboost documentation on
   survival_analysis.html)
 }
 \examples{
+\donttest{# execution time >2.5 sec
 # survival analysis
 
 dataset <- survival::colon |>
@@ -91,6 +92,8 @@ surv_xgboost_aft_optimizer$set_data(
 )
 
 surv_xgboost_aft_optimizer$execute()
+}
+
 
 ## ------------------------------------------------
 ## Method `LearnerSurvXgboostAft$new`

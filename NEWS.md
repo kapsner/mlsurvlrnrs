@@ -23,6 +23,8 @@
 
 #### Other changes
 
+-   updated version to 0.0.2
+    ([2b86ec1](https://github.com/kapsner/mlsurvlrnrs/tree/2b86ec1efff73ea8eb798a78d64572dbce6a44c4))
 -   survivalsvm to feature branch
     ([6ffbcc2](https://github.com/kapsner/mlsurvlrnrs/tree/6ffbcc20abc26ffe22eaee01b02e6f65f6547da3))
 -   updated package description
@@ -33,7 +35,7 @@
     ([47f1c21](https://github.com/kapsner/mlsurvlrnrs/tree/47f1c21f0bf91eba432dec35671411fab24bd4d0))
 
 Full set of changes:
-[`v0.0.1...0eb9785`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...0eb9785)
+[`v0.0.1...2b86ec1`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...2b86ec1)
 
 ## v0.0.1 (2022-11-13)
 

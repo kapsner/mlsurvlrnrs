@@ -20,6 +20,7 @@
 #' @seealso [xgboost::xgb.train()], [xgboost::xgb.cv()]
 #'
 #' @examples
+#' \donttest{# execution time >2.5 sec
 #' # survival analysis
 #'
 #' dataset <- survival::colon |>
@@ -90,7 +91,8 @@
 #' )
 #'
 #' surv_xgboost_aft_optimizer$execute()
-
+#' }
+#'
 #' @export
 #'
 LearnerSurvXgboostAft <- R6::R6Class( # nolint

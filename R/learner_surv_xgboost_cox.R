@@ -16,6 +16,7 @@
 #' @seealso [xgboost::xgb.train()], [xgboost::xgb.cv()]
 #'
 #' @examples
+#' \donttest{# execution time >2.5 sec
 #' # survival analysis
 #'
 #' dataset <- survival::colon |>
@@ -86,7 +87,8 @@
 #' )
 #'
 #' surv_xgboost_cox_optimizer$execute()
-
+#' }
+#'
 #' @export
 #'
 LearnerSurvXgboostCox <- R6::R6Class( # nolint
