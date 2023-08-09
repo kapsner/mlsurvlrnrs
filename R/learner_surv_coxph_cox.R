@@ -1,7 +1,7 @@
 #' @title R6 Class to construct a Cox proportional hazards survival learner
 #'
 #' @description
-#' The `LearnerSurvXgboostCox` class is the interface to perform a Cox
+#' The `LearnerSurvCoxPHCox` class is the interface to perform a Cox
 #'   regression with the `survival` R package for use with the `mlexperiments`
 #'   package.
 #'
@@ -53,7 +53,7 @@
 #' surv_coxph_cox_optimizer <- mlexperiments::MLCrossValidation$new(
 #'   learner = LearnerSurvCoxPHCox$new(),
 #'   fold_list = fold_list,
-#'   ncores = -1L,
+#'   ncores = 1L,
 #'   seed = seed
 #' )
 #' surv_coxph_cox_optimizer$performance_metric <- c_index

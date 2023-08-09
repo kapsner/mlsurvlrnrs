@@ -1,6 +1,6 @@
 # mlsurvlrnrs NEWS
 
-## Unreleased (2023-08-05)
+## v0.0.2 (2023-08-08)
 
 #### Bug fixes
 
@@ -14,6 +14,8 @@
 
 #### Docs
 
+-   wrapped xgboost examples into donttest
+    ([675303d](https://github.com/kapsner/mlsurvlrnrs/tree/675303d5a11c581cc730b1f0399d8c49b9be6a45))
 -   making vignettes static
     ([3dd080a](https://github.com/kapsner/mlsurvlrnrs/tree/3dd080a905589c727b337492a37c605fce198030))
 -   fixed typo in vignettes
@@ -35,7 +37,7 @@
     ([47f1c21](https://github.com/kapsner/mlsurvlrnrs/tree/47f1c21f0bf91eba432dec35671411fab24bd4d0))
 
 Full set of changes:
-[`v0.0.1...2b86ec1`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...2b86ec1)
+[`v0.0.1...v0.0.2`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...v0.0.2)
 
 ## v0.0.1 (2022-11-13)
 

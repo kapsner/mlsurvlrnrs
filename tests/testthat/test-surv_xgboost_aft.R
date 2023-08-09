@@ -64,47 +64,35 @@ fold_list <- splitTools::create_folds(
 )
 
 # ###########################################################################
-# %% TUNING
-# ###########################################################################
-
-xgboost_bounds <- list(
-  subsample = c(0.2, 1),
-  colsample_bytree = c(0.2, 1),
-  min_child_weight = c(1L, 10L),
-  learning_rate = c(0.1, 0.2),
-  max_depth =  c(1L, 10L)
-)
-optim_args <- list(
-  iters.n = ncores,
-  kappa = 3.5,
-  acq = "ucb"
-)
-
-# ###########################################################################
 # %% NESTED CV
 # ###########################################################################
 
 
 test_that(
-  desc = "test nested cv, bayesian - surv_xgboost_aft",
+  desc = "test nested cv, grid - surv_xgboost_aft",
   code = {
 
     surv_xgboost_aft_optimizer <- mlexperiments::MLNestedCV$new(
       learner = LearnerSurvXgboostAft$new(
         metric_optimization_higher_better = FALSE
       ),
-      strategy = "bayesian",
+      strategy = "grid",
       fold_list = fold_list,
       k_tuning = 3L,
       ncores = ncores,
       seed = seed
     )
 
-    surv_xgboost_aft_optimizer$parameter_bounds <- xgboost_bounds
-    surv_xgboost_aft_optimizer$parameter_grid <- param_list_xgboost
+    set.seed(seed)
+    selected_rows <- sample(
+      x = seq_len(nrow(param_list_xgboost)),
+      size = 10,
+      replace = FALSE
+    )
+    surv_xgboost_aft_optimizer$parameter_grid <-
+      param_list_xgboost[selected_rows, ]
     surv_xgboost_aft_optimizer$split_type <- "stratified"
     surv_xgboost_aft_optimizer$split_vector <- split_vector
-    surv_xgboost_aft_optimizer$optim_args <- optim_args
 
     surv_xgboost_aft_optimizer$performance_metric <- c_index
 

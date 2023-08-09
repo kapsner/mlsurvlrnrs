@@ -41,7 +41,7 @@ test_that(
     surv_coxph_cox_optimizer <- mlexperiments::MLCrossValidation$new(
       learner = LearnerSurvCoxPHCox$new(),
       fold_list = fold_list,
-      ncores = -1L,
+      ncores = 1L,
       seed = seed
     )
     surv_coxph_cox_optimizer$performance_metric <- c_index
