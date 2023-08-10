@@ -12,20 +12,7 @@ param_list_glmnet <- expand.grid(
   alpha = seq(0, 1, .2)
 )
 
-if (isTRUE(as.logical(Sys.getenv("_R_CHECK_LIMIT_CORES_")))) {
-  # on cran
-  ncores <- 2L
-} else {
-  ncores <- ifelse(
-    test = parallel::detectCores() > 4,
-    yes = 4L,
-    no = ifelse(
-      test = parallel::detectCores() < 2L,
-      yes = 1L,
-      no = parallel::detectCores()
-    )
-  )
-}
+ncores <- 2L
 
 split_vector <- splitTools::multi_strata(
   df = dataset[, .SD, .SDcols = surv_cols],

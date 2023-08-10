@@ -10,20 +10,7 @@ feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
 cat_vars <- c("sex", "obstruct", "perfor", "adhere", "differ", "extent",
               "surg", "node4", "rx")
 
-if (isTRUE(as.logical(Sys.getenv("_R_CHECK_LIMIT_CORES_")))) {
-  # on cran
-  ncores <- 2L
-} else {
-  ncores <- ifelse(
-    test = parallel::detectCores() > 4,
-    yes = 4L,
-    no = ifelse(
-      test = parallel::detectCores() < 2L,
-      yes = 1L,
-      no = parallel::detectCores()
-    )
-  )
-}
+ncores <- 2L
 
 split_vector <- splitTools::multi_strata(
   df = dataset[, .SD, .SDcols = surv_cols],
