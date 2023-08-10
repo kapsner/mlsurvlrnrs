@@ -41,38 +41,32 @@ fold_list <- splitTools::create_folds(
 )
 
 # ###########################################################################
-# %% TUNING
-# ###########################################################################
-
-glmnet_bounds <- list(alpha = c(0., 1.))
-optim_args <- list(
-  iters.n = ncores,
-  kappa = 3.5,
-  acq = "ucb"
-)
-
-# ###########################################################################
 # %% NESTED CV
 # ###########################################################################
 
 test_that(
-  desc = "test nested cv, bayesian - surv_glmnet_cox",
+  desc = "test nested cv, grid - surv_glmnet_cox",
   code = {
 
     surv_glmnet_cox_optimizer <- mlexperiments::MLNestedCV$new(
       learner = LearnerSurvGlmnetCox$new(),
-      strategy = "bayesian",
+      strategy = "grid",
       fold_list = fold_list,
       k_tuning = 3L,
       ncores = ncores,
       seed = seed
     )
 
-    surv_glmnet_cox_optimizer$parameter_bounds <- glmnet_bounds
-    surv_glmnet_cox_optimizer$parameter_grid <- param_list_glmnet
+    set.seed(seed)
+    selected_rows <- sample(
+      x = seq_len(nrow(param_list_glmnet)),
+      size = 2,
+      replace = FALSE
+    )
+    surv_glmnet_cox_optimizer$parameter_grid <-
+      kdry::mlh_subset(param_list_glmnet, selected_rows)
     surv_glmnet_cox_optimizer$split_type <- "stratified"
     surv_glmnet_cox_optimizer$split_vector <- split_vector
-    surv_glmnet_cox_optimizer$optim_args <- optim_args
 
     surv_glmnet_cox_optimizer$performance_metric <- c_index
 

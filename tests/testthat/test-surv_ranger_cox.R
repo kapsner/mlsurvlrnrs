@@ -37,8 +37,6 @@ train_y <- survival::Surv(
   type = "right"
 )
 
-options("mlexperiments.bayesian.max_init" = 10L)
-
 fold_list <- splitTools::create_folds(
   y = split_vector,
   k = 3,
@@ -47,44 +45,33 @@ fold_list <- splitTools::create_folds(
 )
 
 # ###########################################################################
-# %% TUNING
-# ###########################################################################
-
-ranger_bounds <- list(
-  sample.fraction = c(0.2, 1),
-  min.node.size = c(1L, 10L),
-  mtry = c(2L, 10L),
-  num.trees = c(1L, 10L),
-  max.depth =  c(1L, 10L)
-)
-optim_args <- list(
-  iters.n = ncores,
-  kappa = 3.5,
-  acq = "ucb"
-)
-
-# ###########################################################################
 # %% NESTED CV
 # ###########################################################################
 
 test_that(
-  desc = "test nested cv, bayesian - surv_ranger_cox",
+  desc = "test nested cv, grid - surv_ranger_cox",
   code = {
 
     surv_ranger_cox_optimizer <- mlexperiments::MLNestedCV$new(
       learner = LearnerSurvRangerCox$new(),
-      strategy = "bayesian",
+      strategy = "grid",
       fold_list = fold_list,
       k_tuning = 3L,
       ncores = ncores,
       seed = seed
     )
 
-    surv_ranger_cox_optimizer$parameter_bounds <- ranger_bounds
-    surv_ranger_cox_optimizer$parameter_grid <- param_list_ranger
+    set.seed(seed)
+    selected_rows <- sample(
+      x = seq_len(nrow(param_list_ranger)),
+      size = 10,
+      replace = FALSE
+    )
+
+    surv_ranger_cox_optimizer$parameter_grid <-
+      param_list_ranger[selected_rows, ]
     surv_ranger_cox_optimizer$split_type <- "stratified"
     surv_ranger_cox_optimizer$split_vector <- split_vector
-    surv_ranger_cox_optimizer$optim_args <- optim_args
 
     surv_ranger_cox_optimizer$performance_metric <- c_index
 

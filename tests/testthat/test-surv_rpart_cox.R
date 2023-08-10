@@ -37,23 +37,10 @@ fold_list <- splitTools::create_folds(
   seed = seed
 )
 
-options("mlexperiments.bayesian.max_init" = 10L)
-
 # ###########################################################################
 # %% TUNING
 # ###########################################################################
 
-
-rpart_bounds <- list(
-  minsplit = c(2L, 100L),
-  cp = c(0.01, 0.1),
-  maxdepth = c(2L, 30L)
-)
-optim_args <- list(
-  iters.n = ncores,
-  kappa = 3.5,
-  acq = "ucb"
-)
 param_list_rpart <- expand.grid(
   minsplit = seq(2L, 82L, 10L),
   cp = seq(0.01, 0.1, 0.01),
@@ -65,12 +52,12 @@ param_list_rpart <- expand.grid(
 # ###########################################################################
 
 test_that(
-  desc = "test nested cv, bayesian - surv_rpart_cox",
+  desc = "test nested cv, grid - surv_rpart_cox",
   code = {
 
     surv_rpart_cox_optimizer <- mlexperiments::MLNestedCV$new(
       learner = LearnerSurvRpartCox$new(),
-      strategy = "bayesian",
+      strategy = "grid",
       fold_list = fold_list,
       k_tuning = 3L,
       ncores = ncores,
@@ -78,11 +65,17 @@ test_that(
     )
     surv_rpart_cox_optimizer$learner_args <- list(method = "exp")
 
-    surv_rpart_cox_optimizer$parameter_bounds <- rpart_bounds
-    surv_rpart_cox_optimizer$parameter_grid <- param_list_rpart
+    set.seed(seed)
+    selected_rows <- sample(
+      x = seq_len(nrow(param_list_rpart)),
+      size = 10,
+      replace = FALSE
+    )
+
+    surv_rpart_cox_optimizer$parameter_grid <-
+      param_list_rpart[selected_rows, ]
     surv_rpart_cox_optimizer$split_type <- "stratified"
     surv_rpart_cox_optimizer$split_vector <- split_vector
-    surv_rpart_cox_optimizer$optim_args <- optim_args
 
     surv_rpart_cox_optimizer$performance_metric <- c_index
 
