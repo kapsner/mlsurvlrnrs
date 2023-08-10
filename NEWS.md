@@ -1,6 +1,6 @@
 # mlsurvlrnrs NEWS
 
-## v0.0.2 (2023-08-08)
+## Unreleased (2023-08-10)
 
 #### Bug fixes
 
@@ -9,6 +9,14 @@
 
 #### Tests
 
+-   removed tests with bayesian optimization as number of set cores
+    seems to be ignored
+    ([a14a610](https://github.com/kapsner/mlsurvlrnrs/tree/a14a610775fc2eadce9816cb2e0a7d36abb29130))
+-   hard coding ncores since *R\_CHECK\_LIMIT\_CORES* seems not to work
+    on cran
+    ([61af69f](https://github.com/kapsner/mlsurvlrnrs/tree/61af69fa535346fb6ef069f4f34ca1c71276d495))
+-   updated unit tests
+    ([1e6b5e7](https://github.com/kapsner/mlsurvlrnrs/tree/1e6b5e708f4dec1e9c45234b60e115f95f0bae08))
 -   reduced runtime of unit-tests
     ([4d9b902](https://github.com/kapsner/mlsurvlrnrs/tree/4d9b9026d328bb52d86b8c568e587b99ce40319f))
 
@@ -25,6 +33,10 @@
 
 #### Other changes
 
+-   updated cran comments
+    ([04889e3](https://github.com/kapsner/mlsurvlrnrs/tree/04889e39ce0b7fb87070a10621e705b52d19e5ef))
+-   updated cran comments
+    ([3c6e902](https://github.com/kapsner/mlsurvlrnrs/tree/3c6e9023a5d7290a36227d0f1049217109609c51))
 -   updated version to 0.0.2
     ([2b86ec1](https://github.com/kapsner/mlsurvlrnrs/tree/2b86ec1efff73ea8eb798a78d64572dbce6a44c4))
 -   survivalsvm to feature branch
@@ -37,7 +49,7 @@
     ([47f1c21](https://github.com/kapsner/mlsurvlrnrs/tree/47f1c21f0bf91eba432dec35671411fab24bd4d0))
 
 Full set of changes:
-[`v0.0.1...v0.0.2`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...v0.0.2)
+[`v0.0.1...a14a610`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...a14a610)
 
 ## v0.0.1 (2022-11-13)
 
