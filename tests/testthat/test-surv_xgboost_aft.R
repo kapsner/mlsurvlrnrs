@@ -19,7 +19,20 @@ param_list_xgboost <- expand.grid(
   max_depth = seq(1, 5, 4)
 )
 
-ncores <- 2L
+if (isTRUE(as.logical(Sys.getenv("_R_CHECK_LIMIT_CORES_")))) {
+  # on cran
+  ncores <- 2L
+} else {
+  ncores <- ifelse(
+    test = parallel::detectCores() > 4,
+    yes = 4L,
+    no = ifelse(
+      test = parallel::detectCores() < 2L,
+      yes = 1L,
+      no = parallel::detectCores()
+    )
+  )
+}
 
 split_vector <- splitTools::multi_strata(
   df = dataset[, .SD, .SDcols = surv_cols],
@@ -39,15 +52,31 @@ train_y <- survival::Surv(
   type = "right"
 )
 
-options("mlexperiments.bayesian.max_init" = 10L)
-options("mlexperiments.optim.xgb.nrounds" = 100L)
-options("mlexperiments.optim.xgb.early_stopping_rounds" = 10L)
-
 fold_list <- splitTools::create_folds(
   y = split_vector,
   k = 3,
   type = "stratified",
   seed = seed
+)
+
+options("mlexperiments.bayesian.max_init" = 10L)
+options("mlexperiments.optim.xgb.nrounds" = 100L)
+options("mlexperiments.optim.xgb.early_stopping_rounds" = 10L)
+# ###########################################################################
+# %% TUNING
+# ###########################################################################
+
+xgboost_bounds <- list(
+  subsample = c(0.2, 1),
+  colsample_bytree = c(0.2, 1),
+  min_child_weight = c(1L, 10L),
+  learning_rate = c(0.1, 0.2),
+  max_depth =  c(1L, 10L)
+)
+optim_args <- list(
+  iters.n = ncores,
+  kappa = 3.5,
+  acq = "ucb"
 )
 
 # ###########################################################################
@@ -56,30 +85,25 @@ fold_list <- splitTools::create_folds(
 
 
 test_that(
-  desc = "test nested cv, grid - surv_xgboost_aft",
+  desc = "test nested cv, bayesian - surv_xgboost_aft",
   code = {
 
     surv_xgboost_aft_optimizer <- mlexperiments::MLNestedCV$new(
       learner = LearnerSurvXgboostAft$new(
         metric_optimization_higher_better = FALSE
       ),
-      strategy = "grid",
+      strategy = "bayesian",
       fold_list = fold_list,
       k_tuning = 3L,
       ncores = ncores,
       seed = seed
     )
 
-    set.seed(seed)
-    selected_rows <- sample(
-      x = seq_len(nrow(param_list_xgboost)),
-      size = 10,
-      replace = FALSE
-    )
-    surv_xgboost_aft_optimizer$parameter_grid <-
-      param_list_xgboost[selected_rows, ]
+    surv_xgboost_aft_optimizer$parameter_bounds <- xgboost_bounds
+    surv_xgboost_aft_optimizer$parameter_grid <- param_list_xgboost
     surv_xgboost_aft_optimizer$split_type <- "stratified"
     surv_xgboost_aft_optimizer$split_vector <- split_vector
+    surv_xgboost_aft_optimizer$optim_args <- optim_args
 
     surv_xgboost_aft_optimizer$performance_metric <- c_index
 
