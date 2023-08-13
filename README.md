@@ -2,6 +2,11 @@
 
 <!-- badges: start -->
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![](https://www.r-pkg.org/badges/version/mlsurvlrnrs)](https://cran.r-project.org/package=mlsurvlrnrs)
+[![CRAN checks](https://badges.cranchecks.info/worst/mlsurvlrnrs.svg)](https://cran.r-project.org/web/checks/check_results_mlsurvlrnrs.html)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/mlsurvlrnrs?color=blue)](https://cran.r-project.org/package=mlsurvlrnrs)
+[![](http://cranlogs.r-pkg.org/badges/last-month/mlsurvlrnrs?color=blue)](https://cran.r-project.org/package=mlsurvlrnrs)
+[![Dependencies](https://tinyverse.netlify.com/badge/mlsurvlrnrs)](https://cran.r-project.org/package=mlsurvlrnrs)
 [![R build status](https://github.com/kapsner/mlsurvlrnrs/workflows/R%20CMD%20Check%20via%20{tic}/badge.svg?branch=main)](https://github.com/kapsner/mlsurvlrnrs/actions)
 [![R build status](https://github.com/kapsner/mlsurvlrnrs/workflows/lint/badge.svg?branch=main)](https://github.com/kapsner/mlsurvlrnrs/actions)
 [![R build status](https://github.com/kapsner/mlsurvlrnrs/workflows/test-coverage/badge.svg?branch=main)](https://github.com/kapsner/mlsurvlrnrs/actions)

@@ -1,6 +1,6 @@
 Package: mlsurvlrnrs
 Title: R6-Based ML Survival Learners for 'mlexperiments'
-Version: 0.0.2
+Version: 0.0.2.9001
 Authors@R: 
     person("Lorenz A.", "Kapsner", , "lorenz.kapsner@gmail.com", role = c("cre", "aut", "cph"),
            comment = c(ORCID = "0000-0003-1866-860X"))
@@ -41,6 +41,6 @@ VignetteBuilder:
     knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: false
-Date/Publication: 2023-08-10 07:17:45.587601 UTC
+Date/Publication: 2023-08-13 09:01:54.822762 UTC
 Encoding: UTF-8
 RoxygenNote: 7.2.3

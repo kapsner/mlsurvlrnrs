@@ -1,6 +1,6 @@
 # mlsurvlrnrs NEWS
 
-## Unreleased (2023-08-10)
+## v0.0.2 (2023-08-11)
 
 #### Bug fixes
 
@@ -9,6 +9,8 @@
 
 #### Tests
 
+-   back to bayesian optim
+    ([1aef607](https://github.com/kapsner/mlsurvlrnrs/tree/1aef607374c2b907b1607a4ed5cff28a0ab83c6b))
 -   removed tests with bayesian optimization as number of set cores
     seems to be ignored
     ([a14a610](https://github.com/kapsner/mlsurvlrnrs/tree/a14a610775fc2eadce9816cb2e0a7d36abb29130))
@@ -33,6 +35,8 @@
 
 #### Other changes
 
+-   updated news.md
+    ([340e154](https://github.com/kapsner/mlsurvlrnrs/tree/340e154d1eb12cb5c4e07cbee0505ecbe3a3b0b5))
 -   updated cran comments
     ([04889e3](https://github.com/kapsner/mlsurvlrnrs/tree/04889e39ce0b7fb87070a10621e705b52d19e5ef))
 -   updated cran comments
@@ -49,7 +53,7 @@
     ([47f1c21](https://github.com/kapsner/mlsurvlrnrs/tree/47f1c21f0bf91eba432dec35671411fab24bd4d0))
 
 Full set of changes:
-[`v0.0.1...a14a610`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...a14a610)
+[`v0.0.1...v0.0.2`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.1...v0.0.2)
 
 ## v0.0.1 (2022-11-13)
 
