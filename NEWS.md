@@ -1,16 +1,18 @@
 # mlsurvlrnrs NEWS
 
-## Unreleased (2024-03-07)
+## v0.0.3 (2024-03-08)
 
 #### Other changes
 
+-   updated news.md
+    ([5704c55](https://github.com/kapsner/mlsurvlrnrs/tree/5704c5588f23849b242c08e11f750b32be5ec030))
 -   preparing v0.0.3
     ([f357782](https://github.com/kapsner/mlsurvlrnrs/tree/f3577822701386431c37471f7c0dd20f1bffcef8))
 -   updated cran urls
     ([a602f3d](https://github.com/kapsner/mlsurvlrnrs/tree/a602f3d624fa8d91abc679eaa023c89eaa01b866))
 
 Full set of changes:
-[`v0.0.2...f357782`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.2...f357782)
+[`v0.0.2...v0.0.3`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.2...v0.0.3)
 
 ## v0.0.2 (2023-08-11)
 
