@@ -1,5 +1,12 @@
 # mlsurvlrnrs NEWS
 
+## Unreleased (2024-03-08)
+
+#### Other changes
+
+-   updated news.md
+    ([3bbf43f](https://github.com/kapsner/mlsurvlrnrs/tree/3bbf43f8f65ceb6481164ac2568079af725c41f9))
+
 ## v0.0.3 (2024-03-08)
 
 #### Other changes
