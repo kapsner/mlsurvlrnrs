@@ -41,6 +41,6 @@ VignetteBuilder:
     knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: false
-Date/Publication: 2024-03-07 15:47:14.034957 UTC
+Date/Publication: 2024-03-08 11:30:00.454017 UTC
 Encoding: UTF-8
 RoxygenNote: 7.3.1
