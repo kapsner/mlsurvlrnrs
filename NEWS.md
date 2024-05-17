@@ -1,11 +1,17 @@
+
 # mlsurvlrnrs NEWS
 
 ## Unreleased (2024-03-08)
 
 #### Other changes
 
+-   updated dev-version
+    ([beb52a5](https://github.com/kapsner/mlsurvlrnrs/tree/beb52a59b3755e756698d6675ed01c80966f909b))
 -   updated news.md
     ([3bbf43f](https://github.com/kapsner/mlsurvlrnrs/tree/3bbf43f8f65ceb6481164ac2568079af725c41f9))
+
+Full set of changes:
+[`v0.0.3...beb52a5`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.3...beb52a5)
 
 ## v0.0.3 (2024-03-08)
 
@@ -25,7 +31,7 @@ Full set of changes:
 
 #### Bug fixes
 
--   added cat\_vars adaptions
+-   added cat_vars adaptions
     ([2b85d9c](https://github.com/kapsner/mlsurvlrnrs/tree/2b85d9c2535c274d892121a7a7dbe29d27ca8431))
 
 #### Tests
@@ -35,8 +41,8 @@ Full set of changes:
 -   removed tests with bayesian optimization as number of set cores
     seems to be ignored
     ([a14a610](https://github.com/kapsner/mlsurvlrnrs/tree/a14a610775fc2eadce9816cb2e0a7d36abb29130))
--   hard coding ncores since *R\_CHECK\_LIMIT\_CORES* seems not to work
-    on cran
+-   hard coding ncores since *R_CHECK_LIMIT_CORES* seems not to work on
+    cran
     ([61af69f](https://github.com/kapsner/mlsurvlrnrs/tree/61af69fa535346fb6ef069f4f34ca1c71276d495))
 -   updated unit tests
     ([1e6b5e7](https://github.com/kapsner/mlsurvlrnrs/tree/1e6b5e708f4dec1e9c45234b60e115f95f0bae08))
