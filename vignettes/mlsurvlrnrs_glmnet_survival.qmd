@@ -1,29 +1,25 @@
 ---
-title: "ranger: Survival Analysis"
-output: rmarkdown::html_vignette
+title: "glmnet: Survival Analysis"
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{ranger: Survival Analysis}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{glmnet: Survival Analysis}
+  %\VignetteEngine{quarto::html}
 editor_options: 
   chunk_output_type: console
+
+execute:
+  eval: false
+  collapse: true
+  comment: "#>"
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  eval = FALSE
-)
-# nolint start
-```
-
 ```{r setup}
+# nolint start
 library(mlexperiments)
 library(mlsurvlrnrs)
 ```
 
-See [https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_ranger_cox.R](https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_ranger_cox.R) for implementation details.
+See [https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_glmnet_cox.R](https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_glmnet_cox.R) for implementation details.
 
 # Preprocessing
 
@@ -78,7 +74,8 @@ data_split <- splitTools::partition(
   seed = seed
 )
 
-train_x <- data.matrix(
+train_x <- model.matrix(
+  ~ -1 + .,
   dataset[
     data_split$train, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])
   ]
@@ -97,7 +94,8 @@ split_vector_train <- splitTools::multi_strata(
 )
 
 
-test_x <- data.matrix(
+test_x <- model.matrix(
+  ~ -1 + .,
   dataset[data_split$test, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
 )
 test_y <- survival::Surv(
@@ -138,11 +136,7 @@ return_models <- FALSE
 
 # required for grid search and initialization of bayesian optimization
 parameter_grid <- expand.grid(
-  num.trees = seq(500, 1000, 500),
-  mtry = seq(2, 6, 2),
-  min.node.size = seq(1, 9, 4),
-  max.depth = seq(1, 9, 4),
-  sample.fraction = seq(0.5, 0.8, 0.3)
+  alpha = seq(0, 1, 0.05)
 )
 # reduce to a maximum of 10 rows
 if (nrow(parameter_grid) > 10) {
@@ -153,11 +147,7 @@ if (nrow(parameter_grid) > 10) {
 
 # required for bayesian optimization
 parameter_bounds <- list(
-  num.trees = c(100L, 1000L),
-  mtry = c(2L, 9L),
-  min.node.size = c(1L, 20L),
-  max.depth = c(1L, 40L),
-  sample.fraction = c(0.3, 1.)
+  alpha = c(0., 1.)
 )
 optim_args <- list(
   iters.n = ncores,
@@ -173,7 +163,7 @@ optim_args <- list(
 
 ```{r}
 tuner <- mlexperiments::MLTuneParameters$new(
-  learner = LearnerSurvRangerCox$new(),
+  learner = LearnerSurvGlmnetCox$new(),
   strategy = "grid",
   ncores = ncores,
   seed = seed
@@ -186,8 +176,7 @@ tuner$split_vector <- split_vector_train
 
 tuner$set_data(
   x = train_x,
-  y = train_y,
-  cat_vars = cat_vars
+  y = train_y
 )
 
 tuner_results_grid <- tuner$execute(k = 3)
@@ -203,13 +192,13 @@ tuner_results_grid <- tuner$execute(k = 3)
 #> Parameter settings [==========================================================================================================================================] 10/10 (100%)                                                                                                                                                                             
 
 head(tuner_results_grid)
-#>    setting_id metric_optim_mean num.trees mtry min.node.size max.depth sample.fraction
-#> 1:          1         0.6720841       500    2             9         5             0.5
-#> 2:          1         0.6720841       500    2             9         5             0.5
-#> 3:          1         0.6720841       500    2             9         5             0.5
-#> 4:          1         0.6720841       500    2             9         5             0.5
-#> 5:          1         0.6720841       500    2             9         5             0.5
-#> 6:          1         0.6720841       500    2             9         5             0.5
+#>    setting_id metric_optim_mean    lambda alpha
+#> 1:          1         0.6420939 0.1571721  0.70
+#> 2:          2         0.6473427 0.1222450  0.90
+#> 3:          3         0.6420939 0.1692623  0.65
+#> 4:          4         0.6503151 0.9134093  0.10
+#> 5:          5         0.6448394 0.2227701  0.45
+#> 6:          6         0.6516264 2.0049311  0.05
 ```
 
 
@@ -217,7 +206,7 @@ head(tuner_results_grid)
 
 ```{r}
 tuner <- mlexperiments::MLTuneParameters$new(
-  learner = LearnerSurvRangerCox$new(),
+  learner = LearnerSurvGlmnetCox$new(),
   strategy = "bayesian",
   ncores = ncores,
   seed = seed
@@ -234,8 +223,7 @@ tuner$split_vector <- split_vector_train
 
 tuner$set_data(
   x = train_x,
-  y = train_y,
-  cat_vars = cat_vars
+  y = train_y
 )
 
 tuner_results_bayesian <- tuner$execute(k = 3)
@@ -243,20 +231,20 @@ tuner_results_bayesian <- tuner$execute(k = 3)
 #> Registering parallel backend using 4 cores.
 
 head(tuner_results_bayesian)
-#>    Epoch setting_id num.trees mtry min.node.size max.depth sample.fraction gpUtility acqOptimum inBounds Elapsed     Score metric_optim_mean errorMessage
-#> 1:     0          1       500    2             9         5             0.5        NA      FALSE     TRUE   6.461 0.6693199         0.6693199           NA
-#> 2:     0          2       500    2             5         5             0.8        NA      FALSE     TRUE   7.056 0.6688048         0.6688048           NA
-#> 3:     0          3       500    4             9         9             0.5        NA      FALSE     TRUE   7.871 0.6661409         0.6661409           NA
-#> 4:     0          4      1000    2             9         1             0.5        NA      FALSE     TRUE  11.942 0.6663512         0.6663512           NA
-#> 5:     0          5       500    2             9         1             0.8        NA      FALSE     TRUE   5.117 0.6654894         0.6654894           NA
-#> 6:     0          6      1000    6             1         9             0.5        NA      FALSE     TRUE  15.607 0.6621016         0.6621016           NA
+#>    Epoch setting_id alpha gpUtility acqOptimum inBounds Elapsed     Score metric_optim_mean    lambda errorMessage
+#> 1:     0          1  0.70        NA      FALSE     TRUE   1.186 0.6420939         0.6420939 0.1571721           NA
+#> 2:     0          2  0.90        NA      FALSE     TRUE   1.157 0.6473427         0.6473427 0.1222450           NA
+#> 3:     0          3  0.65        NA      FALSE     TRUE   1.163 0.6420939         0.6420939 0.1692623           NA
+#> 4:     0          4  0.10        NA      FALSE     TRUE   1.177 0.6503151         0.6503151 0.9134093           NA
+#> 5:     0          5  0.45        NA      FALSE     TRUE   0.240 0.6448394         0.6448394 0.2227701           NA
+#> 6:     0          6  0.05        NA      FALSE     TRUE   0.286 0.6516264         0.6516264 2.0049311           NA
 ```
 
 ## k-Fold Cross Validation
 
 ```{r}
 validator <- mlexperiments::MLCrossValidation$new(
-  learner = LearnerSurvRangerCox$new(),
+  learner = LearnerSurvGlmnetCox$new(),
   fold_list = fold_list,
   ncores = ncores,
   seed = seed
@@ -271,8 +259,7 @@ validator$return_models <- return_models
 
 validator$set_data(
   x = train_x,
-  y = train_y,
-  cat_vars = cat_vars
+  y = train_y
 )
 
 validator_results <- validator$execute()
@@ -280,17 +267,14 @@ validator_results <- validator$execute()
 #> CV fold: Fold1
 #> 
 #> CV fold: Fold2
-#> CV progress [=================================================================================================>-------------------------------------------------] 2/3 ( 67%)
 #> 
 #> CV fold: Fold3
-#> CV progress [===================================================================================================================================================] 3/3 (100%)
-#>                                                                                                                                                                              
 
 head(validator_results)
-#>     fold performance num.trees mtry min.node.size max.depth sample.fraction
-#> 1: Fold1   0.6469363      1000    2             9         9             0.5
-#> 2: Fold2   0.6949011      1000    2             9         9             0.5
-#> 3: Fold3   0.6781061      1000    2             9         9             0.5
+#>     fold performance      alpha   lambda
+#> 1: Fold1   0.5959883 0.03836977 2.612644
+#> 2: Fold2   0.6688831 0.03836977 2.612644
+#> 3: Fold3   0.6899724 0.03836977 2.612644
 ```
 
 
@@ -300,7 +284,7 @@ head(validator_results)
 
 ```{r}
 validator <- mlexperiments::MLNestedCV$new(
-  learner = LearnerSurvRangerCox$new(),
+  learner = LearnerSurvGlmnetCox$new(),
   strategy = "grid",
   fold_list = fold_list,
   k_tuning = 3L,
@@ -320,8 +304,7 @@ validator$return_models <- return_models
 
 validator$set_data(
   x = train_x,
-  y = train_y,
-  cat_vars = cat_vars
+  y = train_y
 )
 
 validator_results <- validator$execute()
@@ -363,10 +346,10 @@ validator_results <- validator$execute()
 #> Parameter settings [==========================================================================================================================================] 10/10 (100%)                                                                                                                                                                             
 
 head(validator_results)
-#>     fold performance num.trees mtry min.node.size max.depth sample.fraction
-#> 1: Fold1   0.6455262       500    2             5         9             0.5
-#> 2: Fold2   0.6949011      1000    2             9         9             0.5
-#> 3: Fold3   0.6714574       500    2             9         5             0.5
+#>     fold performance    lambda alpha
+#> 1: Fold1   0.5881450 1.2565031  0.05
+#> 2: Fold2   0.6187568 0.4969800  0.10
+#> 3: Fold3   0.6882968 0.1076019  0.05
 ```
 
 
@@ -374,7 +357,7 @@ head(validator_results)
 
 ```{r}
 validator <- mlexperiments::MLNestedCV$new(
-  learner = LearnerSurvRangerCox$new(),
+  learner = LearnerSurvGlmnetCox$new(),
   strategy = "bayesian",
   fold_list = fold_list,
   k_tuning = 3L,
@@ -398,8 +381,7 @@ validator$return_models <- TRUE
 
 validator$set_data(
   x = train_x,
-  y = train_y,
-  cat_vars = cat_vars
+  y = train_y
 )
 
 validator_results <- validator$execute()
@@ -419,37 +401,109 @@ validator_results <- validator$execute()
 #> Registering parallel backend using 4 cores.
 
 head(validator_results)
-#>     fold performance num.trees mtry min.node.size max.depth sample.fraction
-#> 1: Fold1   0.6468081      1000    2             9         9       0.5000000
-#> 2: Fold2   0.6940663      1000    2             9         9       0.5000000
-#> 3: Fold3   0.6639019       796    2             1         2       0.8221974
+#>     fold performance       alpha      lambda
+#> 1: Fold1   0.5921167 0.001528976 28.32153046
+#> 2: Fold2   0.6033518 0.450000000  0.05758351
+#> 3: Fold3   0.6908924 0.150000000  0.40290596
 ```
 
+## Comparison with Cox Proportional Hazards Regression
 
-## Holdout Test Dataset Performance
+See [https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_coxph_cox.R](https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_coxph_cox.R) for implementation details.
+
+```{r}
+train_x_coxph <- data.matrix(
+  dataset[
+    data_split$train, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])
+  ]
+)
+test_x_coxph <- data.matrix(
+  dataset[
+    data_split$test, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])
+  ]
+)
+```
+
+```{r}
+validator_coxph <- mlexperiments::MLCrossValidation$new(
+  learner = LearnerSurvCoxPHCox$new(),
+  fold_list = fold_list,
+  ncores = ncores,
+  seed = seed
+)
+validator_coxph$performance_metric <- performance_metric
+validator_coxph$performance_metric_args <- performance_metric_args
+validator_coxph$return_models <- TRUE
+validator_coxph$set_data(
+  x = train_x_coxph,
+  y = train_y,
+  cat_vars = cat_vars
+)
+validator_coxph_results <- validator_coxph$execute()
+#> 
+#> CV fold: Fold1
+#> Parameter 'ncores' is ignored for learner 'LearnerSurvCoxPHCox'.
+#> 
+#> CV fold: Fold2
+#> Parameter 'ncores' is ignored for learner 'LearnerSurvCoxPHCox'.
+#> 
+#> CV fold: Fold3
+#> Parameter 'ncores' is ignored for learner 'LearnerSurvCoxPHCox'.
+
+head(validator_coxph_results)
+#>     fold performance
+#> 1: Fold1   0.5895801
+#> 2: Fold2   0.5992298
+#> 3: Fold3   0.6732488
+```
+
+### Test Fold Equality
+
+```{r}
+mlexperiments::validate_fold_equality(
+  experiments = list(validator, validator_coxph)
+)
+```
 
 ### Predict Outcome in Holdout Test Dataset
 
 ```{r}
-preds_ranger <- mlexperiments::predictions(
+preds_glmnet <- mlexperiments::predictions(
   object = validator,
   newdata = test_x
+)
+preds_coxph <- mlexperiments::predictions(
+  object = validator_coxph,
+  newdata = test_x_coxph
 )
 ```
 
 ### Evaluate Performance on Holdout Test Dataset
 
 ```{r}
-perf_ranger <- mlexperiments::performance(
+perf_glmnet <- mlexperiments::performance(
   object = validator,
-  prediction_results = preds_ranger,
+  prediction_results = preds_glmnet,
   y_ground_truth = test_y
 )
-perf_ranger
+perf_glmnet
 #>    model performance
-#> 1: Fold1   0.6515910
-#> 2: Fold2   0.6600127
-#> 3: Fold3   0.6558614
+#> 1: Fold1   0.6660022
+#> 2: Fold2   0.6846061
+#> 3: Fold3   0.6636560
+```
+
+```{r}
+perf_coxph <- mlexperiments::performance(
+  object = validator_coxph,
+  prediction_results = preds_coxph,
+  y_ground_truth = test_y
+)
+perf_coxph
+#>    model performance
+#> 1: Fold1   0.6758025
+#> 2: Fold2   0.6782526
+#> 3: Fold3   0.6437025
 ```
 
 ```{r include=FALSE}

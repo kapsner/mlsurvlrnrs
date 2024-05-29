@@ -1,29 +1,25 @@
 ---
-title: "xgboost: Survival Analysis, AFT Analysis"
-output: rmarkdown::html_vignette
+title: "ranger: Survival Analysis"
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{xgboost: Survival Analysis, AFT Analysis}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{ranger: Survival Analysis}
+  %\VignetteEngine{quarto::html}
 editor_options: 
   chunk_output_type: console
+
+execute:
+  eval: false
+  collapse: true
+  comment: "#>"
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  eval = FALSE
-)
-# nolint start
-```
-
 ```{r setup}
+# nolint start
 library(mlexperiments)
 library(mlsurvlrnrs)
 ```
 
-See [https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_xgboost_aft.R](https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_xgboost_aft.R) for implementation details.
+See [https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_ranger_cox.R](https://github.com/kapsner/mlsurvlrnrs/blob/main/R/learner_surv_ranger_cox.R) for implementation details.
 
 # Preprocessing
 
@@ -37,6 +33,8 @@ dataset <- dataset[get("etype") == 2, ]
 
 surv_cols <- c("status", "time", "rx")
 feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
+cat_vars <- c("sex", "obstruct", "perfor", "adhere", "differ", "extent",
+              "surg", "node4", "rx")
 ```
 
 ## General Configurations
@@ -58,8 +56,6 @@ if (isTRUE(as.logical(Sys.getenv("_R_CHECK_LIMIT_CORES_")))) {
   )
 }
 options("mlexperiments.bayesian.max_init" = 10L)
-options("mlexperiments.optim.xgb.nrounds" = 100L)
-options("mlexperiments.optim.xgb.early_stopping_rounds" = 10L)
 ```
 
 ## Generate Training- and Test Data
@@ -78,8 +74,7 @@ data_split <- splitTools::partition(
   seed = seed
 )
 
-train_x <- model.matrix(
-  ~ -1 + .,
+train_x <- data.matrix(
   dataset[
     data_split$train, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])
   ]
@@ -98,8 +93,7 @@ split_vector_train <- splitTools::multi_strata(
 )
 
 
-test_x <- model.matrix(
-  ~ -1 + .,
+test_x <- data.matrix(
   dataset[data_split$test, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
 )
 test_y <- survival::Surv(
@@ -128,10 +122,7 @@ fold_list <- splitTools::create_folds(
 
 ```{r}
 # required learner arguments, not optimized
-learner_args <- list(
-  objective = "survival:aft",
-  eval_metric = "aft-nloglik"
-)
+learner_args <- NULL
 
 # set arguments for predict function and performance metric,
 # required for mlexperiments::MLCrossValidation and
@@ -143,11 +134,11 @@ return_models <- FALSE
 
 # required for grid search and initialization of bayesian optimization
 parameter_grid <- expand.grid(
-  subsample = seq(0.6, 1, .2),
-  colsample_bytree = seq(0.6, 1, .2),
-  min_child_weight = seq(1, 5, 4),
-  learning_rate = seq(0.1, 0.2, 0.1),
-  max_depth = seq(1, 5, 4)
+  num.trees = seq(500, 1000, 500),
+  mtry = seq(2, 6, 2),
+  min.node.size = seq(1, 9, 4),
+  max.depth = seq(1, 9, 4),
+  sample.fraction = seq(0.5, 0.8, 0.3)
 )
 # reduce to a maximum of 10 rows
 if (nrow(parameter_grid) > 10) {
@@ -158,11 +149,11 @@ if (nrow(parameter_grid) > 10) {
 
 # required for bayesian optimization
 parameter_bounds <- list(
-  subsample = c(0.2, 1),
-  colsample_bytree = c(0.2, 1),
-  min_child_weight = c(1L, 10L),
-  learning_rate = c(0.1, 0.2),
-  max_depth =  c(1L, 10L)
+  num.trees = c(100L, 1000L),
+  mtry = c(2L, 9L),
+  min.node.size = c(1L, 20L),
+  max.depth = c(1L, 40L),
+  sample.fraction = c(0.3, 1.)
 )
 optim_args <- list(
   iters.n = ncores,
@@ -178,9 +169,7 @@ optim_args <- list(
 
 ```{r}
 tuner <- mlexperiments::MLTuneParameters$new(
-  learner = LearnerSurvXgboostAft$new(
-    metric_optimization_higher_better = FALSE
-  ),
+  learner = LearnerSurvRangerCox$new(),
   strategy = "grid",
   ncores = ncores,
   seed = seed
@@ -193,11 +182,14 @@ tuner$split_vector <- split_vector_train
 
 tuner$set_data(
   x = train_x,
-  y = train_y
+  y = train_y,
+  cat_vars = cat_vars
 )
 
 tuner_results_grid <- tuner$execute(k = 3)
 #> 
+#> Parameter settings [===========================>---------------------------------------------------------------------------------------------------------------] 2/10 ( 20%)
+#> Parameter settings [=========================================>-------------------------------------------------------------------------------------------------] 3/10 ( 30%)
 #> Parameter settings [=======================================================>-----------------------------------------------------------------------------------] 4/10 ( 40%)
 #> Parameter settings [=====================================================================>---------------------------------------------------------------------] 5/10 ( 50%)
 #> Parameter settings [==================================================================================>--------------------------------------------------------] 6/10 ( 60%)
@@ -207,13 +199,13 @@ tuner_results_grid <- tuner$execute(k = 3)
 #> Parameter settings [==========================================================================================================================================] 10/10 (100%)                                                                                                                                                                             
 
 head(tuner_results_grid)
-#>    setting_id metric_optim_mean  nrounds subsample colsample_bytree min_child_weight learning_rate max_depth    objective eval_metric
-#> 1:          1          4.508734 40.00000       0.6              0.8                5           0.2         1 survival:aft aft-nloglik
-#> 2:          2          4.546383 39.33333       1.0              0.8                5           0.1         5 survival:aft aft-nloglik
-#> 3:          3          4.505510 69.33333       0.8              0.8                5           0.1         1 survival:aft aft-nloglik
-#> 4:          4          4.578441 19.33333       0.6              0.8                5           0.2         5 survival:aft aft-nloglik
-#> 5:          5          4.561942 38.33333       1.0              0.8                1           0.1         5 survival:aft aft-nloglik
-#> 6:          6          4.542217 37.66667       0.8              0.8                5           0.1         5 survival:aft aft-nloglik
+#>    setting_id metric_optim_mean num.trees mtry min.node.size max.depth sample.fraction
+#> 1:          1         0.6720841       500    2             9         5             0.5
+#> 2:          1         0.6720841       500    2             9         5             0.5
+#> 3:          1         0.6720841       500    2             9         5             0.5
+#> 4:          1         0.6720841       500    2             9         5             0.5
+#> 5:          1         0.6720841       500    2             9         5             0.5
+#> 6:          1         0.6720841       500    2             9         5             0.5
 ```
 
 
@@ -221,9 +213,7 @@ head(tuner_results_grid)
 
 ```{r}
 tuner <- mlexperiments::MLTuneParameters$new(
-  learner = LearnerSurvXgboostAft$new(
-    metric_optimization_higher_better = FALSE
-  ),
+  learner = LearnerSurvRangerCox$new(),
   strategy = "bayesian",
   ncores = ncores,
   seed = seed
@@ -240,7 +230,8 @@ tuner$split_vector <- split_vector_train
 
 tuner$set_data(
   x = train_x,
-  y = train_y
+  y = train_y,
+  cat_vars = cat_vars
 )
 
 tuner_results_bayesian <- tuner$execute(k = 3)
@@ -248,29 +239,20 @@ tuner_results_bayesian <- tuner$execute(k = 3)
 #> Registering parallel backend using 4 cores.
 
 head(tuner_results_bayesian)
-#>    Epoch setting_id subsample colsample_bytree min_child_weight learning_rate max_depth gpUtility acqOptimum inBounds Elapsed     Score metric_optim_mean  nrounds
-#> 1:     0          1       0.6              0.8                5           0.2         1        NA      FALSE     TRUE   3.705 -4.509285          4.509285 41.00000
-#> 2:     0          2       1.0              0.8                5           0.1         5        NA      FALSE     TRUE   3.918 -4.542901          4.542901 41.66667
-#> 3:     0          3       0.8              0.8                5           0.1         1        NA      FALSE     TRUE   3.980 -4.506211          4.506211 82.33333
-#> 4:     0          4       0.6              0.8                5           0.2         5        NA      FALSE     TRUE   3.867 -4.582990          4.582990 22.33333
-#> 5:     0          5       1.0              0.8                1           0.1         5        NA      FALSE     TRUE   2.638 -4.559373          4.559373 42.33333
-#> 6:     0          6       0.8              0.8                5           0.1         5        NA      FALSE     TRUE   3.138 -4.548201          4.548201 44.00000
-#>    errorMessage    objective eval_metric
-#> 1:           NA survival:aft aft-nloglik
-#> 2:           NA survival:aft aft-nloglik
-#> 3:           NA survival:aft aft-nloglik
-#> 4:           NA survival:aft aft-nloglik
-#> 5:           NA survival:aft aft-nloglik
-#> 6:           NA survival:aft aft-nloglik
+#>    Epoch setting_id num.trees mtry min.node.size max.depth sample.fraction gpUtility acqOptimum inBounds Elapsed     Score metric_optim_mean errorMessage
+#> 1:     0          1       500    2             9         5             0.5        NA      FALSE     TRUE   6.461 0.6693199         0.6693199           NA
+#> 2:     0          2       500    2             5         5             0.8        NA      FALSE     TRUE   7.056 0.6688048         0.6688048           NA
+#> 3:     0          3       500    4             9         9             0.5        NA      FALSE     TRUE   7.871 0.6661409         0.6661409           NA
+#> 4:     0          4      1000    2             9         1             0.5        NA      FALSE     TRUE  11.942 0.6663512         0.6663512           NA
+#> 5:     0          5       500    2             9         1             0.8        NA      FALSE     TRUE   5.117 0.6654894         0.6654894           NA
+#> 6:     0          6      1000    6             1         9             0.5        NA      FALSE     TRUE  15.607 0.6621016         0.6621016           NA
 ```
 
 ## k-Fold Cross Validation
 
 ```{r}
 validator <- mlexperiments::MLCrossValidation$new(
-  learner = LearnerSurvXgboostAft$new(
-    metric_optimization_higher_better = FALSE
-  ),
+  learner = LearnerSurvRangerCox$new(),
   fold_list = fold_list,
   ncores = ncores,
   seed = seed
@@ -285,7 +267,8 @@ validator$return_models <- return_models
 
 validator$set_data(
   x = train_x,
-  y = train_y
+  y = train_y,
+  cat_vars = cat_vars
 )
 
 validator_results <- validator$execute()
@@ -293,14 +276,17 @@ validator_results <- validator$execute()
 #> CV fold: Fold1
 #> 
 #> CV fold: Fold2
+#> CV progress [=================================================================================================>-------------------------------------------------] 2/3 ( 67%)
 #> 
 #> CV fold: Fold3
+#> CV progress [===================================================================================================================================================] 3/3 (100%)
+#>                                                                                                                                                                              
 
 head(validator_results)
-#>     fold performance subsample colsample_bytree min_child_weight learning_rate max_depth nrounds    objective eval_metric
-#> 1: Fold1   0.3477846 0.2882211        0.9747412                1     0.1124153         1      60 survival:aft aft-nloglik
-#> 2: Fold2   0.3601468 0.2882211        0.9747412                1     0.1124153         1      60 survival:aft aft-nloglik
-#> 3: Fold3   0.3585996 0.2882211        0.9747412                1     0.1124153         1      60 survival:aft aft-nloglik
+#>     fold performance num.trees mtry min.node.size max.depth sample.fraction
+#> 1: Fold1   0.6469363      1000    2             9         9             0.5
+#> 2: Fold2   0.6949011      1000    2             9         9             0.5
+#> 3: Fold3   0.6781061      1000    2             9         9             0.5
 ```
 
 
@@ -310,9 +296,7 @@ head(validator_results)
 
 ```{r}
 validator <- mlexperiments::MLNestedCV$new(
-  learner = LearnerSurvXgboostAft$new(
-    metric_optimization_higher_better = FALSE
-  ),
+  learner = LearnerSurvRangerCox$new(),
   strategy = "grid",
   fold_list = fold_list,
   k_tuning = 3L,
@@ -332,13 +316,16 @@ validator$return_models <- return_models
 
 validator$set_data(
   x = train_x,
-  y = train_y
+  y = train_y,
+  cat_vars = cat_vars
 )
 
 validator_results <- validator$execute()
 #> 
 #> CV fold: Fold1
 #> 
+#> Parameter settings [===========================>---------------------------------------------------------------------------------------------------------------] 2/10 ( 20%)
+#> Parameter settings [=========================================>-------------------------------------------------------------------------------------------------] 3/10 ( 30%)
 #> Parameter settings [=======================================================>-----------------------------------------------------------------------------------] 4/10 ( 40%)
 #> Parameter settings [=====================================================================>---------------------------------------------------------------------] 5/10 ( 50%)
 #> Parameter settings [==================================================================================>--------------------------------------------------------] 6/10 ( 60%)
@@ -349,6 +336,7 @@ validator_results <- validator$execute()
 #> CV fold: Fold2
 #> CV progress [=================================================================================================>-------------------------------------------------] 2/3 ( 67%)
 #> 
+#> Parameter settings [===========================>---------------------------------------------------------------------------------------------------------------] 2/10 ( 20%)
 #> Parameter settings [=========================================>-------------------------------------------------------------------------------------------------] 3/10 ( 30%)
 #> Parameter settings [=======================================================>-----------------------------------------------------------------------------------] 4/10 ( 40%)
 #> Parameter settings [=====================================================================>---------------------------------------------------------------------] 5/10 ( 50%)
@@ -360,6 +348,8 @@ validator_results <- validator$execute()
 #> CV fold: Fold3
 #> CV progress [===================================================================================================================================================] 3/3 (100%)
 #>                                                                                                                                                                              
+#> Parameter settings [===========================>---------------------------------------------------------------------------------------------------------------] 2/10 ( 20%)
+#> Parameter settings [=========================================>-------------------------------------------------------------------------------------------------] 3/10 ( 30%)
 #> Parameter settings [=======================================================>-----------------------------------------------------------------------------------] 4/10 ( 40%)
 #> Parameter settings [=====================================================================>---------------------------------------------------------------------] 5/10 ( 50%)
 #> Parameter settings [==================================================================================>--------------------------------------------------------] 6/10 ( 60%)
@@ -369,10 +359,10 @@ validator_results <- validator$execute()
 #> Parameter settings [==========================================================================================================================================] 10/10 (100%)                                                                                                                                                                             
 
 head(validator_results)
-#>     fold performance  nrounds subsample colsample_bytree min_child_weight learning_rate max_depth    objective eval_metric
-#> 1: Fold1   0.3609538 32.66667       0.6              0.8                5           0.2         1 survival:aft aft-nloglik
-#> 2: Fold2   0.3665939 31.33333       0.6              1.0                1           0.2         1 survival:aft aft-nloglik
-#> 3: Fold3   0.3549842 38.33333       0.6              1.0                1           0.2         1 survival:aft aft-nloglik
+#>     fold performance num.trees mtry min.node.size max.depth sample.fraction
+#> 1: Fold1   0.6455262       500    2             5         9             0.5
+#> 2: Fold2   0.6949011      1000    2             9         9             0.5
+#> 3: Fold3   0.6714574       500    2             9         5             0.5
 ```
 
 
@@ -380,9 +370,7 @@ head(validator_results)
 
 ```{r}
 validator <- mlexperiments::MLNestedCV$new(
-  learner = LearnerSurvXgboostAft$new(
-    metric_optimization_higher_better = FALSE
-  ),
+  learner = LearnerSurvRangerCox$new(),
   strategy = "bayesian",
   fold_list = fold_list,
   k_tuning = 3L,
@@ -406,7 +394,8 @@ validator$return_models <- TRUE
 
 validator$set_data(
   x = train_x,
-  y = train_y
+  y = train_y,
+  cat_vars = cat_vars
 )
 
 validator_results <- validator$execute()
@@ -426,10 +415,10 @@ validator_results <- validator$execute()
 #> Registering parallel backend using 4 cores.
 
 head(validator_results)
-#>     fold performance subsample colsample_bytree min_child_weight learning_rate max_depth  nrounds    objective eval_metric
-#> 1: Fold1   0.3480615 0.6000000        0.8000000                5     0.2000000         1 44.33333 survival:aft aft-nloglik
-#> 2: Fold2   0.3699332 0.6000000        1.0000000                1     0.2000000         1 36.66667 survival:aft aft-nloglik
-#> 3: Fold3   0.3522341 0.7604887        0.7889484                1     0.1695828         1 31.00000 survival:aft aft-nloglik
+#>     fold performance num.trees mtry min.node.size max.depth sample.fraction
+#> 1: Fold1   0.6468081      1000    2             9         9       0.5000000
+#> 2: Fold2   0.6940663      1000    2             9         9       0.5000000
+#> 3: Fold3   0.6639019       796    2             1         2       0.8221974
 ```
 
 
@@ -438,7 +427,7 @@ head(validator_results)
 ### Predict Outcome in Holdout Test Dataset
 
 ```{r}
-preds_xgboost <- mlexperiments::predictions(
+preds_ranger <- mlexperiments::predictions(
   object = validator,
   newdata = test_x
 )
@@ -447,16 +436,16 @@ preds_xgboost <- mlexperiments::predictions(
 ### Evaluate Performance on Holdout Test Dataset
 
 ```{r}
-perf_xgboost <- mlexperiments::performance(
+perf_ranger <- mlexperiments::performance(
   object = validator,
-  prediction_results = preds_xgboost,
+  prediction_results = preds_ranger,
   y_ground_truth = test_y
 )
-perf_xgboost
+perf_ranger
 #>    model performance
-#> 1: Fold1   0.3401763
-#> 2: Fold2   0.3213113
-#> 3: Fold3   0.3136183
+#> 1: Fold1   0.6515910
+#> 2: Fold2   0.6600127
+#> 3: Fold3   0.6558614
 ```
 
 ```{r include=FALSE}

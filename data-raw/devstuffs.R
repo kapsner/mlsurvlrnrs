@@ -41,14 +41,19 @@ my_desc$set("BugReports",
             "https://github.com/kapsner/mlsurvlrnrs/issues")
 
 # Vignette Builder
-my_desc$set("VignetteBuilder" = "knitr")
+my_desc$set("VignetteBuilder" = "quarto")
+# Quarto
+my_desc$set("SystemRequirements" = paste0(
+  "Quarto command line tools ",
+  "(https://github.com/quarto-dev/quarto-cli).")
+)
 
 # Testthat stuff
 my_desc$set("Config/testthat/parallel" = "false")
 my_desc$set("Config/testthat/edition" = "3")
+# Roxygen
+my_desc$set("Roxygen" = "list(markdown = TRUE)")
 
-# License
-my_desc$set("License", "GPL-3")
 # Save everyting
 my_desc$write(file = "DESCRIPTION")
 
@@ -56,7 +61,7 @@ my_desc$write(file = "DESCRIPTION")
 usethis::use_gpl3_license()
 
 # Depends
-usethis::use_package("R", min_version = "2.10", type = "Depends")
+usethis::use_package("R", min_version = "3.6", type = "Depends")
 
 # Imports
 # https://cran.r-project.org/web/packages/data.table/vignettes/datatable-importing.html
@@ -70,7 +75,7 @@ usethis::use_package("mllrnrs", type = "Imports")
 # Suggests
 usethis::use_package("testthat", type = "Suggests", min_version = "3.0.1")
 usethis::use_package("lintr", type = "Suggests")
-usethis::use_package("knitr", type = "Suggests")
+usethis::use_package("quarto", type = "Suggests")
 usethis::use_package("glmnet", type = "Suggests")
 usethis::use_package("xgboost", type = "Suggests")
 usethis::use_package("ranger", type = "Suggests")
@@ -175,6 +180,7 @@ usethis::use_git_ignore("!README.qmd")
 usethis::use_git_ignore("!cran-comments.md")
 usethis::use_git_ignore("docs")
 usethis::use_git_ignore("Meta")
+usethis::use_git_ignore("!vignettes/*.qmd")
 
 usethis::use_tidy_description()
 
