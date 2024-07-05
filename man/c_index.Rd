@@ -7,7 +7,7 @@
 c_index(ground_truth, predictions)
 }
 \arguments{
-\item{ground_truth}{A `survival::Surv` object with the ground truth.}
+\item{ground_truth}{A \code{survival::Surv} object with the ground truth.}
 
 \item{predictions}{A vector with predictions.}
 }
@@ -15,7 +15,7 @@ c_index(ground_truth, predictions)
 Calculate the Harrell's concordance index (C-index)
 }
 \details{
-A wrapper function around [glmnet::Cindex()] for use with `mlexperiments`.
+A wrapper function around \code{\link[glmnet:Cindex]{glmnet::Cindex()}} for use with \code{mlexperiments}.
 }
 \examples{
 set.seed(123)
@@ -29,5 +29,5 @@ c_index(gt, preds)
 
 }
 \seealso{
-[glmnet::Cindex()]
+\code{\link[glmnet:Cindex]{glmnet::Cindex()}}
 }

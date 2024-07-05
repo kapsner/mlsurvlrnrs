@@ -11,7 +11,7 @@
 #' Can be used with
 #' * [mlexperiments::MLTuneParameters]
 #' * [mlexperiments::MLCrossValidation]
-#' * [mlexperiments::MLNestedCVs]
+#' * [mlexperiments::MLNestedCV]
 #'
 #' @seealso [xgboost::xgb.train()], [xgboost::xgb.cv()]
 #'

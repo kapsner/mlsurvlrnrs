@@ -4,13 +4,15 @@
 \alias{LearnerSurvCoxPHCox}
 \title{R6 Class to construct a Cox proportional hazards survival learner}
 \description{
-The `LearnerSurvCoxPHCox` class is the interface to perform a Cox
-  regression with the `survival` R package for use with the `mlexperiments`
-  package.
+The \code{LearnerSurvCoxPHCox} class is the interface to perform a Cox
+regression with the \code{survival} R package for use with the \code{mlexperiments}
+package.
 }
 \details{
 Can be used with
-* [mlexperiments::MLCrossValidation]
+\itemize{
+\item \link[mlexperiments:MLCrossValidation]{mlexperiments::MLCrossValidation}
+}
 }
 \examples{
 # survival analysis
@@ -76,7 +78,7 @@ LearnerSurvCoxPHCox$new()
 
 }
 \seealso{
-[survival::coxph()]
+\code{\link[survival:coxph]{survival::coxph()}}
 }
 \section{Super class}{
 \code{\link[mlexperiments:MLLearnerBase]{mlexperiments::MLLearnerBase}} -> \code{LearnerSurvCoxPHCox}
@@ -102,13 +104,13 @@ LearnerSurvCoxPHCox$new()
 \if{html}{\out{<a id="method-LearnerSurvCoxPHCox-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LearnerSurvCoxPHCox-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new `LearnerSurvCoxPHCox` object.
+Create a new \code{LearnerSurvCoxPHCox} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LearnerSurvCoxPHCox$new()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-A new `LearnerSurvCoxPHCox` R6 object.
+A new \code{LearnerSurvCoxPHCox} R6 object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

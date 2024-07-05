@@ -4,28 +4,32 @@
 \alias{LearnerSurvRpartCox}
 \title{LearnerSurvRpartCox R6 class}
 \description{
-This learner is a wrapper around [rpart::rpart()] in order to fit recursive
-  partitioning and regression trees with survival data.
+This learner is a wrapper around \code{\link[rpart:rpart]{rpart::rpart()}} in order to fit recursive
+partitioning and regression trees with survival data.
 }
 \details{
 Optimization metric: C-index
 *
 Can be used with
-* [mlexperiments::MLTuneParameters]
-* [mlexperiments::MLCrossValidation]
-* [mlexperiments::MLNestedCV]
+\itemize{
+\item \link[mlexperiments:MLTuneParameters]{mlexperiments::MLTuneParameters}
+\item \link[mlexperiments:MLCrossValidation]{mlexperiments::MLCrossValidation}
+\item \link[mlexperiments:MLNestedCV]{mlexperiments::MLNestedCV}
+}
 
 Implemented methods:
-* `$fit` To fit the model.
-* `$predict` To predict new data with the model.
-* `$cross_validation` To perform a grid search (hyperparameter
-  optimization).
-* `$bayesian_scoring_function` To perform a Bayesian hyperparameter
-  optimization.
+\itemize{
+\item \verb{$fit} To fit the model.
+\item \verb{$predict} To predict new data with the model.
+\item \verb{$cross_validation} To perform a grid search (hyperparameter
+optimization).
+\item \verb{$bayesian_scoring_function} To perform a Bayesian hyperparameter
+optimization.
+}
 
-Parameters that are specified with `parameter_grid` and / or `learner_args`
-  are forwarded to `rpart`'s argument `control` (see
-  [rpart::rpart.control()] for further details).
+Parameters that are specified with \code{parameter_grid} and / or \code{learner_args}
+are forwarded to \code{rpart}'s argument \code{control} (see
+\code{\link[rpart:rpart.control]{rpart::rpart.control()}} for further details).
 }
 \examples{
 # survival analysis
@@ -98,10 +102,10 @@ LearnerSurvRpartCox$new()
 
 }
 \seealso{
-[rpart::rpart()], [c_index()],
-  [rpart::rpart.control()]
+\code{\link[rpart:rpart]{rpart::rpart()}}, \code{\link[=c_index]{c_index()}},
+\code{\link[rpart:rpart.control]{rpart::rpart.control()}}
 
-[rpart::rpart()], [c_index()],
+\code{\link[rpart:rpart]{rpart::rpart()}}, \code{\link[=c_index]{c_index()}},
 }
 \section{Super class}{
 \code{\link[mlexperiments:MLLearnerBase]{mlexperiments::MLLearnerBase}} -> \code{LearnerSurvRpartCox}
@@ -127,14 +131,14 @@ LearnerSurvRpartCox$new()
 \if{html}{\out{<a id="method-LearnerSurvRpartCox-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LearnerSurvRpartCox-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new `LearnerSurvRpartCox` object.
+Create a new \code{LearnerSurvRpartCox} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LearnerSurvRpartCox$new()}\if{html}{\out{</div>}}
 }
 
 \subsection{Details}{
-This learner is a wrapper around [rpart::rpart()] in order to fit
-  recursive partitioning and regression trees with survival data.
+This learner is a wrapper around \code{\link[rpart:rpart]{rpart::rpart()}} in order to fit
+recursive partitioning and regression trees with survival data.
 }
 
 \subsection{Examples}{

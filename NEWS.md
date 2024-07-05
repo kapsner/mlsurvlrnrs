@@ -2,7 +2,7 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2024-05-24)
+## Unreleased (2024-05-29)
 
 #### CI
 
@@ -11,6 +11,8 @@
 
 #### Other changes
 
+-   switched vignetteengine to quarto
+    ([239e395](https://github.com/kapsner/mlsurvlrnrs/tree/239e39567361a83cf96f6ce3847ca19237508df7))
 -   automated readme gen
     ([3fd0c35](https://github.com/kapsner/mlsurvlrnrs/tree/3fd0c35013f7010d0d26644799e000e6f894b2fb))
 -   updated dev-version
@@ -19,7 +21,7 @@
     ([3bbf43f](https://github.com/kapsner/mlsurvlrnrs/tree/3bbf43f8f65ceb6481164ac2568079af725c41f9))
 
 Full set of changes:
-[`v0.0.3...3fd0c35`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.3...3fd0c35)
+[`v0.0.3...239e395`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.3...239e395)
 
 ## v0.0.3 (2024-03-08)
 

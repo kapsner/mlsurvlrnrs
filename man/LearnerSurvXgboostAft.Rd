@@ -3,22 +3,24 @@
 \name{LearnerSurvXgboostAft}
 \alias{LearnerSurvXgboostAft}
 \title{R6 Class to construct a Xgboost survival learner for accelerated
-  failure time models}
+failure time models}
 \description{
-The `LearnerSurvXgboostAft` class is the interface to accelerated failure
-  time models with the `xgboost` R package for use with the `mlexperiments`
-  package.
+The \code{LearnerSurvXgboostAft} class is the interface to accelerated failure
+time models with the \code{xgboost} R package for use with the \code{mlexperiments}
+package.
 }
 \details{
 Optimization metric: needs to be specified with the learner parameter
-  `eval_metric`.
+\code{eval_metric}.
 Can be used with
-* [mlexperiments::MLTuneParameters]
-* [mlexperiments::MLCrossValidation]
-* [mlexperiments::MLNestedCVs]
-Also see the official xgboost documentation on
-  [aft models](https://xgboost.readthedocs.io/en/stable/tutorials/aft_
-  survival_analysis.html)
+\itemize{
+\item \link[mlexperiments:MLTuneParameters]{mlexperiments::MLTuneParameters}
+\item \link[mlexperiments:MLCrossValidation]{mlexperiments::MLCrossValidation}
+\item \link[mlexperiments:MLNestedCV]{mlexperiments::MLNestedCV}
+}
+
+Also see the official xgboost documentation on aft models:
+\url{https://xgboost.readthedocs.io/en/stable/tutorials/aft_survival_analysis.html}
 }
 \examples{
 \donttest{# execution time >2.5 sec
@@ -103,7 +105,7 @@ LearnerSurvXgboostAft$new(metric_optimization_higher_better = FALSE)
 
 }
 \seealso{
-[xgboost::xgb.train()], [xgboost::xgb.cv()]
+\code{\link[xgboost:xgb.train]{xgboost::xgb.train()}}, \code{\link[xgboost:xgb.cv]{xgboost::xgb.cv()}}
 }
 \section{Super classes}{
 \code{\link[mlexperiments:MLLearnerBase]{mlexperiments::MLLearnerBase}} -> \code{\link[mllrnrs:LearnerXgboost]{mllrnrs::LearnerXgboost}} -> \code{LearnerSurvXgboostAft}
@@ -129,7 +131,7 @@ LearnerSurvXgboostAft$new(metric_optimization_higher_better = FALSE)
 \if{html}{\out{<a id="method-LearnerSurvXgboostAft-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LearnerSurvXgboostAft-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new `LearnerSurvXgboostAft` object.
+Create a new \code{LearnerSurvXgboostAft} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LearnerSurvXgboostAft$new(metric_optimization_higher_better)}\if{html}{\out{</div>}}
 }
@@ -144,7 +146,7 @@ optimization.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new `LearnerSurvXgboostAft` R6 object.
+A new \code{LearnerSurvXgboostAft} R6 object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

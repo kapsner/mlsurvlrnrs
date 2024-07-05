@@ -4,16 +4,18 @@
 \alias{LearnerSurvRangerCox}
 \title{R6 Class to construct a Ranger survival learner for Cox regression}
 \description{
-The `LearnerSurvRangerCox` class is the interface to perform a Cox
-  regression with the `ranger` R package for use with the `mlexperiments`
-  package.
+The \code{LearnerSurvRangerCox} class is the interface to perform a Cox
+regression with the \code{ranger} R package for use with the \code{mlexperiments}
+package.
 }
 \details{
 Optimization metric: C-index
 Can be used with
-* [mlexperiments::MLTuneParameters]
-* [mlexperiments::MLCrossValidation]
-* [mlexperiments::MLNestedCVs]
+\itemize{
+\item \link[mlexperiments:MLTuneParameters]{mlexperiments::MLTuneParameters}
+\item \link[mlexperiments:MLCrossValidation]{mlexperiments::MLCrossValidation}
+\item \link[mlexperiments:MLNestedCV]{mlexperiments::MLNestedCV}
+}
 }
 \examples{
 # survival analysis
@@ -91,7 +93,7 @@ LearnerSurvRangerCox$new()
 
 }
 \seealso{
-[ranger::ranger()]
+\code{\link[ranger:ranger]{ranger::ranger()}}
 }
 \section{Super class}{
 \code{\link[mlexperiments:MLLearnerBase]{mlexperiments::MLLearnerBase}} -> \code{LearnerSurvRangerCox}
@@ -117,13 +119,13 @@ LearnerSurvRangerCox$new()
 \if{html}{\out{<a id="method-LearnerSurvRangerCox-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LearnerSurvRangerCox-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new `LearnerSurvRangerCox` object.
+Create a new \code{LearnerSurvRangerCox} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LearnerSurvRangerCox$new()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-A new `LearnerSurvRangerCox` R6 object.
+A new \code{LearnerSurvRangerCox} R6 object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

@@ -4,16 +4,18 @@
 \alias{LearnerSurvGlmnetCox}
 \title{R6 Class to construct a Glmnet survival learner for Cox regression}
 \description{
-The `LearnerSurvGlmnetCox` class is the interface to perform a Cox
-  regression with the `glmnet` R package for use with the `mlexperiments`
-  package.
+The \code{LearnerSurvGlmnetCox} class is the interface to perform a Cox
+regression with the \code{glmnet} R package for use with the \code{mlexperiments}
+package.
 }
 \details{
 Optimization metric: C-index
 Can be used with
-* [mlexperiments::MLTuneParameters]
-* [mlexperiments::MLCrossValidation]
-* [mlexperiments::MLNestedCVs]
+\itemize{
+\item \link[mlexperiments:MLTuneParameters]{mlexperiments::MLTuneParameters}
+\item \link[mlexperiments:MLCrossValidation]{mlexperiments::MLCrossValidation}
+\item \link[mlexperiments:MLNestedCV]{mlexperiments::MLNestedCV}
+}
 }
 \examples{
 # survival analysis
@@ -88,7 +90,7 @@ LearnerSurvGlmnetCox$new()
 
 }
 \seealso{
-[glmnet::glmnet()], [glmnet::cv.glmnet()]
+\code{\link[glmnet:glmnet]{glmnet::glmnet()}}, \code{\link[glmnet:cv.glmnet]{glmnet::cv.glmnet()}}
 }
 \section{Super class}{
 \code{\link[mlexperiments:MLLearnerBase]{mlexperiments::MLLearnerBase}} -> \code{LearnerSurvGlmnetCox}
@@ -114,13 +116,13 @@ LearnerSurvGlmnetCox$new()
 \if{html}{\out{<a id="method-LearnerSurvGlmnetCox-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LearnerSurvGlmnetCox-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new `LearnerSurvGlmnetCox` object.
+Create a new \code{LearnerSurvGlmnetCox} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LearnerSurvGlmnetCox$new()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-A new `LearnerSurvGlmnetCox` R6 object.
+A new \code{LearnerSurvGlmnetCox} R6 object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

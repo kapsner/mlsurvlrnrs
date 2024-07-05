@@ -12,10 +12,10 @@
 #' Can be used with
 #' * [mlexperiments::MLTuneParameters]
 #' * [mlexperiments::MLCrossValidation]
-#' * [mlexperiments::MLNestedCVs]
-#' Also see the official xgboost documentation on
-#'   [aft models](https://xgboost.readthedocs.io/en/stable/tutorials/aft_
-#'   survival_analysis.html)
+#' * [mlexperiments::MLNestedCV]
+#'
+#' Also see the official xgboost documentation on aft models:
+#'   \url{https://xgboost.readthedocs.io/en/stable/tutorials/aft_survival_analysis.html}
 #'
 #' @seealso [xgboost::xgb.train()], [xgboost::xgb.cv()]
 #'

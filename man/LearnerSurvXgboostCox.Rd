@@ -4,17 +4,19 @@
 \alias{LearnerSurvXgboostCox}
 \title{R6 Class to construct a Xgboost survival learner for Cox regression}
 \description{
-The `LearnerSurvXgboostCox` class is the interface to perform a Cox
-  regression with the `xgboost` R package for use with the `mlexperiments`
-  package.
+The \code{LearnerSurvXgboostCox} class is the interface to perform a Cox
+regression with the \code{xgboost} R package for use with the \code{mlexperiments}
+package.
 }
 \details{
 Optimization metric: needs to be specified with the learner parameter
-  `eval_metric`.
+\code{eval_metric}.
 Can be used with
-* [mlexperiments::MLTuneParameters]
-* [mlexperiments::MLCrossValidation]
-* [mlexperiments::MLNestedCVs]
+\itemize{
+\item \link[mlexperiments:MLTuneParameters]{mlexperiments::MLTuneParameters}
+\item \link[mlexperiments:MLCrossValidation]{mlexperiments::MLCrossValidation}
+\item \link[mlexperiments:MLNestedCV]{mlexperiments::MLNestedCV}
+}
 }
 \examples{
 \donttest{# execution time >2.5 sec
@@ -99,7 +101,7 @@ LearnerSurvXgboostCox$new(metric_optimization_higher_better = FALSE)
 
 }
 \seealso{
-[xgboost::xgb.train()], [xgboost::xgb.cv()]
+\code{\link[xgboost:xgb.train]{xgboost::xgb.train()}}, \code{\link[xgboost:xgb.cv]{xgboost::xgb.cv()}}
 }
 \section{Super classes}{
 \code{\link[mlexperiments:MLLearnerBase]{mlexperiments::MLLearnerBase}} -> \code{\link[mllrnrs:LearnerXgboost]{mllrnrs::LearnerXgboost}} -> \code{LearnerSurvXgboostCox}
@@ -125,7 +127,7 @@ LearnerSurvXgboostCox$new(metric_optimization_higher_better = FALSE)
 \if{html}{\out{<a id="method-LearnerSurvXgboostCox-new"></a>}}
 \if{latex}{\out{\hypertarget{method-LearnerSurvXgboostCox-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new `LearnerSurvXgboostCox` object.
+Create a new \code{LearnerSurvXgboostCox} object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{LearnerSurvXgboostCox$new(metric_optimization_higher_better)}\if{html}{\out{</div>}}
 }
@@ -140,7 +142,7 @@ optimization.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new `LearnerSurvXgboostCox` R6 object.
+A new \code{LearnerSurvXgboostCox} R6 object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
