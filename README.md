@@ -1,5 +1,3 @@
-
-
 # mlsurvlrnrs
 
 <!-- badges: start -->
@@ -17,8 +15,7 @@ status](https://github.com/kapsner/mlsurvlrnrs/workflows/R%20CMD%20Check%20via%2
 status](https://github.com/kapsner/mlsurvlrnrs/workflows/lint/badge.svg)](https://github.com/kapsner/mlsurvlrnrs/actions)
 [![R build
 status](https://github.com/kapsner/mlsurvlrnrs/workflows/test-coverage/badge.svg)](https://github.com/kapsner/mlsurvlrnrs/actions)
-[![](https://codecov.io/gh/https://github.com/kapsner/mlsurvlrnrs/branch/main/graph/badge.svg)](https://codecov.io/gh/https://github.com/kapsner/mlsurvlrnrs)
-
+[![](https://codecov.io/gh/https://github.com/kapsner/mlsurvlrnrs/branch/main/graph/badge.svg)](https://app.codecov.io/gh/https://github.com/kapsner/mlsurvlrnrs)
 <!-- badges: end -->
 
 The goal of `mlsurvlrnrs` is to enhance the
@@ -27,13 +24,13 @@ with survival learners.
 
 Currently implemented learners are:
 
-| Name                  | Based on             | Description / Tasks                                                                                                                       |
-|-----------------------|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| LearnerSurvCoxPHCox   | `survival::coxph`    | Cox Proportional Hazards Regression                                                                                                       |
-| LearnerSurvGlmnetCox  | `glmnet::glmnet`     | Regularized Cox Regression                                                                                                                |
-| LearnerSurvRangerCox  | `ranger::ranger`     | Random Survival Forest with right-censored data                                                                                           |
-| LearnerSurvRpartCox   | `rpart::rpart`       | Random Survival Forest with right-censored data                                                                                           |
-| LearnerSurvXgboostCox | `xgboost::xgb.train` | Cox Regression with right-censored data                                                                                                   |
+| Name | Based on | Description / Tasks |
+|----|----|----|
+| LearnerSurvCoxPHCox | `survival::coxph` | Cox Proportional Hazards Regression |
+| LearnerSurvGlmnetCox | `glmnet::glmnet` | Regularized Cox Regression |
+| LearnerSurvRangerCox | `ranger::ranger` | Random Survival Forest with right-censored data |
+| LearnerSurvRpartCox | `rpart::rpart` | Random Survival Forest with right-censored data |
+| LearnerSurvXgboostCox | `xgboost::xgb.train` | Cox Regression with right-censored data |
 | LearnerSurvXgboostAft | `xgboost::xgb.train` | [Accelerated failure time models](https://xgboost.readthedocs.io/en/stable/tutorials/aft_survival_analysis.html) with right-censored data |
 
 For a short introduction on how to use the learners together with the

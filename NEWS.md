@@ -2,7 +2,7 @@
 
 # mlsurvlrnrs NEWS
 
-## v0.0.4 (2024-07-05)
+## Unreleased (2024-07-07)
 
 #### CI
 
@@ -11,6 +11,8 @@
 
 #### Other changes
 
+-   updated dev-version
+    ([10e794f](https://github.com/kapsner/mlsurvlrnrs/tree/10e794f8518996ea4901f33019b3854ec9a939ef))
 -   updated package for next cran-release
     ([34c6cfc](https://github.com/kapsner/mlsurvlrnrs/tree/34c6cfcb0e5cae3c462699e30fd2d16435b10999))
 -   switched vignetteengine to quarto
@@ -21,14 +23,6 @@
     ([beb52a5](https://github.com/kapsner/mlsurvlrnrs/tree/beb52a59b3755e756698d6675ed01c80966f909b))
 -   updated news.md
     ([3bbf43f](https://github.com/kapsner/mlsurvlrnrs/tree/3bbf43f8f65ceb6481164ac2568079af725c41f9))
-
-Full set of changes:
-[`v0.0.3...v0.0.4`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.3...v0.0.4)
-
-## v0.0.3 (2024-03-08)
-
-#### Other changes
-
 -   updated news.md
     ([5704c55](https://github.com/kapsner/mlsurvlrnrs/tree/5704c5588f23849b242c08e11f750b32be5ec030))
 -   preparing v0.0.3
@@ -37,7 +31,7 @@ Full set of changes:
     ([a602f3d](https://github.com/kapsner/mlsurvlrnrs/tree/a602f3d624fa8d91abc679eaa023c89eaa01b866))
 
 Full set of changes:
-[`v0.0.2...v0.0.3`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.2...v0.0.3)
+[`v0.0.2...10e794f`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.2...10e794f)
 
 ## v0.0.2 (2023-08-11)
 

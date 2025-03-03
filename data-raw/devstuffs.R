@@ -19,7 +19,7 @@ my_desc$set_authors(c(
 # Remove some author fields
 my_desc$del("Maintainer")
 # Set the version
-my_desc$set_version("0.0.4.9001")
+my_desc$set_version("0.0.5")
 # The title of your package
 my_desc$set(Title = "R6-Based ML Survival Learners for 'mlexperiments'")
 # The description of your package
@@ -61,7 +61,7 @@ my_desc$write(file = "DESCRIPTION")
 usethis::use_gpl3_license()
 
 # Depends
-usethis::use_package("R", min_version = "3.6", type = "Depends")
+usethis::use_package("R", min_version = "4.1.0", type = "Depends")
 
 # Imports
 # https://cran.r-project.org/web/packages/data.table/vignettes/datatable-importing.html
