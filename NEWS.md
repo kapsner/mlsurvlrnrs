@@ -2,7 +2,7 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2024-07-07)
+## v0.0.5 (2025-03-03)
 
 #### CI
 
@@ -11,6 +11,8 @@
 
 #### Other changes
 
+-   adresses notes on cran-checks
+    ([69a69b7](https://github.com/kapsner/mlsurvlrnrs/tree/69a69b7cf54a592e5286f45ba33df359e78f051e))
 -   updated dev-version
     ([10e794f](https://github.com/kapsner/mlsurvlrnrs/tree/10e794f8518996ea4901f33019b3854ec9a939ef))
 -   updated package for next cran-release
@@ -31,7 +33,7 @@
     ([a602f3d](https://github.com/kapsner/mlsurvlrnrs/tree/a602f3d624fa8d91abc679eaa023c89eaa01b866))
 
 Full set of changes:
-[`v0.0.2...10e794f`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.2...10e794f)
+[`v0.0.2...v0.0.5`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.2...v0.0.5)
 
 ## v0.0.2 (2023-08-11)
 
