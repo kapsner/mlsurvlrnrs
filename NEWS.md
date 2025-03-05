@@ -2,6 +2,13 @@
 
 # mlsurvlrnrs NEWS
 
+## Unreleased (2025-03-05)
+
+#### Other changes
+
+-   updated news.md
+    ([79e8efc](https://github.com/kapsner/mlsurvlrnrs/tree/79e8efc600f2252d26bb3fd194bca4f6e0c5cb21))
+
 ## v0.0.5 (2025-03-03)
 
 #### CI
