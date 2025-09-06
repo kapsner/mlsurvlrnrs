@@ -42,9 +42,11 @@ test_that(
       learner = LearnerSurvCoxPHCox$new(),
       fold_list = fold_list,
       ncores = 1L,
-      seed = seed
+      seed = seed,
+      return_models = TRUE
     )
     surv_coxph_cox_optimizer$performance_metric <- c_index
+    surv_coxph_cox_optimizer$learner_args <- list(cat_vars = cat_vars)
 
     # set data
     surv_coxph_cox_optimizer$set_data(

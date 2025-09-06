@@ -51,3 +51,4 @@ Meta
 !cran-comments.md
 !README.qmd
 !vignettes/*.qmd
+revdep
