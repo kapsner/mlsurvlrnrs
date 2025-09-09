@@ -2,10 +2,12 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2025-09-06)
+## v0.0.6 (2025-09-09)
 
 #### Other changes
 
+-   updated description and news.md
+    ([7ac6388](https://github.com/kapsner/mlsurvlrnrs/tree/7ac638806aeb7b1f57c021f24884464882bb44c1))
 -   prepared fix / adaption to new mlexperiments version
     ([23db7a2](https://github.com/kapsner/mlsurvlrnrs/tree/23db7a23b4007216c9ec6f85e2ec7b566b5aad4b))
 -   new dev-version
@@ -14,7 +16,7 @@
     ([79e8efc](https://github.com/kapsner/mlsurvlrnrs/tree/79e8efc600f2252d26bb3fd194bca4f6e0c5cb21))
 
 Full set of changes:
-[`v0.0.5...23db7a2`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.5...23db7a2)
+[`v0.0.5...v0.0.6`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.5...v0.0.6)
 
 ## v0.0.5 (2025-03-03)
 
