@@ -95,11 +95,11 @@
 #'
 #' @export
 #'
-LearnerSurvXgboostAft <- R6::R6Class( # nolint
+LearnerSurvXgboostAft <- R6::R6Class(
+  # nolint
   classname = "LearnerSurvXgboostAft",
   inherit = mllrnrs::LearnerXgboost,
   public = list(
-
     #' @description
     #' Create a new `LearnerSurvXgboostAft` object.
     #'
@@ -112,9 +112,11 @@ LearnerSurvXgboostAft <- R6::R6Class( # nolint
     #' @examples
     #' LearnerSurvXgboostAft$new(metric_optimization_higher_better = FALSE)
     #'
-    initialize = function(metric_optimization_higher_better) { # nolint
-      super$initialize(metric_optimization_higher_better =
-                         metric_optimization_higher_better)
+    initialize = function(metric_optimization_higher_better) {
+      # nolint
+      super$initialize(
+        metric_optimization_higher_better = metric_optimization_higher_better
+      )
       self$environment <- "mlsurvlrnrs"
       self$cluster_export <- surv_xgboost_aft_ce()
       private$fun_optim_cv <- surv_xgboost_aft_optimization
@@ -129,11 +131,12 @@ surv_xgboost_aft_ce <- function() {
 }
 
 
-surv_xgboost_aft_bsF <- function(...) { # nolint
+surv_xgboost_aft_bsF <- function(...) {
+  # nolint
 
   params <- list(...)
 
-  set.seed(seed)#, kind = "L'Ecuyer-CMRG")
+  set.seed(seed) #, kind = "L'Ecuyer-CMRG")
   bayes_opt_xgboost <- surv_xgboost_aft_optimization(
     x = x,
     y = y,
@@ -152,13 +155,13 @@ surv_xgboost_aft_bsF <- function(...) { # nolint
 }
 
 surv_xgboost_aft_optimization <- function(
-    x,
-    y,
-    params,
-    fold_list,
-    ncores,
-    seed
-  ) {
+  x,
+  y,
+  params,
+  fold_list,
+  ncores,
+  seed
+) {
   stopifnot(
     inherits(x = y, what = "Surv"),
     is.list(params),
@@ -171,9 +174,10 @@ surv_xgboost_aft_optimization <- function(
     "metric" = numeric(0)
   )
 
+  params$nthread <- ncores
+
   # loop over the folds
   for (fold in names(fold_list)) {
-
     # get row-ids of the current fold
     train_idx <- fold_list[[fold]]
 
@@ -198,9 +202,8 @@ surv_xgboost_aft_optimization <- function(
       data = dtrain,
       params = params,
       print_every_n = as.integer(options("mlexperiments.xgb.print_every_n")),
-      nthread = ncores,
       nrounds = as.integer(options("mlexperiments.optim.xgb.nrounds")),
-      watchlist = watchlist,
+      eval = watchlist,
       early_stopping_rounds = as.integer(
         options("mlexperiments.optim.xgb.early_stopping_rounds")
       ),
@@ -223,19 +226,19 @@ surv_xgboost_aft_optimization <- function(
       predictions = preds,
       ground_truth = kdry::mlh_subset(y, -train_idx)
     )
-
     # save the results of this fold into a dataframe
     # from help("ranger::ranger"):
     # prediction.error - Overall out of bag prediction error. [...] for
     # survival one minus Harrell's C-index.
+    cv_fit_results <- attributes(cvfit)
     results_df <- data.table::rbindlist(
       l = list(
         results_df,
         list(
           "fold" = fold,
-          "metric" = cvfit$best_score,
+          "metric" = xgboost::xgb.attr(cvfit, "best_score"),
           "validation_metric" = perf,
-          "best_iteration" = cvfit$best_iteration
+          "best_iteration" = cv_fit_results$early_stop$best_iteration
         )
       ),
       fill = TRUE
