@@ -52,3 +52,4 @@ Meta
 !README.qmd
 !vignettes/*.qmd
 revdep
+/data-raw/debug.R

@@ -2,12 +2,22 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2025-09-09)
+## Unreleased (2025-10-14)
+
+#### Bug fixes
+
+-   work on fixing xgboost-aft learner
+    ([3672862](https://github.com/kapsner/mlsurvlrnrs/tree/3672862250aa0a23e0ea0cc92f3b3ab6ffa51126))
 
 #### Other changes
 
+-   udated dev-version
+    ([b6ab10c](https://github.com/kapsner/mlsurvlrnrs/tree/b6ab10cce54e8fd3290660700ebf598cd66d6a3a))
 -   updated news.md
     ([a2ca4aa](https://github.com/kapsner/mlsurvlrnrs/tree/a2ca4aa32fcb7b4bef0df0a1bdf6fbe5601fe909))
+
+Full set of changes:
+[`v0.0.6...3672862`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...3672862)
 
 ## v0.0.6 (2025-09-09)
 

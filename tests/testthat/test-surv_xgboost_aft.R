@@ -10,8 +10,6 @@ feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
 
 
 param_list_xgboost <- expand.grid(
-  objective = "survival:aft",
-  eval_metric = "aft-nloglik",
   subsample = seq(0.6, 1, .2),
   colsample_bytree = seq(0.6, 1, .2),
   min_child_weight = seq(1, 5, 4),
@@ -46,8 +44,8 @@ train_x <- model.matrix(
 )
 train_y <- survival::Surv(
   event = (dataset[, get("status")] |>
-             as.character() |>
-             as.integer()),
+    as.character() |>
+    as.integer()),
   time = dataset[, get("time")],
   type = "right"
 )
@@ -66,13 +64,19 @@ options("mlexperiments.optim.xgb.early_stopping_rounds" = 10L)
 # %% TUNING
 # ###########################################################################
 
+learner_args <- list(
+  objective = "survival:aft",
+  eval_metric = "aft-nloglik"
+)
+
 xgboost_bounds <- list(
   subsample = c(0.2, 1),
   colsample_bytree = c(0.2, 1),
   min_child_weight = c(1L, 10L),
   learning_rate = c(0.1, 0.2),
-  max_depth =  c(1L, 10L)
+  max_depth = c(1L, 10L)
 )
+
 optim_args <- list(
   iters.n = ncores,
   kappa = 3.5,
@@ -83,42 +87,42 @@ optim_args <- list(
 # %% NESTED CV
 # ###########################################################################
 
+test_that(desc = "test nested cv, bayesian - surv_xgboost_aft", code = {
+  surv_xgboost_aft_optimizer <- mlexperiments::MLNestedCV$new(
+    learner = LearnerSurvXgboostAft$new(
+      metric_optimization_higher_better = FALSE
+    ),
+    strategy = "bayesian",
+    fold_list = fold_list,
+    k_tuning = 3L,
+    ncores = ncores,
+    seed = seed
+  )
 
-test_that(
-  desc = "test nested cv, bayesian - surv_xgboost_aft",
-  code = {
+  set.seed(seed)
+  random_grid <- sample(seq_len(nrow(param_list_xgboost)), 12)
+  surv_xgboost_aft_optimizer$parameter_grid <-
+    param_list_xgboost[random_grid, ]
 
-    surv_xgboost_aft_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = LearnerSurvXgboostAft$new(
-        metric_optimization_higher_better = FALSE
-      ),
-      strategy = "bayesian",
-      fold_list = fold_list,
-      k_tuning = 3L,
-      ncores = ncores,
-      seed = seed
-    )
+  surv_xgboost_aft_optimizer$learner_args <- learner_args
+  surv_xgboost_aft_optimizer$parameter_bounds <- xgboost_bounds
+  surv_xgboost_aft_optimizer$split_type <- "stratified"
+  surv_xgboost_aft_optimizer$split_vector <- split_vector
+  surv_xgboost_aft_optimizer$optim_args <- optim_args
 
-    surv_xgboost_aft_optimizer$parameter_bounds <- xgboost_bounds
-    surv_xgboost_aft_optimizer$parameter_grid <- param_list_xgboost
-    surv_xgboost_aft_optimizer$split_type <- "stratified"
-    surv_xgboost_aft_optimizer$split_vector <- split_vector
-    surv_xgboost_aft_optimizer$optim_args <- optim_args
+  surv_xgboost_aft_optimizer$performance_metric <- c_index
 
-    surv_xgboost_aft_optimizer$performance_metric <- c_index
+  # set data
+  surv_xgboost_aft_optimizer$set_data(
+    x = train_x,
+    y = train_y
+  )
 
-    # set data
-    surv_xgboost_aft_optimizer$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    cv_results <- surv_xgboost_aft_optimizer$execute()
-    expect_type(cv_results, "list")
-    expect_equal(dim(cv_results), c(3, 10))
-    expect_true(inherits(
-      x = surv_xgboost_aft_optimizer$results,
-      what = "mlexCV"
-    ))
-  }
-)
+  cv_results <- surv_xgboost_aft_optimizer$execute()
+  expect_type(cv_results, "list")
+  expect_equal(dim(cv_results), c(3, 10))
+  expect_true(inherits(
+    x = surv_xgboost_aft_optimizer$results,
+    what = "mlexCV"
+  ))
+})

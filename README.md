@@ -4,11 +4,6 @@
 
 <!-- badges: start -->
 
-    Warning: `git_branch_default()` was deprecated in usethis 2.1.0.
-    ℹ Please use `git_default_branch()` instead.
-    ℹ The deprecated feature was likely used in the badger package.
-      Please report the issue at <https://github.com/GuangchuangYu/badger/issues>.
-
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![](https://www.r-pkg.org/badges/version/mlsurvlrnrs)](https://cran.r-project.org/package=mlsurvlrnrs)
 [![CRAN
@@ -23,7 +18,6 @@ status](https://github.com/kapsner/mlsurvlrnrs/workflows/lint/badge.svg)](https:
 [![R build
 status](https://github.com/kapsner/mlsurvlrnrs/workflows/test-coverage/badge.svg)](https://github.com/kapsner/mlsurvlrnrs/actions)
 [![](https://codecov.io/gh/https://github.com/kapsner/mlsurvlrnrs/branch/main/graph/badge.svg)](https://app.codecov.io/gh/https://github.com/kapsner/mlsurvlrnrs)
-
 <!-- badges: end -->
 
 The goal of `mlsurvlrnrs` is to enhance the
