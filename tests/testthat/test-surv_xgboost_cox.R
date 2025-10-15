@@ -10,6 +10,8 @@ feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
 
 
 param_list_xgboost <- expand.grid(
+  objective = "survival:cox",
+  eval_metric = "cox-nloglik",
   subsample = seq(0.6, 1, .2),
   colsample_bytree = seq(0.6, 1, .2),
   min_child_weight = seq(1, 5, 4),
@@ -64,10 +66,7 @@ options("mlexperiments.optim.xgb.early_stopping_rounds" = 10L)
 # %% TUNING
 # ###########################################################################
 
-learner_args <- list(
-  objective = "survival:cox",
-  eval_metric = "cox-nloglik"
-)
+learner_args <- NULL
 
 xgboost_bounds <- list(
   subsample = c(0.2, 1),
@@ -129,6 +128,12 @@ test_that(desc = "test nested cv, bayesian - surv_xgboost_cox", code = {
 # ###########################################################################
 # %% NESTED CV
 # ###########################################################################
+
+learner_args <- list(
+  objective = "survival:cox",
+  eval_metric = "cox-nloglik"
+)
+
 
 test_that(desc = "test nested cv, grid - surv_xgboost_cox", code = {
   surv_xgboost_cox_optimizer <- mlexperiments::MLNestedCV$new(
