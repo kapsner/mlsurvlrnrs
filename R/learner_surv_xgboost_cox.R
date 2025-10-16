@@ -74,9 +74,8 @@
 #'   seed = seed
 #' )
 #' surv_xgboost_cox_optimizer$learner_args <- c(as.list(
-#'   data.table::data.table(param_list_xgboost[1, ], stringsAsFactors = FALSE)
-#' ),
-#' nrounds = 45L
+#'   param_list_xgboost[1, ]),
+#'   nrounds = 45L
 #' )
 #' surv_xgboost_cox_optimizer$performance_metric <- c_index
 #'

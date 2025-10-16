@@ -2,12 +2,19 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2025-10-14)
+## Unreleased (2025-10-15)
 
 #### Bug fixes
 
+-   fixed adaptions to new xgboost version
+    ([99824a3](https://github.com/kapsner/mlsurvlrnrs/tree/99824a3ef17d0bc7ace3ad5724d99c17a24dd4db))
 -   work on fixing xgboost-aft learner
     ([3672862](https://github.com/kapsner/mlsurvlrnrs/tree/3672862250aa0a23e0ea0cc92f3b3ab6ffa51126))
+
+#### Tests
+
+-   added unittest for usecase when learner-args are in param-grid
+    ([8027dfc](https://github.com/kapsner/mlsurvlrnrs/tree/8027dfc3440af0fc09be2ffdaa12ae267cb19a92))
 
 #### Other changes
 
@@ -17,7 +24,7 @@
     ([a2ca4aa](https://github.com/kapsner/mlsurvlrnrs/tree/a2ca4aa32fcb7b4bef0df0a1bdf6fbe5601fe909))
 
 Full set of changes:
-[`v0.0.6...3672862`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...3672862)
+[`v0.0.6...8027dfc`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...8027dfc)
 
 ## v0.0.6 (2025-09-09)
 

@@ -78,9 +78,8 @@
 #'   seed = seed
 #' )
 #' surv_xgboost_aft_optimizer$learner_args <- c(as.list(
-#'   data.table::data.table(param_list_xgboost[1, ], stringsAsFactors = FALSE)
-#' ),
-#' nrounds = 45L
+#'   param_list_xgboost[1, ]),
+#'   nrounds = 45L
 #' )
 #' surv_xgboost_aft_optimizer$performance_metric <- c_index
 #'
@@ -176,6 +175,13 @@ surv_xgboost_aft_optimization <- function(
 
   params$nthread <- ncores
 
+  if ("nrounds" %in% names(params)) {
+    use_nrounds <- params$nrounds
+    params[["nrounds"]] <- NULL
+  } else {
+    use_nrounds <- as.integer(options("mlexperiments.optim.xgb.nrounds"))
+  }
+
   # loop over the folds
   for (fold in names(fold_list)) {
     # get row-ids of the current fold
@@ -202,7 +208,7 @@ surv_xgboost_aft_optimization <- function(
       data = dtrain,
       params = params,
       print_every_n = as.integer(options("mlexperiments.xgb.print_every_n")),
-      nrounds = as.integer(options("mlexperiments.optim.xgb.nrounds")),
+      nrounds = use_nrounds,
       eval = watchlist,
       early_stopping_rounds = as.integer(
         options("mlexperiments.optim.xgb.early_stopping_rounds")

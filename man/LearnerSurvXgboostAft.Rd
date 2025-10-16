@@ -81,9 +81,8 @@ surv_xgboost_aft_optimizer <- mlexperiments::MLCrossValidation$new(
   seed = seed
 )
 surv_xgboost_aft_optimizer$learner_args <- c(as.list(
-  data.table::data.table(param_list_xgboost[1, ], stringsAsFactors = FALSE)
-),
-nrounds = 45L
+  param_list_xgboost[1, ]),
+  nrounds = 45L
 )
 surv_xgboost_aft_optimizer$performance_metric <- c_index
 

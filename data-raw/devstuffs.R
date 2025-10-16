@@ -20,7 +20,7 @@ my_desc$set_authors(c(
 # Remove some author fields
 my_desc$del("Maintainer")
 # Set the version
-my_desc$set_version("0.0.6.9002")
+my_desc$set_version("0.0.6.9003")
 # The title of your package
 my_desc$set(Title = "R6-Based ML Survival Learners for 'mlexperiments'")
 # The description of your package
@@ -73,7 +73,7 @@ usethis::use_package("R6", type = "Imports")
 usethis::use_package("data.table", type = "Imports")
 usethis::use_package("kdry", type = "Imports")
 usethis::use_package("stats", type = "Imports")
-usethis::use_package("mlexperiments", type = "Imports", min_version = "0.0.7")
+usethis::use_package("mlexperiments", type = "Imports", min_version = "0.0.8")
 usethis::use_package("mllrnrs", type = "Imports")
 
 # Suggests
