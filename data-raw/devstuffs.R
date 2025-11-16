@@ -20,7 +20,7 @@ my_desc$set_authors(c(
 # Remove some author fields
 my_desc$del("Maintainer")
 # Set the version
-my_desc$set_version("0.0.6.9003")
+my_desc$set_version("0.0.6.9004")
 # The title of your package
 my_desc$set(Title = "R6-Based ML Survival Learners for 'mlexperiments'")
 # The description of your package
@@ -81,7 +81,7 @@ usethis::use_package("testthat", type = "Suggests", min_version = "3.0.1")
 usethis::use_package("lintr", type = "Suggests")
 usethis::use_package("quarto", type = "Suggests")
 usethis::use_package("glmnet", type = "Suggests")
-usethis::use_package("xgboost", type = "Suggests", min_version = "3.1.0.1")
+usethis::use_package("xgboost", type = "Suggests", min_version = "3.1.1.1")
 usethis::use_package("ranger", type = "Suggests")
 usethis::use_package("rpart", type = "Suggests")
 usethis::use_package("survival", type = "Suggests")
@@ -181,6 +181,7 @@ usethis::use_build_ignore("README.qmd")
 usethis::use_build_ignore("docs")
 usethis::use_build_ignore("Meta")
 usethis::use_build_ignore("revdep")
+usethis::use_build_ignore(".pre-commit-config.yaml")
 
 usethis::use_git_ignore("!NEWS.md")
 usethis::use_git_ignore("!README.md")

@@ -2,10 +2,12 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2025-10-15)
+## Unreleased (2025-11-16)
 
 #### Bug fixes
 
+-   added adaptions for package to work with xgboost \> version 3
+    ([875dacc](https://github.com/kapsner/mlsurvlrnrs/tree/875dacc242318436955373ace052aa520df9e05c))
 -   fixed adaptions to new xgboost version
     ([99824a3](https://github.com/kapsner/mlsurvlrnrs/tree/99824a3ef17d0bc7ace3ad5724d99c17a24dd4db))
 -   work on fixing xgboost-aft learner
@@ -16,6 +18,11 @@
 -   added unittest for usecase when learner-args are in param-grid
     ([8027dfc](https://github.com/kapsner/mlsurvlrnrs/tree/8027dfc3440af0fc09be2ffdaa12ae267cb19a92))
 
+#### CI
+
+-   added pre-commit hooks
+    ([e3f632e](https://github.com/kapsner/mlsurvlrnrs/tree/e3f632ebb4cc666992425efb872f7e0fdded7a70))
+
 #### Other changes
 
 -   udated dev-version
@@ -24,7 +31,7 @@
     ([a2ca4aa](https://github.com/kapsner/mlsurvlrnrs/tree/a2ca4aa32fcb7b4bef0df0a1bdf6fbe5601fe909))
 
 Full set of changes:
-[`v0.0.6...8027dfc`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...8027dfc)
+[`v0.0.6...e3f632e`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...e3f632e)
 
 ## v0.0.6 (2025-09-09)
 
