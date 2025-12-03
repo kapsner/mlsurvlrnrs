@@ -2,7 +2,7 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2025-11-16)
+## Unreleased (2025-12-03)
 
 #### Bug fixes
 
@@ -21,17 +21,19 @@
 #### CI
 
 -   added pre-commit hooks
-    ([e3f632e](https://github.com/kapsner/mlsurvlrnrs/tree/e3f632ebb4cc666992425efb872f7e0fdded7a70))
+    ([00a702a](https://github.com/kapsner/mlsurvlrnrs/tree/00a702aab2cbc032d53bc75817ff9cce3b4862d6))
 
 #### Other changes
 
+-   update to v0.0.7
+    ([eaed8a8](https://github.com/kapsner/mlsurvlrnrs/tree/eaed8a873416e1d3ca4e233acf02b9969ea9625b))
 -   udated dev-version
     ([b6ab10c](https://github.com/kapsner/mlsurvlrnrs/tree/b6ab10cce54e8fd3290660700ebf598cd66d6a3a))
 -   updated news.md
     ([a2ca4aa](https://github.com/kapsner/mlsurvlrnrs/tree/a2ca4aa32fcb7b4bef0df0a1bdf6fbe5601fe909))
 
 Full set of changes:
-[`v0.0.6...e3f632e`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...e3f632e)
+[`v0.0.6...eaed8a8`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...eaed8a8)
 
 ## v0.0.6 (2025-09-09)
 
