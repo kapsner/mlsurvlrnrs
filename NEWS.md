@@ -6,6 +6,8 @@
 
 #### Bug fixes
 
+-   added omp-thread-limit to donttest examples
+    ([61d3acb](https://github.com/kapsner/mlsurvlrnrs/tree/61d3acbf958d5db4ef4c8afee2812dff93483902))
 -   added adaptions for package to work with xgboost \> version 3
     ([875dacc](https://github.com/kapsner/mlsurvlrnrs/tree/875dacc242318436955373ace052aa520df9e05c))
 -   fixed adaptions to new xgboost version
@@ -25,8 +27,12 @@
 
 #### Other changes
 
+-   add omp threadlimit for xgbcox
+    ([54368c0](https://github.com/kapsner/mlsurvlrnrs/tree/54368c0bffa5aa8a9cb5bd897eacf70794d48024))
+-   add omp threadlimit parameter to xgbaft
+    ([7246757](https://github.com/kapsner/mlsurvlrnrs/tree/724675788e7aab2f0161686fa5be5c321e32a403))
 -   updated vignette outputs
-    ([6492409](https://github.com/kapsner/mlsurvlrnrs/tree/649240920e84f5493ff1a9121ca6efbd8513e801))
+    ([540d80e](https://github.com/kapsner/mlsurvlrnrs/tree/540d80ee23ad9ca84cd71c1d8d521292f0a00ebb))
 -   update to v0.0.7
     ([73b9a11](https://github.com/kapsner/mlsurvlrnrs/tree/73b9a1121c76461186304dadc0d0bc04913b46b9))
 -   udated dev-version
@@ -35,7 +41,7 @@
     ([a2ca4aa](https://github.com/kapsner/mlsurvlrnrs/tree/a2ca4aa32fcb7b4bef0df0a1bdf6fbe5601fe909))
 
 Full set of changes:
-[`v0.0.6...6492409`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...6492409)
+[`v0.0.6...61d3acb`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...61d3acb)
 
 ## v0.0.6 (2025-09-09)
 

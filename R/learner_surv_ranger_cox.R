@@ -224,7 +224,6 @@ surv_ranger_cox_optimization <- function(
   # as the code has already been written for xgboost, I just adapt it here
   # to work for survival models with ranger and to accept a list of parameters
   # from the parmeter grid-search.
-
   # loop over the folds
   for (fold in names(cvfit_list)) {
 
@@ -257,7 +256,7 @@ surv_ranger_cox_optimization <- function(
         list(
           "fold" = fold,
           "oob_metric" = 1 - cvfit$prediction.error,
-          "validation_metric" = perf
+          "metric" = perf
         )
       ),
       fill = TRUE
@@ -265,7 +264,7 @@ surv_ranger_cox_optimization <- function(
   }
 
   res <- list(
-    "metric_optim_mean" = mean(results_df$validation_metric)
+    "metric_optim_mean" = mean(results_df$metric)
   )
 
   return(res)
