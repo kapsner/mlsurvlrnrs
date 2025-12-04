@@ -2,7 +2,7 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2025-12-03)
+## Unreleased (2025-12-04)
 
 #### Bug fixes
 
@@ -25,15 +25,17 @@
 
 #### Other changes
 
+-   updated vignette outputs
+    ([6492409](https://github.com/kapsner/mlsurvlrnrs/tree/649240920e84f5493ff1a9121ca6efbd8513e801))
 -   update to v0.0.7
-    ([eaed8a8](https://github.com/kapsner/mlsurvlrnrs/tree/eaed8a873416e1d3ca4e233acf02b9969ea9625b))
+    ([73b9a11](https://github.com/kapsner/mlsurvlrnrs/tree/73b9a1121c76461186304dadc0d0bc04913b46b9))
 -   udated dev-version
     ([b6ab10c](https://github.com/kapsner/mlsurvlrnrs/tree/b6ab10cce54e8fd3290660700ebf598cd66d6a3a))
 -   updated news.md
     ([a2ca4aa](https://github.com/kapsner/mlsurvlrnrs/tree/a2ca4aa32fcb7b4bef0df0a1bdf6fbe5601fe909))
 
 Full set of changes:
-[`v0.0.6...eaed8a8`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...eaed8a8)
+[`v0.0.6...6492409`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...6492409)
 
 ## v0.0.6 (2025-09-09)
 

@@ -209,7 +209,7 @@ surv_xgboost_aft_optimization <- function(
       params = params,
       print_every_n = as.integer(options("mlexperiments.xgb.print_every_n")),
       nrounds = use_nrounds,
-      eval = watchlist,
+      evals = watchlist,
       early_stopping_rounds = as.integer(
         options("mlexperiments.optim.xgb.early_stopping_rounds")
       ),
