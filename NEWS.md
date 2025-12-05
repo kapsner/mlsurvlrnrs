@@ -6,8 +6,13 @@
 
 #### Other changes
 
+-   updated news.md
+    ([699d814](https://github.com/kapsner/mlsurvlrnrs/tree/699d81459e690da4b5e0fe1fe96632cbecec5b73))
 -   updated dev-version
-    ([b100ff1](https://github.com/kapsner/mlsurvlrnrs/tree/b100ff15104bb47d469c5322478cacb07aa883e5))
+    ([b8643fb](https://github.com/kapsner/mlsurvlrnrs/tree/b8643fb304223f942fa6391fcd9f6239e96cc53a))
+
+Full set of changes:
+[`v0.0.7...699d814`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.7...699d814)
 
 ## v0.0.7 (2025-12-04)
 
