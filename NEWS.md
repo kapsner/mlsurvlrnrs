@@ -2,12 +2,19 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2025-12-04)
+## Unreleased (2025-12-05)
+
+#### Other changes
+
+-   updated dev-version
+    ([b100ff1](https://github.com/kapsner/mlsurvlrnrs/tree/b100ff15104bb47d469c5322478cacb07aa883e5))
+
+## v0.0.7 (2025-12-04)
 
 #### Bug fixes
 
 -   added omp-thread-limit to donttest examples
-    ([61d3acb](https://github.com/kapsner/mlsurvlrnrs/tree/61d3acbf958d5db4ef4c8afee2812dff93483902))
+    ([c1499ad](https://github.com/kapsner/mlsurvlrnrs/tree/c1499adc0ea6f1678701dfc28c42f40a1984f377))
 -   added adaptions for package to work with xgboost \> version 3
     ([875dacc](https://github.com/kapsner/mlsurvlrnrs/tree/875dacc242318436955373ace052aa520df9e05c))
 -   fixed adaptions to new xgboost version
@@ -41,7 +48,7 @@
     ([a2ca4aa](https://github.com/kapsner/mlsurvlrnrs/tree/a2ca4aa32fcb7b4bef0df0a1bdf6fbe5601fe909))
 
 Full set of changes:
-[`v0.0.6...61d3acb`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...61d3acb)
+[`v0.0.6...v0.0.7`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...v0.0.7)
 
 ## v0.0.6 (2025-09-09)
 
