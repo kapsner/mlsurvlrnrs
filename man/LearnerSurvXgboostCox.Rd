@@ -21,6 +21,7 @@ Can be used with
 \examples{
 \donttest{# execution time >2.5 sec
 # survival analysis
+Sys.setenv("OMP_THREAD_LIMIT" = 2)
 
 dataset <- survival::colon |>
   data.table::as.data.table() |>

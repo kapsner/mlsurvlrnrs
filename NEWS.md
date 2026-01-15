@@ -2,10 +2,26 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2025-10-15)
+## Unreleased (2025-12-05)
+
+#### Other changes
+
+-   updated news.md
+    ([699d814](https://github.com/kapsner/mlsurvlrnrs/tree/699d81459e690da4b5e0fe1fe96632cbecec5b73))
+-   updated dev-version
+    ([b8643fb](https://github.com/kapsner/mlsurvlrnrs/tree/b8643fb304223f942fa6391fcd9f6239e96cc53a))
+
+Full set of changes:
+[`v0.0.7...699d814`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.7...699d814)
+
+## v0.0.7 (2025-12-04)
 
 #### Bug fixes
 
+-   added omp-thread-limit to donttest examples
+    ([c1499ad](https://github.com/kapsner/mlsurvlrnrs/tree/c1499adc0ea6f1678701dfc28c42f40a1984f377))
+-   added adaptions for package to work with xgboost \> version 3
+    ([875dacc](https://github.com/kapsner/mlsurvlrnrs/tree/875dacc242318436955373ace052aa520df9e05c))
 -   fixed adaptions to new xgboost version
     ([99824a3](https://github.com/kapsner/mlsurvlrnrs/tree/99824a3ef17d0bc7ace3ad5724d99c17a24dd4db))
 -   work on fixing xgboost-aft learner
@@ -16,15 +32,28 @@
 -   added unittest for usecase when learner-args are in param-grid
     ([8027dfc](https://github.com/kapsner/mlsurvlrnrs/tree/8027dfc3440af0fc09be2ffdaa12ae267cb19a92))
 
+#### CI
+
+-   added pre-commit hooks
+    ([00a702a](https://github.com/kapsner/mlsurvlrnrs/tree/00a702aab2cbc032d53bc75817ff9cce3b4862d6))
+
 #### Other changes
 
+-   add omp threadlimit for xgbcox
+    ([54368c0](https://github.com/kapsner/mlsurvlrnrs/tree/54368c0bffa5aa8a9cb5bd897eacf70794d48024))
+-   add omp threadlimit parameter to xgbaft
+    ([7246757](https://github.com/kapsner/mlsurvlrnrs/tree/724675788e7aab2f0161686fa5be5c321e32a403))
+-   updated vignette outputs
+    ([540d80e](https://github.com/kapsner/mlsurvlrnrs/tree/540d80ee23ad9ca84cd71c1d8d521292f0a00ebb))
+-   update to v0.0.7
+    ([73b9a11](https://github.com/kapsner/mlsurvlrnrs/tree/73b9a1121c76461186304dadc0d0bc04913b46b9))
 -   udated dev-version
     ([b6ab10c](https://github.com/kapsner/mlsurvlrnrs/tree/b6ab10cce54e8fd3290660700ebf598cd66d6a3a))
 -   updated news.md
     ([a2ca4aa](https://github.com/kapsner/mlsurvlrnrs/tree/a2ca4aa32fcb7b4bef0df0a1bdf6fbe5601fe909))
 
 Full set of changes:
-[`v0.0.6...8027dfc`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...8027dfc)
+[`v0.0.6...v0.0.7`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.6...v0.0.7)
 
 ## v0.0.6 (2025-09-09)
 

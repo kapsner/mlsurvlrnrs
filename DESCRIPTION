@@ -1,6 +1,6 @@
 Package: mlsurvlrnrs
 Title: R6-Based ML Survival Learners for 'mlexperiments'
-Version: 0.0.7
+Version: 0.0.8
 Authors@R: 
     person("Lorenz A.", "Kapsner", , "lorenz.kapsner@gmail.com", role = c("cre", "aut", "cph"),
            comment = c(ORCID = "0000-0003-1866-860X"))
@@ -16,16 +16,16 @@ Description: Enhances 'mlexperiments'
 License: GPL (>= 3)
 URL: https://github.com/kapsner/mlsurvlrnrs
 BugReports: https://github.com/kapsner/mlsurvlrnrs/issues
-Depends: 
+Depends:
     R (>= 4.1.0)
-Imports: 
+Imports:
     data.table,
     kdry,
     mlexperiments (>= 1.0.0),
     mllrnrs (>= 0.0.8),
     R6,
     stats
-Suggests: 
+Suggests:
     glmnet,
     lintr,
     parallel,
@@ -36,8 +36,8 @@ Suggests:
     splitTools,
     survival,
     testthat (>= 3.0.1),
-    xgboost (>= 3.1.0.1)
-VignetteBuilder: 
+    xgboost (>= 3.1.2.1)
+VignetteBuilder:
     quarto
 Config/testthat/edition: 3
 Config/testthat/parallel: false

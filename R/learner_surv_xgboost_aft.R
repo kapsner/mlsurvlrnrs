@@ -22,6 +22,7 @@
 #' @examples
 #' \donttest{# execution time >2.5 sec
 #' # survival analysis
+#' Sys.setenv("OMP_THREAD_LIMIT" = 2)
 #'
 #' dataset <- survival::colon |>
 #'   data.table::as.data.table() |>
@@ -209,7 +210,7 @@ surv_xgboost_aft_optimization <- function(
       params = params,
       print_every_n = as.integer(options("mlexperiments.xgb.print_every_n")),
       nrounds = use_nrounds,
-      eval = watchlist,
+      evals = watchlist,
       early_stopping_rounds = as.integer(
         options("mlexperiments.optim.xgb.early_stopping_rounds")
       ),

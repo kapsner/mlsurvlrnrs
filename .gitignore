@@ -53,3 +53,5 @@ Meta
 !vignettes/*.qmd
 revdep
 /data-raw/debug.R
+
+!.pre-commit-config.yaml
