@@ -38,6 +38,8 @@ test_that(
   desc = "test cv - surv_coxph_cox",
   code = {
 
+    testthat::skip_if_not_installed("survival")
+
     surv_coxph_cox_optimizer <- mlexperiments::MLCrossValidation$new(
       learner = LearnerSurvCoxPHCox$new(),
       fold_list = fold_list,

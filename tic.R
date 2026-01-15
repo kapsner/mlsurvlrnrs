@@ -6,5 +6,5 @@ do_package_checks(
 )
 
 get_stage("install") %>%
-  add_code_step(remotes::install_cran(c("ParBayesianOptimization", "measures"))) %>%
+  add_code_step(remotes::install_cran(c("rBayesianOptimization"))) %>%
   add_code_step(devtools::install(".", upgrade = "always"))

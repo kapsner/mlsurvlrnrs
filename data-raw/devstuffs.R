@@ -20,7 +20,7 @@ my_desc$set_authors(c(
 # Remove some author fields
 my_desc$del("Maintainer")
 # Set the version
-my_desc$set_version("0.0.6.9003")
+my_desc$set_version("0.0.7")
 # The title of your package
 my_desc$set(Title = "R6-Based ML Survival Learners for 'mlexperiments'")
 # The description of your package
@@ -73,8 +73,8 @@ usethis::use_package("R6", type = "Imports")
 usethis::use_package("data.table", type = "Imports")
 usethis::use_package("kdry", type = "Imports")
 usethis::use_package("stats", type = "Imports")
-usethis::use_package("mlexperiments", type = "Imports", min_version = "0.0.8")
-usethis::use_package("mllrnrs", type = "Imports")
+usethis::use_package("mlexperiments", type = "Imports", min_version = "1.0.0")
+usethis::use_package("mllrnrs", type = "Imports", min_version = "0.0.8")
 
 # Suggests
 usethis::use_package("testthat", type = "Suggests", min_version = "3.0.1")
@@ -86,8 +86,8 @@ usethis::use_package("ranger", type = "Suggests")
 usethis::use_package("rpart", type = "Suggests")
 usethis::use_package("survival", type = "Suggests")
 usethis::use_package("splitTools", type = "Suggests")
-usethis::use_package("measures", type = "Suggests")
-usethis::use_package("ParBayesianOptimization", type = "Suggests")
+usethis::use_package("rBayesianOptimization", type = "Suggests")
+usethis::use_package("parallel", type = "Suggests")
 
 
 # define remotes

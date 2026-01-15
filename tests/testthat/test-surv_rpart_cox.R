@@ -49,7 +49,7 @@ fold_list <- splitTools::create_folds(
   type = "stratified",
   seed = seed
 )
-options("mlexperiments.bayesian.max_init" = 10L)
+options("mlexperiments.bayesian.max_init" = 4L)
 
 # ###########################################################################
 # %% TUNING
@@ -62,7 +62,7 @@ rpart_bounds <- list(
   maxdepth = c(2L, 30L)
 )
 optim_args <- list(
-  iters.n = ncores,
+  n_iter = ncores,
   kappa = 3.5,
   acq = "ucb"
 )
@@ -79,6 +79,9 @@ param_list_rpart <- expand.grid(
 test_that(
   desc = "test nested cv, bayesian - surv_rpart_cox",
   code = {
+
+    testthat::skip_if_not_installed("rBayesianOptimizaion")
+    testthat::skip_if_not_installed("rpart")
 
     surv_rpart_cox_optimizer <- mlexperiments::MLNestedCV$new(
       learner = LearnerSurvRpartCox$new(),

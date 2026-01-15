@@ -57,7 +57,7 @@ fold_list <- splitTools::create_folds(
   seed = seed
 )
 
-options("mlexperiments.bayesian.max_init" = 10L)
+options("mlexperiments.bayesian.max_init" = 4L)
 
 # ###########################################################################
 # %% TUNING
@@ -71,7 +71,7 @@ ranger_bounds <- list(
   max.depth =  c(1L, 10L)
 )
 optim_args <- list(
-  iters.n = ncores,
+  n_iter = ncores,
   kappa = 3.5,
   acq = "ucb"
 )
@@ -83,6 +83,9 @@ optim_args <- list(
 test_that(
   desc = "test nested cv, bayesian - surv_ranger_cox",
   code = {
+
+    testthat::skip_if_not_installed("rBayesianOptimizaion")
+    testthat::skip_if_not_installed("ranger")
 
     surv_ranger_cox_optimizer <- mlexperiments::MLNestedCV$new(
       learner = LearnerSurvRangerCox$new(),

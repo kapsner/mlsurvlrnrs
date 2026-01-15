@@ -52,7 +52,7 @@ fold_list <- splitTools::create_folds(
   seed = seed
 )
 
-options("mlexperiments.bayesian.max_init" = 10L)
+options("mlexperiments.bayesian.max_init" = 4L)
 
 # ###########################################################################
 # %% TUNING
@@ -60,7 +60,7 @@ options("mlexperiments.bayesian.max_init" = 10L)
 
 glmnet_bounds <- list(alpha = c(0., 1.))
 optim_args <- list(
-  iters.n = ncores,
+  n_iter = ncores,
   kappa = 3.5,
   acq = "ucb"
 )
@@ -72,6 +72,8 @@ optim_args <- list(
 test_that(
   desc = "test nested cv, grid - surv_glmnet_cox",
   code = {
+
+    testthat::skip_if_not_installed("glmnet")
 
     surv_glmnet_cox_optimizer <- mlexperiments::MLNestedCV$new(
       learner = LearnerSurvGlmnetCox$new(),
