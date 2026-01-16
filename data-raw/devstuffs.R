@@ -86,6 +86,7 @@ usethis::use_package("ranger", type = "Suggests")
 usethis::use_package("rpart", type = "Suggests")
 usethis::use_package("survival", type = "Suggests")
 usethis::use_package("splitTools", type = "Suggests")
+usethis::use_package("measures", type = "Suggests")
 usethis::use_package("rBayesianOptimization", type = "Suggests")
 usethis::use_package("parallel", type = "Suggests")
 

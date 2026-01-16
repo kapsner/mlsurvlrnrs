@@ -7,8 +7,17 @@ seed <- 123
 surv_cols <- c("status", "time", "rx")
 
 feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
-cat_vars <- c("sex", "obstruct", "perfor", "adhere", "differ", "extent",
-              "surg", "node4", "rx")
+cat_vars <- c(
+  "sex",
+  "obstruct",
+  "perfor",
+  "adhere",
+  "differ",
+  "extent",
+  "surg",
+  "node4",
+  "rx"
+)
 
 if (isTRUE(as.logical(Sys.getenv("_R_CHECK_LIMIT_CORES_")))) {
   # on cran
@@ -36,8 +45,8 @@ train_x <- data.matrix(
 )
 train_y <- survival::Surv(
   event = (dataset[, get("status")] |>
-             as.character() |>
-             as.integer()),
+    as.character() |>
+    as.integer()),
   time = dataset[, get("time")],
   type = "right"
 )
@@ -49,12 +58,11 @@ fold_list <- splitTools::create_folds(
   type = "stratified",
   seed = seed
 )
-options("mlexperiments.bayesian.max_init" = 4L)
+options("mlexperiments.bayesian.max_init" = 10L)
 
 # ###########################################################################
 # %% TUNING
 # ###########################################################################
-
 
 rpart_bounds <- list(
   minsplit = c(2L, 100L),
@@ -76,43 +84,39 @@ param_list_rpart <- expand.grid(
 # %% NESTED CV
 # ###########################################################################
 
-test_that(
-  desc = "test nested cv, bayesian - surv_rpart_cox",
-  code = {
+test_that(desc = "test nested cv, bayesian - surv_rpart_cox", code = {
+  testthat::skip_if_not_installed("rBayesianOptimizaion")
+  testthat::skip_if_not_installed("rpart")
 
-    testthat::skip_if_not_installed("rBayesianOptimizaion")
-    testthat::skip_if_not_installed("rpart")
+  surv_rpart_cox_optimizer <- mlexperiments::MLNestedCV$new(
+    learner = LearnerSurvRpartCox$new(),
+    strategy = "bayesian",
+    fold_list = fold_list,
+    k_tuning = 3L,
+    ncores = ncores,
+    seed = seed
+  )
+  surv_rpart_cox_optimizer$learner_args <- list(method = "exp")
 
-    surv_rpart_cox_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = LearnerSurvRpartCox$new(),
-      strategy = "bayesian",
-      fold_list = fold_list,
-      k_tuning = 3L,
-      ncores = ncores,
-      seed = seed
-    )
-    surv_rpart_cox_optimizer$learner_args <- list(method = "exp")
+  surv_rpart_cox_optimizer$parameter_bounds <- rpart_bounds
+  surv_rpart_cox_optimizer$parameter_grid <- param_list_rpart
+  surv_rpart_cox_optimizer$split_type <- "stratified"
+  surv_rpart_cox_optimizer$split_vector <- split_vector
+  surv_rpart_cox_optimizer$optim_args <- optim_args
 
-    surv_rpart_cox_optimizer$parameter_bounds <- rpart_bounds
-    surv_rpart_cox_optimizer$parameter_grid <- param_list_rpart
-    surv_rpart_cox_optimizer$split_type <- "stratified"
-    surv_rpart_cox_optimizer$split_vector <- split_vector
-    surv_rpart_cox_optimizer$optim_args <- optim_args
+  surv_rpart_cox_optimizer$performance_metric <- c_index
 
-    surv_rpart_cox_optimizer$performance_metric <- c_index
+  # set data
+  surv_rpart_cox_optimizer$set_data(
+    x = train_x,
+    y = train_y,
+    cat_vars = cat_vars
+  )
 
-    # set data
-    surv_rpart_cox_optimizer$set_data(
-      x = train_x,
-      y = train_y,
-      cat_vars = cat_vars
-    )
-
-    cv_results <- surv_rpart_cox_optimizer$execute()
-    expect_type(cv_results, "list")
-    expect_true(inherits(
-      x = surv_rpart_cox_optimizer$results,
-      what = "mlexCV"
-    ))
-  }
-)
+  cv_results <- surv_rpart_cox_optimizer$execute()
+  expect_type(cv_results, "list")
+  expect_true(inherits(
+    x = surv_rpart_cox_optimizer$results,
+    what = "mlexCV"
+  ))
+})
