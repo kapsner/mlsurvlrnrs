@@ -13,10 +13,15 @@
 -   adaptions to new mlexperiments api
     ([bfdf33b](https://github.com/kapsner/mlsurvlrnrs/tree/bfdf33bc99fbe1fe914a5f42106351f5ad9f85e9))
 
+#### Tests
+
+-   more conditions on examples for suggested packages
+    ([f8b1f85](https://github.com/kapsner/mlsurvlrnrs/tree/f8b1f850d840bb2db7c13c708b0d4029d618c719))
+
 #### Other changes
 
 -   add skipping of suggests to roxygen
-    ([f7a4d24](https://github.com/kapsner/mlsurvlrnrs/tree/f7a4d2481847a94697cad9590805cbe5d208ed4d))
+    ([e35bbf8](https://github.com/kapsner/mlsurvlrnrs/tree/e35bbf86d651f95cee9ccb6ebca64652ecaf4ea5))
 -   updated metadata
     ([9de9e5d](https://github.com/kapsner/mlsurvlrnrs/tree/9de9e5d14675e6c2a99b37a3f79d24ef9bcb285a))
 -   updated news.md
@@ -25,7 +30,7 @@
     ([b8643fb](https://github.com/kapsner/mlsurvlrnrs/tree/b8643fb304223f942fa6391fcd9f6239e96cc53a))
 
 Full set of changes:
-[`v0.0.7...f7a4d24`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.7...f7a4d24)
+[`v0.0.7...f8b1f85`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.7...f8b1f85)
 
 ## v0.0.7 (2025-12-04)
 

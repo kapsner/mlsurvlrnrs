@@ -1,7 +1,7 @@
 Package: mlsurvlrnrs
 Title: R6-Based ML Survival Learners for 'mlexperiments'
 Version: 0.0.8
-Authors@R: 
+Authors@R:
     person("Lorenz A.", "Kapsner", , "lorenz.kapsner@gmail.com", role = c("cre", "aut", "cph"),
            comment = c(ORCID = "0000-0003-1866-860X"))
 Description: Enhances 'mlexperiments'
@@ -16,16 +16,16 @@ Description: Enhances 'mlexperiments'
 License: GPL (>= 3)
 URL: https://github.com/kapsner/mlsurvlrnrs
 BugReports: https://github.com/kapsner/mlsurvlrnrs/issues
-Depends: 
+Depends:
     R (>= 4.1.0)
-Imports: 
+Imports:
     data.table,
     kdry,
     mlexperiments (>= 1.0.0),
     mllrnrs (>= 0.0.8),
     R6,
     stats
-Suggests: 
+Suggests:
     glmnet,
     lintr,
     measures,
@@ -38,11 +38,11 @@ Suggests:
     survival,
     testthat (>= 3.0.1),
     xgboost (>= 3.1.2.1)
-VignetteBuilder: 
+VignetteBuilder:
     quarto
 Config/testthat/edition: 3
 Config/testthat/parallel: false
-Date/Publication: 2026-01-16 11:31:06.937739 UTC
+Date/Publication: 2026-01-16 20:19:08.497675 UTC
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 SystemRequirements: Quarto command line tools

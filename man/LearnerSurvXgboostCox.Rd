@@ -22,7 +22,8 @@ Can be used with
 \donttest{# execution time >2.5 sec
 if (requireNamespace("survival", quietly = TRUE) &&
 requireNamespace("glmnet", quietly = TRUE) &&
-requireNamespace("xgboost", quietly = TRUE)) {
+requireNamespace("xgboost", quietly = TRUE) &&
+requireNamespace("splitTools", quietly = TRUE)) {
 
   # survival analysis
   Sys.setenv("OMP_THREAD_LIMIT" = 2)

@@ -35,7 +35,8 @@ are forwarded to \code{rpart}'s argument \code{control} (see
 # survival analysis
 if (requireNamespace("survival", quietly = TRUE) &&
 requireNamespace("glmnet", quietly = TRUE) &&
-requireNamespace("rpart", quietly = TRUE)) {
+requireNamespace("rpart", quietly = TRUE) &&
+requireNamespace("splitTools", quietly = TRUE)) {
 
   dataset <- survival::colon |>
     data.table::as.data.table() |>
