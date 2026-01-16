@@ -72,6 +72,7 @@ optim_args <- list(
 test_that(desc = "test nested cv, grid - surv_glmnet_cox", code = {
   testthat::skip_if_not_installed("survival")
   testthat::skip_if_not_installed("glmnet")
+  testthat::skip_if_not_installed("rBayesianOptimization")
 
   surv_glmnet_cox_optimizer <- mlexperiments::MLNestedCV$new(
     learner = LearnerSurvGlmnetCox$new(),

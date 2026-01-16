@@ -15,8 +15,10 @@
 
 #### Tests
 
+-   more conditional tests for suggested pkg
+    ([c024b32](https://github.com/kapsner/mlsurvlrnrs/tree/c024b32edfe42b8b1e1488970b2b1ac5f4ae826e))
 -   more conditions on examples for suggested packages
-    ([f8b1f85](https://github.com/kapsner/mlsurvlrnrs/tree/f8b1f850d840bb2db7c13c708b0d4029d618c719))
+    ([65c1eb0](https://github.com/kapsner/mlsurvlrnrs/tree/65c1eb0e056d3569bcbf18c64423ec2a39d08d88))
 
 #### Other changes
 
@@ -30,7 +32,7 @@
     ([b8643fb](https://github.com/kapsner/mlsurvlrnrs/tree/b8643fb304223f942fa6391fcd9f6239e96cc53a))
 
 Full set of changes:
-[`v0.0.7...f8b1f85`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.7...f8b1f85)
+[`v0.0.7...c024b32`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.7...c024b32)
 
 ## v0.0.7 (2025-12-04)
 

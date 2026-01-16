@@ -139,6 +139,7 @@ learner_args <- list(
 
 test_that(desc = "test nested cv, grid - surv_xgboost_aft", code = {
   testthat::skip_if_not_installed("xgboost")
+  testthat::skip_if_not_installed("glmnet")
 
   surv_xgboost_aft_optimizer <- mlexperiments::MLNestedCV$new(
     learner = LearnerSurvXgboostAft$new(

@@ -88,6 +88,7 @@ optim_args <- list(
 test_that(desc = "test nested cv, bayesian - surv_xgboost_cox", code = {
   testthat::skip_if_not_installed("rBayesianOptimizaion")
   testthat::skip_if_not_installed("xgboost")
+  testthat::skip_if_not_installed("glmnet")
 
   surv_xgboost_cox_optimizer <- mlexperiments::MLNestedCV$new(
     learner = LearnerSurvXgboostCox$new(
