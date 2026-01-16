@@ -29,69 +29,74 @@
 #'
 #' @examples
 #' # survival analysis
+#' if (requireNamespace("survival", quietly = TRUE) &&
+#' requireNamespace("glmnet", quietly = TRUE) &&
+#' requireNamespace("rpart", quietly = TRUE)) {
 #'
-#' dataset <- survival::colon |>
-#'   data.table::as.data.table() |>
-#'   na.omit()
-#' dataset <- dataset[get("etype") == 2, ]
+#'   dataset <- survival::colon |>
+#'     data.table::as.data.table() |>
+#'     na.omit()
+#'   dataset <- dataset[get("etype") == 2, ]
 #'
-#' seed <- 123
-#' surv_cols <- c("status", "time", "rx")
+#'   seed <- 123
+#'   surv_cols <- c("status", "time", "rx")
 #'
-#' feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
+#'   feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
 #'
-#' ncores <- 2L
+#'   ncores <- 2L
 #'
-#' split_vector <- splitTools::multi_strata(
-#'   df = dataset[, .SD, .SDcols = surv_cols],
-#'   strategy = "kmeans",
-#'   k = 4
-#' )
+#'   split_vector <- splitTools::multi_strata(
+#'     df = dataset[, .SD, .SDcols = surv_cols],
+#'     strategy = "kmeans",
+#'     k = 4
+#'   )
 #'
-#' train_x <- model.matrix(
-#'   ~ -1 + .,
-#'   dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
-#' )
-#' train_y <- survival::Surv(
-#'   event = (dataset[, get("status")] |>
-#'              as.character() |>
-#'              as.integer()),
-#'   time = dataset[, get("time")],
-#'   type = "right"
-#' )
+#'   train_x <- model.matrix(
+#'     ~ -1 + .,
+#'     dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
+#'   )
+#'   train_y <- survival::Surv(
+#'     event = (dataset[, get("status")] |>
+#'                as.character() |>
+#'                as.integer()),
+#'     time = dataset[, get("time")],
+#'     type = "right"
+#'   )
 #'
-#' fold_list <- splitTools::create_folds(
-#'   y = split_vector,
-#'   k = 3,
-#'   type = "stratified",
-#'   seed = seed
-#' )
+#'   fold_list <- splitTools::create_folds(
+#'     y = split_vector,
+#'     k = 3,
+#'     type = "stratified",
+#'     seed = seed
+#'   )
 #'
-#' surv_rpart_optimizer <- mlexperiments::MLCrossValidation$new(
-#'   learner = LearnerSurvRpartCox$new(),
-#'   fold_list = fold_list,
-#'   ncores = ncores,
-#'   seed = seed
-#' )
-#' surv_rpart_optimizer$learner_args <- list(
-#'   minsplit = 10L,
-#'   maxdepth = 20L,
-#'   cp = 0.03,
-#'   method = "exp"
-#' )
-#' surv_rpart_optimizer$performance_metric <- c_index
+#'   surv_rpart_optimizer <- mlexperiments::MLCrossValidation$new(
+#'     learner = LearnerSurvRpartCox$new(),
+#'     fold_list = fold_list,
+#'     ncores = ncores,
+#'     seed = seed
+#'   )
+#'   surv_rpart_optimizer$learner_args <- list(
+#'     minsplit = 10L,
+#'     maxdepth = 20L,
+#'     cp = 0.03,
+#'     method = "exp"
+#'   )
+#'   surv_rpart_optimizer$performance_metric <- c_index
 #'
-#' # set data
-#' surv_rpart_optimizer$set_data(
-#'   x = train_x,
-#'   y = train_y
-#' )
+#'   # set data
+#'   surv_rpart_optimizer$set_data(
+#'     x = train_x,
+#'     y = train_y
+#'   )
 #'
-#' surv_rpart_optimizer$execute()
+#'   surv_rpart_optimizer$execute()
+#' }
 #'
 #' @export
 #'
-LearnerSurvRpartCox <- R6::R6Class( # nolint
+LearnerSurvRpartCox <- R6::R6Class(
+  # nolint
   classname = "LearnerSurvRpartCox",
   inherit = mlexperiments::MLLearnerBase,
   public = list(
@@ -106,7 +111,9 @@ LearnerSurvRpartCox <- R6::R6Class( # nolint
     #' @seealso [rpart::rpart()], [c_index()],
     #'
     #' @examples
-    #' LearnerSurvRpartCox$new()
+    #' if (requireNamespace("rpart", quietly = TRUE)) {
+    #'   LearnerSurvRpartCox$new()
+    #' }
     #'
     #' @export
     #'
@@ -125,17 +132,20 @@ LearnerSurvRpartCox <- R6::R6Class( # nolint
       )
       self$environment <- "mlsurvlrnrs"
       self$cluster_export <- c(
-        "surv_rpart_cox_optimization", "surv_rpart_cox_fit",
+        "surv_rpart_cox_optimization",
+        "surv_rpart_cox_fit",
         "surv_rpart_cox_predict"
       )
       private$fun_optim_cv <- surv_rpart_cox_optimization
       private$fun_fit <- function(x, y, ncores, seed, ...) {
         kwargs <- list(...)
-        stopifnot(kwargs$method == "exp",
-                  inherits(y, "Surv"))
+        stopifnot(kwargs$method == "exp", inherits(y, "Surv"))
         args <- kdry::list.append(
           list(
-            x = x, y = y, ncores = ncores, seed = seed
+            x = x,
+            y = y,
+            ncores = ncores,
+            seed = seed
           ),
           kwargs
         )
@@ -148,7 +158,8 @@ LearnerSurvRpartCox <- R6::R6Class( # nolint
 )
 
 
-surv_rpart_cox_bsF <- function(...) { # nolint
+surv_rpart_cox_bsF <- function(...) {
+  # nolint
   params <- list(...)
 
   stopifnot(inherits(y, "Surv"))
@@ -160,7 +171,7 @@ surv_rpart_cox_bsF <- function(...) { # nolint
 
   # call to surv_rpart_cox_optimization here with ncores = 1, since the Bayesian
   # search is parallelized already / "FUN is fitted n times in m threads"
-  set.seed(seed)#, kind = "L'Ecuyer-CMRG")
+  set.seed(seed) #, kind = "L'Ecuyer-CMRG")
   bayes_opt_rpart <- surv_rpart_cox_optimization(
     x = x,
     y = y,
@@ -180,12 +191,12 @@ surv_rpart_cox_bsF <- function(...) { # nolint
 
 
 surv_rpart_cox_cv <- function(
-    x,
-    y,
-    params,
-    fold_list,
-    ncores,
-    seed
+  x,
+  y,
+  params,
+  fold_list,
+  ncores,
+  seed
 ) {
   stopifnot(inherits(y, "Surv"))
 
@@ -193,7 +204,6 @@ surv_rpart_cox_cv <- function(
 
   # loop over the folds
   for (fold in names(fold_list)) {
-
     # get row-ids of the current fold
     train_idx <- fold_list[[fold]]
 
@@ -209,8 +219,7 @@ surv_rpart_cox_cv <- function(
     )
     set.seed(seed)
     cvfit <- do.call(surv_rpart_cox_fit, args)
-    outlist[[fold]] <- list(cvfit = cvfit,
-                            train_idx = train_idx)
+    outlist[[fold]] <- list(cvfit = cvfit, train_idx = train_idx)
   }
   return(outlist)
 }
@@ -240,7 +249,6 @@ surv_rpart_cox_optimization <- function(x, y, params, fold_list, ncores, seed) {
   )
 
   for (fold in names(cv_fit_list)) {
-
     cvfit <- cv_fit_list[[fold]][["cvfit"]]
     train_idx <- cv_fit_list[[fold]][["train_idx"]]
 
@@ -280,9 +288,11 @@ surv_rpart_cox_optimization <- function(x, y, params, fold_list, ncores, seed) {
 
 surv_rpart_cox_fit <- function(x, y, ncores, seed, ...) {
   kwargs <- list(...)
-  stopifnot("method" %in% names(kwargs),
-            kwargs$method == "exp",
-            inherits(y, "Surv"))
+  stopifnot(
+    "method" %in% names(kwargs),
+    kwargs$method == "exp",
+    inherits(y, "Surv")
+  )
   fit_args <- kdry::list.append(
     list(
       x = x,

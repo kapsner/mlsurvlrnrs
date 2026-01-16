@@ -7,8 +7,17 @@ seed <- 123
 surv_cols <- c("status", "time", "rx")
 
 feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
-cat_vars <- c("sex", "obstruct", "perfor", "adhere", "differ", "extent",
-              "surg", "node4", "rx")
+cat_vars <- c(
+  "sex",
+  "obstruct",
+  "perfor",
+  "adhere",
+  "differ",
+  "extent",
+  "surg",
+  "node4",
+  "rx"
+)
 
 split_vector <- splitTools::multi_strata(
   df = dataset[, .SD, .SDcols = surv_cols],
@@ -21,8 +30,8 @@ train_x <- data.matrix(
 )
 train_y <- survival::Surv(
   event = (dataset[, get("status")] |>
-             as.character() |>
-             as.integer()),
+    as.character() |>
+    as.integer()),
   time = dataset[, get("time")],
   type = "right"
 )
@@ -34,35 +43,32 @@ fold_list <- splitTools::create_folds(
   seed = seed
 )
 
-test_that(
-  desc = "test cv - surv_coxph_cox",
-  code = {
+test_that(desc = "test cv - surv_coxph_cox", code = {
+  testthat::skip_if_not_installed("survival")
+  testthat::skip_if_not_installed("glmnet")
 
-    testthat::skip_if_not_installed("survival")
+  surv_coxph_cox_optimizer <- mlexperiments::MLCrossValidation$new(
+    learner = LearnerSurvCoxPHCox$new(),
+    fold_list = fold_list,
+    ncores = 1L,
+    seed = seed,
+    return_models = TRUE
+  )
+  surv_coxph_cox_optimizer$performance_metric <- c_index
+  surv_coxph_cox_optimizer$learner_args <- list(cat_vars = cat_vars)
 
-    surv_coxph_cox_optimizer <- mlexperiments::MLCrossValidation$new(
-      learner = LearnerSurvCoxPHCox$new(),
-      fold_list = fold_list,
-      ncores = 1L,
-      seed = seed,
-      return_models = TRUE
-    )
-    surv_coxph_cox_optimizer$performance_metric <- c_index
-    surv_coxph_cox_optimizer$learner_args <- list(cat_vars = cat_vars)
+  # set data
+  surv_coxph_cox_optimizer$set_data(
+    x = train_x,
+    y = train_y,
+    cat_vars = cat_vars
+  )
 
-    # set data
-    surv_coxph_cox_optimizer$set_data(
-      x = train_x,
-      y = train_y,
-      cat_vars = cat_vars
-    )
-
-    cv_results <- surv_coxph_cox_optimizer$execute()
-    expect_type(cv_results, "list")
-    expect_equal(dim(cv_results), c(3, 2))
-    expect_true(inherits(
-      x = surv_coxph_cox_optimizer$results,
-      what = "mlexCV"
-    ))
-  }
-)
+  cv_results <- surv_coxph_cox_optimizer$execute()
+  expect_type(cv_results, "list")
+  expect_equal(dim(cv_results), c(3, 2))
+  expect_true(inherits(
+    x = surv_coxph_cox_optimizer$results,
+    what = "mlexCV"
+  ))
+})

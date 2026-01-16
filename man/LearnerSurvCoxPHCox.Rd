@@ -16,65 +16,70 @@ Can be used with
 }
 \examples{
 # survival analysis
+if (requireNamespace("survival", quietly = TRUE) &&
+requireNamespace("glmnet", quietly = TRUE)) {
 
-dataset <- survival::colon |>
-  data.table::as.data.table() |>
-  na.omit()
-dataset <- dataset[get("etype") == 2, ]
+  dataset <- survival::colon |>
+    data.table::as.data.table() |>
+    na.omit()
+  dataset <- dataset[get("etype") == 2, ]
 
-seed <- 123
-surv_cols <- c("status", "time", "rx")
+  seed <- 123
+  surv_cols <- c("status", "time", "rx")
 
-feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
+  feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
 
-split_vector <- splitTools::multi_strata(
-  df = dataset[, .SD, .SDcols = surv_cols],
-  strategy = "kmeans",
-  k = 4
-)
+  split_vector <- splitTools::multi_strata(
+    df = dataset[, .SD, .SDcols = surv_cols],
+    strategy = "kmeans",
+    k = 4
+  )
 
-train_x <- model.matrix(
-  ~ -1 + .,
-  dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
-)
-train_y <- survival::Surv(
-  event = (dataset[, get("status")] |>
-             as.character() |>
-             as.integer()),
-  time = dataset[, get("time")],
-  type = "right"
-)
+  train_x <- model.matrix(
+    ~ -1 + .,
+    dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
+  )
+  train_y <- survival::Surv(
+    event = (dataset[, get("status")] |>
+               as.character() |>
+               as.integer()),
+    time = dataset[, get("time")],
+    type = "right"
+  )
 
-fold_list <- splitTools::create_folds(
-  y = split_vector,
-  k = 3,
-  type = "stratified",
-  seed = seed
-)
+  fold_list <- splitTools::create_folds(
+    y = split_vector,
+    k = 3,
+    type = "stratified",
+    seed = seed
+  )
 
 
-surv_coxph_cox_optimizer <- mlexperiments::MLCrossValidation$new(
-  learner = LearnerSurvCoxPHCox$new(),
-  fold_list = fold_list,
-  ncores = 1L,
-  seed = seed
-)
-surv_coxph_cox_optimizer$performance_metric <- c_index
+  surv_coxph_cox_optimizer <- mlexperiments::MLCrossValidation$new(
+    learner = LearnerSurvCoxPHCox$new(),
+    fold_list = fold_list,
+    ncores = 1L,
+    seed = seed
+  )
+  surv_coxph_cox_optimizer$performance_metric <- c_index
 
-# set data
-surv_coxph_cox_optimizer$set_data(
-  x = train_x,
-  y = train_y
-)
+  # set data
+  surv_coxph_cox_optimizer$set_data(
+    x = train_x,
+    y = train_y
+  )
 
-surv_coxph_cox_optimizer$execute()
+  surv_coxph_cox_optimizer$execute()
+}
 
 
 ## ------------------------------------------------
 ## Method `LearnerSurvCoxPHCox$new`
 ## ------------------------------------------------
 
-LearnerSurvCoxPHCox$new()
+if (requireNamespace("survival", quietly = TRUE)) {
+  LearnerSurvCoxPHCox$new()
+}
 
 }
 \seealso{
@@ -114,7 +119,9 @@ A new \code{LearnerSurvCoxPHCox} R6 object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{LearnerSurvCoxPHCox$new()
+\preformatted{if (requireNamespace("survival", quietly = TRUE)) {
+  LearnerSurvCoxPHCox$new()
+}
 
 }
 \if{html}{\out{</div>}}

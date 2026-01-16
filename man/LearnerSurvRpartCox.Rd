@@ -33,72 +33,78 @@ are forwarded to \code{rpart}'s argument \code{control} (see
 }
 \examples{
 # survival analysis
+if (requireNamespace("survival", quietly = TRUE) &&
+requireNamespace("glmnet", quietly = TRUE) &&
+requireNamespace("rpart", quietly = TRUE)) {
 
-dataset <- survival::colon |>
-  data.table::as.data.table() |>
-  na.omit()
-dataset <- dataset[get("etype") == 2, ]
+  dataset <- survival::colon |>
+    data.table::as.data.table() |>
+    na.omit()
+  dataset <- dataset[get("etype") == 2, ]
 
-seed <- 123
-surv_cols <- c("status", "time", "rx")
+  seed <- 123
+  surv_cols <- c("status", "time", "rx")
 
-feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
+  feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
 
-ncores <- 2L
+  ncores <- 2L
 
-split_vector <- splitTools::multi_strata(
-  df = dataset[, .SD, .SDcols = surv_cols],
-  strategy = "kmeans",
-  k = 4
-)
+  split_vector <- splitTools::multi_strata(
+    df = dataset[, .SD, .SDcols = surv_cols],
+    strategy = "kmeans",
+    k = 4
+  )
 
-train_x <- model.matrix(
-  ~ -1 + .,
-  dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
-)
-train_y <- survival::Surv(
-  event = (dataset[, get("status")] |>
-             as.character() |>
-             as.integer()),
-  time = dataset[, get("time")],
-  type = "right"
-)
+  train_x <- model.matrix(
+    ~ -1 + .,
+    dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
+  )
+  train_y <- survival::Surv(
+    event = (dataset[, get("status")] |>
+               as.character() |>
+               as.integer()),
+    time = dataset[, get("time")],
+    type = "right"
+  )
 
-fold_list <- splitTools::create_folds(
-  y = split_vector,
-  k = 3,
-  type = "stratified",
-  seed = seed
-)
+  fold_list <- splitTools::create_folds(
+    y = split_vector,
+    k = 3,
+    type = "stratified",
+    seed = seed
+  )
 
-surv_rpart_optimizer <- mlexperiments::MLCrossValidation$new(
-  learner = LearnerSurvRpartCox$new(),
-  fold_list = fold_list,
-  ncores = ncores,
-  seed = seed
-)
-surv_rpart_optimizer$learner_args <- list(
-  minsplit = 10L,
-  maxdepth = 20L,
-  cp = 0.03,
-  method = "exp"
-)
-surv_rpart_optimizer$performance_metric <- c_index
+  surv_rpart_optimizer <- mlexperiments::MLCrossValidation$new(
+    learner = LearnerSurvRpartCox$new(),
+    fold_list = fold_list,
+    ncores = ncores,
+    seed = seed
+  )
+  surv_rpart_optimizer$learner_args <- list(
+    minsplit = 10L,
+    maxdepth = 20L,
+    cp = 0.03,
+    method = "exp"
+  )
+  surv_rpart_optimizer$performance_metric <- c_index
 
-# set data
-surv_rpart_optimizer$set_data(
-  x = train_x,
-  y = train_y
-)
+  # set data
+  surv_rpart_optimizer$set_data(
+    x = train_x,
+    y = train_y
+  )
 
-surv_rpart_optimizer$execute()
+  surv_rpart_optimizer$execute()
+}
 
 
 ## ------------------------------------------------
 ## Method `LearnerSurvRpartCox$new`
 ## ------------------------------------------------
 
-LearnerSurvRpartCox$new()
+if (requireNamespace("rpart", quietly = TRUE)) {
+  LearnerSurvRpartCox$new()
+}
 
 }
 \seealso{
@@ -143,7 +149,9 @@ recursive partitioning and regression trees with survival data.
 
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{LearnerSurvRpartCox$new()
+\preformatted{if (requireNamespace("rpart", quietly = TRUE)) {
+  LearnerSurvRpartCox$new()
+}
 
 }
 \if{html}{\out{</div>}}

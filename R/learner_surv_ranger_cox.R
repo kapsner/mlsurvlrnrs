@@ -16,84 +16,91 @@
 #'
 #' @examples
 #' # survival analysis
+#' if (requireNamespace("survival", quietly = TRUE) &&
+#' requireNamespace("glmnet", quietly = TRUE) &&
+#' requireNamespace("ranger", quietly = TRUE)) {
 #'
-#' dataset <- survival::colon |>
-#'   data.table::as.data.table() |>
-#'   na.omit()
-#' dataset <- dataset[get("etype") == 2, ]
+#'   dataset <- survival::colon |>
+#'     data.table::as.data.table() |>
+#'     na.omit()
+#'   dataset <- dataset[get("etype") == 2, ]
 #'
-#' seed <- 123
-#' surv_cols <- c("status", "time", "rx")
+#'   seed <- 123
+#'   surv_cols <- c("status", "time", "rx")
 #'
-#' feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
+#'   feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
 #'
-#' param_list_ranger <- expand.grid(
-#'   sample.fraction = seq(0.6, 1, .2),
-#'   min.node.size = seq(1, 5, 4),
-#'   mtry = seq(2, 6, 2),
-#'   num.trees = c(5L, 10L),
-#'   max.depth = seq(1, 5, 4)
-#' )
+#'   param_list_ranger <- expand.grid(
+#'     sample.fraction = seq(0.6, 1, .2),
+#'     min.node.size = seq(1, 5, 4),
+#'     mtry = seq(2, 6, 2),
+#'     num.trees = c(5L, 10L),
+#'     max.depth = seq(1, 5, 4)
+#'   )
 #'
-#' ncores <- 2L
+#'   ncores <- 2L
 #'
-#' split_vector <- splitTools::multi_strata(
-#'   df = dataset[, .SD, .SDcols = surv_cols],
-#'   strategy = "kmeans",
-#'   k = 4
-#' )
+#'   split_vector <- splitTools::multi_strata(
+#'     df = dataset[, .SD, .SDcols = surv_cols],
+#'     strategy = "kmeans",
+#'     k = 4
+#'   )
 #'
-#' train_x <- model.matrix(
-#'   ~ -1 + .,
-#'   dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
-#' )
-#' train_y <- survival::Surv(
-#'   event = (dataset[, get("status")] |>
-#'              as.character() |>
-#'              as.integer()),
-#'   time = dataset[, get("time")],
-#'   type = "right"
-#' )
+#'   train_x <- model.matrix(
+#'     ~ -1 + .,
+#'     dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
+#'   )
+#'   train_y <- survival::Surv(
+#'     event = (dataset[, get("status")] |>
+#'                as.character() |>
+#'                as.integer()),
+#'     time = dataset[, get("time")],
+#'     type = "right"
+#'   )
 #'
-#' fold_list <- splitTools::create_folds(
-#'   y = split_vector,
-#'   k = 3,
-#'   type = "stratified",
-#'   seed = seed
-#' )
+#'   fold_list <- splitTools::create_folds(
+#'     y = split_vector,
+#'     k = 3,
+#'     type = "stratified",
+#'     seed = seed
+#'   )
 #'
-#' surv_ranger_cox_optimizer <- mlexperiments::MLCrossValidation$new(
-#'   learner = LearnerSurvRangerCox$new(),
-#'   fold_list = fold_list,
-#'   ncores = ncores,
-#'   seed = seed
-#' )
-#' surv_ranger_cox_optimizer$learner_args <- as.list(
-#'   data.table::data.table(param_list_ranger[1, ], stringsAsFactors = FALSE)
-#' )
-#' surv_ranger_cox_optimizer$performance_metric <- c_index
+#'   surv_ranger_cox_optimizer <- mlexperiments::MLCrossValidation$new(
+#'     learner = LearnerSurvRangerCox$new(),
+#'     fold_list = fold_list,
+#'     ncores = ncores,
+#'     seed = seed
+#'   )
+#'   surv_ranger_cox_optimizer$learner_args <- as.list(
+#'     data.table::data.table(param_list_ranger[1, ], stringsAsFactors = FALSE)
+#'   )
+#'   surv_ranger_cox_optimizer$performance_metric <- c_index
 #'
-#' # set data
-#' surv_ranger_cox_optimizer$set_data(
-#'   x = train_x,
-#'   y = train_y
-#' )
+#'   # set data
+#'   surv_ranger_cox_optimizer$set_data(
+#'     x = train_x,
+#'     y = train_y
+#'   )
 #'
-#' surv_ranger_cox_optimizer$execute()
+#'   surv_ranger_cox_optimizer$execute()
+#' }
 #'
 #' @export
-LearnerSurvRangerCox <- R6::R6Class( # nolint
+#'
+LearnerSurvRangerCox <- R6::R6Class(
+  # nolint
   classname = "LearnerSurvRangerCox",
   inherit = mlexperiments::MLLearnerBase,
   public = list(
-
     #' @description
     #' Create a new `LearnerSurvRangerCox` object.
     #'
     #' @return A new `LearnerSurvRangerCox` R6 object.
     #'
     #' @examples
-    #' LearnerSurvRangerCox$new()
+    #' if (requireNamespace("ranger", quietly = TRUE)) {
+    #'   LearnerSurvRangerCox$new()
+    #' }
     #'
     initialize = function() {
       if (!requireNamespace("ranger", quietly = TRUE)) {
@@ -118,11 +125,16 @@ LearnerSurvRangerCox <- R6::R6Class( # nolint
 
 
 surv_ranger_cox_ce <- function() {
-  c("surv_ranger_cox_optimization", "surv_ranger_cox_cv",
-    "surv_ranger_cox_predict", "c_index")
+  c(
+    "surv_ranger_cox_optimization",
+    "surv_ranger_cox_cv",
+    "surv_ranger_cox_predict",
+    "c_index"
+  )
 }
 
-surv_ranger_cox_bsF <- function(...) { # nolint
+surv_ranger_cox_bsF <- function(...) {
+  # nolint
 
   params <- list(...)
 
@@ -131,7 +143,7 @@ surv_ranger_cox_bsF <- function(...) { # nolint
     append_list = method_helper$execute_params["cat_vars"]
   )
 
-  set.seed(seed)#, kind = "L'Ecuyer-CMRG")
+  set.seed(seed) #, kind = "L'Ecuyer-CMRG")
   bayes_opt_ranger <- surv_ranger_cox_optimization(
     x = x,
     y = y,
@@ -151,12 +163,12 @@ surv_ranger_cox_bsF <- function(...) { # nolint
 
 # ranger-cv is not implemented yet
 surv_ranger_cox_cv <- function(
-    x,
-    y,
-    params,
-    fold_list,
-    ncores,
-    seed
+  x,
+  y,
+  params,
+  fold_list,
+  ncores,
+  seed
 ) {
   stopifnot(
     is.list(params)
@@ -171,7 +183,6 @@ surv_ranger_cox_cv <- function(
 
   # loop over the folds
   for (fold in names(fold_list)) {
-
     # get row-ids of the current fold
     ranger_train_idx <- fold_list[[fold]]
 
@@ -191,20 +202,18 @@ surv_ranger_cox_cv <- function(
     set.seed(seed)
     outlist[[fold]][["cvfit"]] <- do.call(mllrnrs:::ranger_fit, args)
     outlist[[fold]][["train_idx"]] <- ranger_train_idx
-
   }
   return(outlist)
 }
 
 surv_ranger_cox_optimization <- function(
-    x,
-    y,
-    params,
-    fold_list,
-    ncores,
-    seed
+  x,
+  y,
+  params,
+  fold_list,
+  ncores,
+  seed
 ) {
-
   # initialize a dataframe to store the results
   results_df <- data.table::data.table(
     "fold" = character(0),
@@ -226,7 +235,6 @@ surv_ranger_cox_optimization <- function(
   # from the parmeter grid-search.
   # loop over the folds
   for (fold in names(cvfit_list)) {
-
     # get row-ids of the current fold
     cvfit <- cvfit_list[[fold]][["cvfit"]]
     ranger_train_idx <- cvfit_list[[fold]][["train_idx"]]
@@ -244,7 +252,6 @@ surv_ranger_cox_optimization <- function(
       predictions = preds,
       ground_truth = kdry::mlh_subset(y, -ranger_train_idx)
     )
-
 
     # save the results of this fold into a dataframe
     # from help("ranger::ranger"):

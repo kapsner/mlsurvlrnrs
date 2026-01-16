@@ -87,6 +87,7 @@ param_list_rpart <- expand.grid(
 test_that(desc = "test nested cv, bayesian - surv_rpart_cox", code = {
   testthat::skip_if_not_installed("rBayesianOptimizaion")
   testthat::skip_if_not_installed("rpart")
+  testthat::skip_if_not_installed("glmnet")
 
   surv_rpart_cox_optimizer <- mlexperiments::MLNestedCV$new(
     learner = LearnerSurvRpartCox$new(),

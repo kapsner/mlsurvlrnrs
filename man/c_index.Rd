@@ -18,14 +18,17 @@ Calculate the Harrell's concordance index (C-index)
 A wrapper function around \code{\link[glmnet:Cindex]{glmnet::Cindex()}} for use with \code{mlexperiments}.
 }
 \examples{
-set.seed(123)
-gt <- survival::Surv(
-  time = rnorm(100, 50, 15),
-  event = sample(0:1, 100, TRUE)
-)
-preds <- rbeta(100, 2, 5)
+if (requireNamespace("survival", quietly = TRUE) &&
+requireNamespace("glmnet", quietly = TRUE)) {
+  set.seed(123)
+  gt <- survival::Surv(
+    time = rnorm(100, 50, 15),
+    event = sample(0:1, 100, TRUE)
+  )
+  preds <- rbeta(100, 2, 5)
 
-c_index(gt, preds)
+  c_index(gt, preds)
+}
 
 }
 \seealso{

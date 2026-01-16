@@ -39,8 +39,8 @@ train_x <- model.matrix(
 )
 train_y <- survival::Surv(
   event = (dataset[, get("status")] |>
-             as.character() |>
-             as.integer()),
+    as.character() |>
+    as.integer()),
   time = dataset[, get("time")],
   type = "right"
 )
@@ -69,41 +69,38 @@ optim_args <- list(
 # %% NESTED CV
 # ###########################################################################
 
-test_that(
-  desc = "test nested cv, grid - surv_glmnet_cox",
-  code = {
+test_that(desc = "test nested cv, grid - surv_glmnet_cox", code = {
+  testthat::skip_if_not_installed("survival")
+  testthat::skip_if_not_installed("glmnet")
 
-    testthat::skip_if_not_installed("glmnet")
+  surv_glmnet_cox_optimizer <- mlexperiments::MLNestedCV$new(
+    learner = LearnerSurvGlmnetCox$new(),
+    strategy = "bayesian",
+    fold_list = fold_list,
+    k_tuning = 3L,
+    ncores = ncores,
+    seed = seed
+  )
 
-    surv_glmnet_cox_optimizer <- mlexperiments::MLNestedCV$new(
-      learner = LearnerSurvGlmnetCox$new(),
-      strategy = "bayesian",
-      fold_list = fold_list,
-      k_tuning = 3L,
-      ncores = ncores,
-      seed = seed
-    )
+  surv_glmnet_cox_optimizer$parameter_bounds <- glmnet_bounds
+  surv_glmnet_cox_optimizer$parameter_grid <- param_list_glmnet
+  surv_glmnet_cox_optimizer$split_type <- "stratified"
+  surv_glmnet_cox_optimizer$split_vector <- split_vector
+  surv_glmnet_cox_optimizer$optim_args <- optim_args
 
-    surv_glmnet_cox_optimizer$parameter_bounds <- glmnet_bounds
-    surv_glmnet_cox_optimizer$parameter_grid <- param_list_glmnet
-    surv_glmnet_cox_optimizer$split_type <- "stratified"
-    surv_glmnet_cox_optimizer$split_vector <- split_vector
-    surv_glmnet_cox_optimizer$optim_args <- optim_args
+  surv_glmnet_cox_optimizer$performance_metric <- c_index
 
-    surv_glmnet_cox_optimizer$performance_metric <- c_index
+  # set data
+  surv_glmnet_cox_optimizer$set_data(
+    x = train_x,
+    y = train_y
+  )
 
-    # set data
-    surv_glmnet_cox_optimizer$set_data(
-      x = train_x,
-      y = train_y
-    )
-
-    cv_results <- surv_glmnet_cox_optimizer$execute()
-    expect_type(cv_results, "list")
-    expect_equal(dim(cv_results), c(3, 4))
-    expect_true(inherits(
-      x = surv_glmnet_cox_optimizer$results,
-      what = "mlexCV"
-    ))
-  }
-)
+  cv_results <- surv_glmnet_cox_optimizer$execute()
+  expect_type(cv_results, "list")
+  expect_equal(dim(cv_results), c(3, 4))
+  expect_true(inherits(
+    x = surv_glmnet_cox_optimizer$results,
+    what = "mlexCV"
+  ))
+})

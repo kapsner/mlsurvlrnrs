@@ -2,17 +2,30 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2025-12-05)
+## Unreleased (2026-01-16)
+
+#### Bug fixes
+
+-   alignment to upstream api changes
+    ([4d8f429](https://github.com/kapsner/mlsurvlrnrs/tree/4d8f429809f3b6cd9c65fb09bb2228a517ff0550))
+-   adaptions to new mlexperiments api
+    ([d697741](https://github.com/kapsner/mlsurvlrnrs/tree/d69774191965bf5f6ad8f29a7ce7cf548fdddcdd))
+-   adaptions to new mlexperiments api
+    ([bfdf33b](https://github.com/kapsner/mlsurvlrnrs/tree/bfdf33bc99fbe1fe914a5f42106351f5ad9f85e9))
 
 #### Other changes
 
+-   add skipping of suggests to roxygen
+    ([f7a4d24](https://github.com/kapsner/mlsurvlrnrs/tree/f7a4d2481847a94697cad9590805cbe5d208ed4d))
+-   updated metadata
+    ([9de9e5d](https://github.com/kapsner/mlsurvlrnrs/tree/9de9e5d14675e6c2a99b37a3f79d24ef9bcb285a))
 -   updated news.md
-    ([699d814](https://github.com/kapsner/mlsurvlrnrs/tree/699d81459e690da4b5e0fe1fe96632cbecec5b73))
+    ([5b6ccd6](https://github.com/kapsner/mlsurvlrnrs/tree/5b6ccd6f139b7565903fdc5a17251d7809c7032e))
 -   updated dev-version
     ([b8643fb](https://github.com/kapsner/mlsurvlrnrs/tree/b8643fb304223f942fa6391fcd9f6239e96cc53a))
 
 Full set of changes:
-[`v0.0.7...699d814`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.7...699d814)
+[`v0.0.7...f7a4d24`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.7...f7a4d24)
 
 ## v0.0.7 (2025-12-04)
 

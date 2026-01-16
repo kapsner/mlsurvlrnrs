@@ -24,84 +24,90 @@ Also see the official xgboost documentation on aft models:
 }
 \examples{
 \donttest{# execution time >2.5 sec
-# survival analysis
-Sys.setenv("OMP_THREAD_LIMIT" = 2)
+if (requireNamespace("survival", quietly = TRUE) &&
+requireNamespace("glmnet", quietly = TRUE) &&
+requireNamespace("xgboost", quietly = TRUE)) {
 
-dataset <- survival::colon |>
-  data.table::as.data.table() |>
-  na.omit()
-dataset <- dataset[get("etype") == 2, ]
+  # survival analysis
+  Sys.setenv("OMP_THREAD_LIMIT" = 2)
 
-seed <- 123
-surv_cols <- c("status", "time", "rx")
+  dataset <- survival::colon |>
+    data.table::as.data.table() |>
+    na.omit()
+  dataset <- dataset[get("etype") == 2, ]
 
-feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
+  seed <- 123
+  surv_cols <- c("status", "time", "rx")
 
-param_list_xgboost <- expand.grid(
-  objective = "survival:aft",
-  eval_metric = "aft-nloglik",
-  subsample = seq(0.6, 1, .2),
-  colsample_bytree = seq(0.6, 1, .2),
-  min_child_weight = seq(1, 5, 4),
-  learning_rate = c(0.1, 0.2),
-  max_depth = seq(1, 5, 4)
-)
-ncores <- 2L
+  feature_cols <- colnames(dataset)[3:(ncol(dataset) - 1)]
 
-split_vector <- splitTools::multi_strata(
-  df = dataset[, .SD, .SDcols = surv_cols],
-  strategy = "kmeans",
-  k = 4
-)
+  param_list_xgboost <- expand.grid(
+    objective = "survival:aft",
+    eval_metric = "aft-nloglik",
+    subsample = seq(0.6, 1, .2),
+    colsample_bytree = seq(0.6, 1, .2),
+    min_child_weight = seq(1, 5, 4),
+    learning_rate = c(0.1, 0.2),
+    max_depth = seq(1, 5, 4)
+  )
+  ncores <- 2L
 
-train_x <- model.matrix(
-  ~ -1 + .,
-  dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
-)
-train_y <- survival::Surv(
-  event = (dataset[, get("status")] |>
-             as.character() |>
-             as.integer()),
-  time = dataset[, get("time")],
-  type = "right"
-)
+  split_vector <- splitTools::multi_strata(
+    df = dataset[, .SD, .SDcols = surv_cols],
+    strategy = "kmeans",
+    k = 4
+  )
 
-fold_list <- splitTools::create_folds(
-  y = split_vector,
-  k = 3,
-  type = "stratified",
-  seed = seed
-)
+  train_x <- model.matrix(
+    ~ -1 + .,
+    dataset[, .SD, .SDcols = setdiff(feature_cols, surv_cols[1:2])]
+  )
+  train_y <- survival::Surv(
+    event = (dataset[, get("status")] |>
+               as.character() |>
+               as.integer()),
+    time = dataset[, get("time")],
+    type = "right"
+  )
 
-surv_xgboost_aft_optimizer <- mlexperiments::MLCrossValidation$new(
-  learner = LearnerSurvXgboostAft$new(
-    metric_optimization_higher_better = FALSE
-  ),
-  fold_list = fold_list,
-  ncores = ncores,
-  seed = seed
-)
-surv_xgboost_aft_optimizer$learner_args <- c(as.list(
-  param_list_xgboost[1, ]),
-  nrounds = 45L
-)
-surv_xgboost_aft_optimizer$performance_metric <- c_index
+  fold_list <- splitTools::create_folds(
+    y = split_vector,
+    k = 3,
+    type = "stratified",
+    seed = seed
+  )
 
-# set data
-surv_xgboost_aft_optimizer$set_data(
-  x = train_x,
-  y = train_y
-)
+  surv_xgboost_aft_optimizer <- mlexperiments::MLCrossValidation$new(
+    learner = LearnerSurvXgboostAft$new(
+      metric_optimization_higher_better = FALSE
+    ),
+    fold_list = fold_list,
+    ncores = ncores,
+    seed = seed
+  )
+  surv_xgboost_aft_optimizer$learner_args <- c(as.list(
+    param_list_xgboost[1, ]),
+    nrounds = 45L
+  )
+  surv_xgboost_aft_optimizer$performance_metric <- c_index
 
-surv_xgboost_aft_optimizer$execute()
-}
+  # set data
+  surv_xgboost_aft_optimizer$set_data(
+    x = train_x,
+    y = train_y
+  )
+
+  surv_xgboost_aft_optimizer$execute()
+}}
 
 
 ## ------------------------------------------------
 ## Method `LearnerSurvXgboostAft$new`
 ## ------------------------------------------------
 
-LearnerSurvXgboostAft$new(metric_optimization_higher_better = FALSE)
+if (requireNamespace("xgboost", quietly = TRUE)) {
+  LearnerSurvXgboostAft$new(metric_optimization_higher_better = FALSE)
+}
 
 }
 \seealso{
@@ -150,7 +156,9 @@ A new \code{LearnerSurvXgboostAft} R6 object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{LearnerSurvXgboostAft$new(metric_optimization_higher_better = FALSE)
+\preformatted{if (requireNamespace("xgboost", quietly = TRUE)) {
+  LearnerSurvXgboostAft$new(metric_optimization_higher_better = FALSE)
+}
 
 }
 \if{html}{\out{</div>}}
