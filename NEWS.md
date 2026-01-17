@@ -2,7 +2,7 @@
 
 # mlsurvlrnrs NEWS
 
-## Unreleased (2026-01-16)
+## Unreleased (2026-01-17)
 
 #### Bug fixes
 
@@ -16,12 +16,14 @@
 #### Tests
 
 -   more conditional tests for suggested pkg
-    ([c024b32](https://github.com/kapsner/mlsurvlrnrs/tree/c024b32edfe42b8b1e1488970b2b1ac5f4ae826e))
+    ([0828306](https://github.com/kapsner/mlsurvlrnrs/tree/08283069ae928111b75a65f9afc18409d885b7c1))
 -   more conditions on examples for suggested packages
     ([65c1eb0](https://github.com/kapsner/mlsurvlrnrs/tree/65c1eb0e056d3569bcbf18c64423ec2a39d08d88))
 
 #### Other changes
 
+-   updated description
+    ([4aaab2f](https://github.com/kapsner/mlsurvlrnrs/tree/4aaab2f7fe25782c6db3d12d08e7e8ff5665c4d7))
 -   add skipping of suggests to roxygen
     ([e35bbf8](https://github.com/kapsner/mlsurvlrnrs/tree/e35bbf86d651f95cee9ccb6ebca64652ecaf4ea5))
 -   updated metadata
@@ -32,7 +34,7 @@
     ([b8643fb](https://github.com/kapsner/mlsurvlrnrs/tree/b8643fb304223f942fa6391fcd9f6239e96cc53a))
 
 Full set of changes:
-[`v0.0.7...c024b32`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.7...c024b32)
+[`v0.0.7...4aaab2f`](https://github.com/kapsner/mlsurvlrnrs/compare/v0.0.7...4aaab2f)
 
 ## v0.0.7 (2025-12-04)
 
